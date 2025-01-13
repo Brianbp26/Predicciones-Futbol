@@ -12,8 +12,8 @@ st.set_page_config(
 )
 
 # Rutas base
-BASE_DIR = Path(__file__).resolve().parent
-LOGOS_PATH = BASE_DIR / "logos"
+BASE_PATH = r"C:\\Users\\brian\\OneDrive - Universidad Politécnica de Madrid\\Escritorio\\CDIA 2º\\Practica3-Streamlit"
+LOGOS_PATH = os.path.join(BASE_PATH, "logos")
 
 # Aplicar algunos estilos CSS personalizados
 st.markdown("""
