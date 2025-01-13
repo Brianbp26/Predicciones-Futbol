@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
+from pathlib import Path
 import os
 
 # Configuración de la página
@@ -11,7 +12,8 @@ st.set_page_config(
 )
 
 # Rutas base
-LOGOS_PATH = os.path.join(os.path.dirname(__file__), "logos")
+BASE_DIR = Path(__file__).resolve().parent
+LOGOS_PATH = BASE_DIR / "logos"
 
 # Aplicar algunos estilos CSS personalizados
 st.markdown("""
@@ -64,13 +66,11 @@ NOMBRES_EQUIPOS = {
 
 # Función para cargar logos
 def cargar_logo(equipo):
-    # Obtener el nombre del archivo desde el diccionario
     nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    logo_path = os.path.join(LOGOS_PATH, "España", "Primera División", f"{nombre_archivo}.png")
-    if os.path.exists(logo_path):
-        return logo_path
+    logo_path = LOGOS_PATH / f"{nombre_archivo}.png"
+    if logo_path.exists():
+        return str(logo_path)
     return None
-
 # Datos de ejemplo con los partidos de la jornada 20
 partidos_ejemplo = pd.DataFrame({
     'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 
