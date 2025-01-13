@@ -11,8 +11,7 @@ st.set_page_config(
 )
 
 # Rutas base
-BASE_PATH = r"C:\\Users\\brian\\OneDrive - Universidad Politécnica de Madrid\\Escritorio\\CDIA 2º\\Practica3-Streamlit"
-LOGOS_PATH = os.path.join(BASE_PATH, "logos")
+LOGOS_PATH = os.path.join(os.path.dirname(__file__), "logos")
 
 # Aplicar algunos estilos CSS personalizados
 st.markdown("""
@@ -65,9 +64,8 @@ NOMBRES_EQUIPOS = {
 
 # Función para cargar logos
 def cargar_logo(equipo):
-    # Obtener el nombre del archivo desde el diccionario
     nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    logo_path = os.path.join(LOGOS_PATH, "España", "Primera División", f"{nombre_archivo}.png")
+    logo_path = os.path.join(LOGOS_PATH, f"{nombre_archivo}.png")
     if os.path.exists(logo_path):
         return logo_path
     return None
