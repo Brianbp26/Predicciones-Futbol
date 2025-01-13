@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # Rutas base
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(".").resolve()
 LOGOS_PATH = BASE_DIR / "logos"
 
 # Aplicar algunos estilos CSS personalizados
