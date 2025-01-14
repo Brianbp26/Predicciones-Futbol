@@ -237,7 +237,7 @@ temporada = st.sidebar.selectbox("Selecciona una temporada", ["2022", "2023"])
 
 
 # Obtener los partidos de la liga seleccionada y temporada
-liga_id = liga_map[liga_seleccionada]
+liga_id = liga_ids[liga_seleccionada]
 partidos = obtener_partidos(liga_ids)
 
 # Mostrar partidos con los logos correspondientes
