@@ -181,23 +181,28 @@ def obtener_partidos(liga):
         return []
 
 # Función para mostrar los partidos
-def mostrar_partidos(partidos):
+def mostrar_partidos(partidos, liga):
     for partido in partidos:
         local = partido['homeTeam']['name']
         visitante = partido['awayTeam']['name']
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
-        fecha_formateada = fecha.strftime('%d/%m/%Y %H:%M')
+        fecha = fecha.strftime('%d/%m/%Y %H:%M')
+
+        logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
+        logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
 
         st.markdown(f"""
             <div class="match-container">
                 <div class="team-logo">
+                    <img src="{logo_local}" alt="{local}">
                     <div class="team-name">{local}</div>
                 </div>
                 <div class="team-logo">
+                    <img src="{logo_visitante}" alt="{visitante}">
                     <div class="team-name">{visitante}</div>
                 </div>
                 <div class="match-time">
-                    <strong>{fecha_formateada}</strong>
+                    <strong>{fecha}</strong>
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -215,6 +220,6 @@ elif liga_seleccionada == "Ligue 1":
     liga_id = "FL1"
 
 partidos = obtener_partidos(liga_id)
-mostrar_partidos(partidos)
+mostrar_partidos(partidos, liga_seleccionada)
 
 
