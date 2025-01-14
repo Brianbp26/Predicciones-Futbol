@@ -68,7 +68,7 @@ URL_LOGOS_PREMIER = {
     "chelsea": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/chelsea.png",
     "crystalpalace": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/crystalpalace.png",
     "everton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/everton.png",
-    "leeds": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/leeds.png",
+    "ipswich": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/ipswich.png",
     "leicester": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/leicester.png",
     "liverpool": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/liverpool.png",
     "manunited": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/manunited.png",
@@ -101,7 +101,7 @@ PARTIDOS_LALIGA = pd.DataFrame({
 
 PARTIDOS_PREMIER = pd.DataFrame({
     'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
-    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Leeds'],
+    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Ipswich'],
     'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
     'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
     'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
