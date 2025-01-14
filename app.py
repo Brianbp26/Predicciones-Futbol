@@ -80,6 +80,7 @@ URL_LOGOS_PREMIER = {
     "westham": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/westham.png",
     "wolves": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/wolves.png"
 }
+
 URL_LOGOS_SERIE_A = {
     "atalanta": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/atalanta.png",
     "bolonia": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/bolonia.png",
@@ -103,12 +104,33 @@ URL_LOGOS_SERIE_A = {
     "venezia": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/venezia.png"
 }
 
+URL_LOGOS_LIGUE_1 = {
+    "angers": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/angers.png",
+    "auxerre": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/auxerre.png",
+    "estrasburgo": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/estrasburgo.png",
+    "havre": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/havre.png",
+    "lens": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/lens.png",
+    "lille": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/lille.png",
+    "lyon": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/lyon.png",
+    "marsella": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/marsella.png",
+    "monaco": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/monaco.png",
+    "montpellier": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/montpellier.png",
+    "nantes": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/nantes.png",
+    "niza": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/niza.png",
+    "psg": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/psg.png",
+    "saintetienne": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/saintetienne.png",
+    "stadebretois": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/stadebretois.png",
+    "stadereims": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/stadereims.png",
+    "staderennais": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/staderennais.png",
+    "toulouse": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/toulouse.png"
+}
+
 
 URL_LOGOS = {
     "LaLiga": URL_LOGOS_LALIGA,
     "Premier League": URL_LOGOS_PREMIER,
-    "Serie A": URL_LOGOS_SERIE_A
-    # Agrega más ligas aquí
+    "Serie A": URL_LOGOS_SERIE_A,
+    "Ligue 1": URL_LOGOS_LIGUE_1
 }
 
 # Partidos de ejemplo por liga
@@ -135,9 +157,22 @@ PARTIDOS_PREMIER = pd.DataFrame({
     'pred_goles_local': [2, 1, 3, 3, 2],
     'pred_goles_visitante': [1, 1, 0, 0, 1]
 })
+
 PARTIDOS_SERIE_A = pd.DataFrame({
     'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
     'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+PARTIDOS_LIGUE_1 = pd.DataFrame({
+    'local': ['Psg', 'Niza', 'Marsella', 'Angers', 'Lille'],
+    'visitante': ['Monaco', 'Lyon', 'Nantes', 'Lens', 'Havre'],
     'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
     'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
     'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
@@ -151,7 +186,8 @@ PARTIDOS_SERIE_A = pd.DataFrame({
 PARTIDOS = {
     "LaLiga": PARTIDOS_LALIGA,
     "Premier League": PARTIDOS_PREMIER,
-    "Serie A": PARTIDOS_SERIE_A
+    "Serie A": PARTIDOS_SERIE_A,
+    "Ligue 1": PARTIDOS_LIGUE_1
     # Agrega más ligas aquí
 }
 
