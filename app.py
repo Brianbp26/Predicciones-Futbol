@@ -66,7 +66,7 @@ liga_seleccionada = st.sidebar.selectbox(
 # Diccionario de logos de ligas
 logos_ligas = {
     "LaLiga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/laliga.png",
-    "Premier League": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/premier.png",
+    "Premier League": "https://raw.githubusercontent.com/Brianbp26/Logos/2f2655f530ea5167a6be850dadec6ad55232ea5a/premier.png",
     "Serie A": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/serie a.png",
     "Bundesliga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/bundesliga.png",
     "Ligue 1": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/ligue 1.png",
