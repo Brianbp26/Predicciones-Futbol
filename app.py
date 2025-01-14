@@ -8,7 +8,28 @@ st.set_page_config(
     page_icon="⚽",
     layout="wide"
 )
-
+st.markdown("""
+    <style>
+    .main {
+        padding: 0rem 1rem;
+    }
+    .stButton>button {
+        width: 100%;
+    }
+    .match-container {
+        background-color: #f0f2f6;
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    </style>
+""", unsafe_allow_html=True)
+# Sidebar para selección de liga
+st.sidebar.title("⚽ Predicciones Fútbol")
+liga_seleccionada = st.sidebar.selectbox(
+    "Selecciona una liga",
+    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
+)
 # URLs de los logos
 URL_LOGOS = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
@@ -95,7 +116,8 @@ partidos_ejemplo = pd.DataFrame({
 })
 
 # Header principal
-st.title("⚽ Predicciones Fútbol")
+# Header principal
+st.title(f"Predicciones {liga_seleccionada}")
 st.markdown("---")
 st.subheader("Jornada 20 de 38 - Próximos partidos")
 
