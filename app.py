@@ -180,43 +180,92 @@ def obtener_partidos(liga):
         st.error("No se pudieron obtener los partidos.")
         return []
 
-# Función para mostrar los partidos
-def mostrar_partidos(partidos, liga):
+def agrupar_partidos_por_jornadas(partidos):
+    # Ordenar partidos por fecha
+    partidos.sort(key=lambda p: p['utcDate'])
+    
+    jornadas = []
+    jornada_actual = []
+    jornada_numero = 1
+    inicio_jornada = None
+    
     for partido in partidos:
-        local = partido['homeTeam']['name']
-        visitante = partido['awayTeam']['name']
-        fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
-         # Verificar si la hora es 00:00
-        if fecha.strftime('%H:%M') == '00:00':
-            fecha = fecha.strftime('%d/%m/%Y')  # Solo día, mes y año
+        fecha_partido = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
+        
+        if not inicio_jornada:
+            # Inicio de una nueva jornada
+            inicio_jornada = fecha_partido
+            jornada_actual.append(partido)
+        elif (fecha_partido - inicio_jornada).days > 5:
+            # Cerrar la jornada actual si han pasado más de 5 días
+            jornadas.append((jornada_numero, jornada_actual))
+            jornada_numero += 1
+            jornada_actual = [partido]
+            inicio_jornada = fecha_partido
         else:
-            fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
-        logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
-        logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
+            # Continuar en la misma jornada
+            jornada_actual.append(partido)
+    
+    # Añadir la última jornada si está incompleta
+    if jornada_actual:
+        jornadas.append((jornada_numero, jornada_actual))
+    
+    return jornadas
 
+def mostrar_partidos(partidos, liga):
+    # Agrupar partidos en jornadas
+    jornadas = agrupar_partidos_por_jornadas(partidos)
+    
+    for numero_jornada, partidos_jornada in jornadas:
+        # Mostrar título de la jornada
         st.markdown(f"""
-    <div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem;">
-        <div class="team-container" style="text-align: center; width: 40%;">
-            <div class="team-logo">
-                <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
-            </div>
-            <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
-                {local}
-            </div>
+        <div style="font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem;">
+            Jornada {numero_jornada}
         </div>
-        <div class="match-time" style="text-align: center; width: 20%; font-size: 1.2rem; font-weight: bold;">
-            <strong>{fecha}</strong>
-        </div>
-        <div class="team-container" style="text-align: center; width: 40%;">
-            <div class="team-logo">
-                <img src="{logo_visitante}" alt="{visitante}" style="width: 100px; height: 100px;">
+        """, unsafe_allow_html=True)
+        
+        # Mostrar los partidos de la jornada
+        for partido in partidos_jornada:
+            local = partido['homeTeam']['name']
+            visitante = partido['awayTeam']['name']
+            
+            # Convertir la fecha
+            fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
+            
+            # Verificar si la hora es 00:00
+            if fecha.strftime('%H:%M') == '00:00':
+                fecha = fecha.strftime('%d/%m/%Y')  # Solo día, mes y año
+            else:
+                fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
+            
+            # Obtener logos
+            logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
+            logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
+            
+            # Generar el HTML
+            st.markdown(f"""
+            <div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #f9f9f9; margin-bottom: 0.5rem; border-radius: 8px;">
+                <div class="team-container" style="text-align: center; width: 40%;">
+                    <div class="team-logo">
+                        <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
+                    </div>
+                    <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+                        {local}
+                    </div>
+                </div>
+                <div class="match-time" style="text-align: center; width: 20%; font-size: 1.2rem; font-weight: bold;">
+                    <strong>{fecha}</strong>
+                </div>
+                <div class="team-container" style="text-align: center; width: 40%;">
+                    <div class="team-logo">
+                        <img src="{logo_visitante}" alt="{visitante}" style="width: 100px; height: 100px;">
+                    </div>
+                    <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+                        {visitante}
+                    </div>
+                </div>
             </div>
-            <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
-                {visitante}
-            </div>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 # Header principal
 st.title(f"Predicciones {liga_seleccionada}")
 st.markdown("---")
