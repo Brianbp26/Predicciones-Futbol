@@ -33,6 +33,7 @@ st.markdown("""
     .team-name {
         font-weight: bold;
         margin-top: 0.5rem;
+        text-align: center;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -251,6 +252,7 @@ st.markdown("---")
 st.subheader(f"Jornada 20 de 38 - Próximos partidos ({liga_seleccionada})")
 
 # Mostrar los partidos
+# Mostrar los partidos
 for idx, partido in partidos.iterrows():
     col1, col2, col3 = st.columns([2, 3, 2])
 
@@ -260,6 +262,7 @@ for idx, partido in partidos.iterrows():
             st.image(logo_local, width=100)
         else:
             st.warning(f"Logo no encontrado para: {partido['local']}")
+        st.markdown(f"<div class='team-name'>{partido['local']}</div>", unsafe_allow_html=True)
 
     with col2:
         st.markdown("<br>", unsafe_allow_html=True)
@@ -282,6 +285,7 @@ for idx, partido in partidos.iterrows():
             st.image(logo_visitante, width=100)
         else:
             st.warning(f"Logo no encontrado para: {partido['visitante']}")
+        st.markdown(f"<div class='team-name'>{partido['visitante']}</div>", unsafe_allow_html=True)
 
 # Métricas adicionales en el sidebar
 st.sidebar.markdown("---")
