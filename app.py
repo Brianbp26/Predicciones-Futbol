@@ -1,7 +1,7 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
-
+import requests
 # Configuración de la página
 st.set_page_config(
     page_title="Predicciones Fútbol",
