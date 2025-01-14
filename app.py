@@ -186,7 +186,7 @@ def agrupar_partidos_por_jornadas(partidos):
     
     jornadas = []
     jornada_actual = []
-    jornada_numero = 1
+    jornada_numero = 20
     inicio_jornada = None
     
     for partido in partidos:
