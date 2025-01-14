@@ -188,6 +188,7 @@ jornadas_iniciales = {
     'Bundesliga': 17  
 }
 
+
 def agrupar_partidos_por_jornadas(partidos, liga):
     # Obtener la jornada inicial de la liga seleccionada
     jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
@@ -232,7 +233,6 @@ def agrupar_partidos_por_jornadas(partidos, liga):
         jornadas.append((jornada_numero, jornada_actual))
     
     return jornadas
-
 
 def mostrar_partidos(partidos, liga):
     # Agrupar partidos en jornadas
