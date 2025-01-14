@@ -158,29 +158,49 @@ URL_LOGOS_BUNDESLIGA = {
 }
 
 
-# Función para obtener los partidos de la API
-API_KEY = '918b7c487455961b60f9972bc323f354'  # Debes reemplazar 'tu_api_key' por tu propia clave de API
-BASE_URL = 'https://api-football-v1.p.rapidapi.com/v3'
+# API Key de Football-Data
+API_KEY = "d21df9a683e74915bdb6dac39270a985"
+API_URL = "https://api.football-data.org/v4/competitions/{}/matches"
 
-def obtener_partidos(liga, temporada):
-    url = f"{BASE_URL}/fixtures"
+# Diccionario de ID de ligas (usando el código interno de Football-Data)
+liga_ids = {
+    "LaLiga": "PD",  # LaLiga tiene el código "PD" en Football-Data
+    "Premier League": "PL",
+    "Serie A": "IT1",
+    "Bundesliga": "BL1",
+    "Ligue 1": "FR1"
+}
+
+# Función para obtener partidos de la API de Football-Data
+def obtener_partidos(liga):
+    url = API_URL.format(liga_ids[liga])
     headers = {
-        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
-        "X-RapidAPI-Key": API_KEY
-    }
-    params = {
-        'league': liga,
-        'season': temporada
+        "X-Auth-Token": API_KEY
     }
     
-    response = requests.get(url, headers=headers, params=params)
-    
+    # Realizamos la solicitud HTTP
+    response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        return data['response']
+        matches = data.get("matches", [])
+        
+        # Crear un DataFrame de los partidos
+        partidos = []
+        for match in matches:
+            home_team = match["homeTeam"]["name"]
+            away_team = match["awayTeam"]["name"]
+            score = match["score"]
+            partidos.append({
+                "Local": home_team,
+                "Visitante": away_team,
+                "Resultado": f"{score['fullTime']['homeTeam']} - {score['fullTime']['awayTeam']}",
+                "Fecha": match["utcDate"]
+            })
+        
+        return pd.DataFrame(partidos)
     else:
-        st.error("Error al obtener los partidos.")
-        return []
+        st.error("Error al obtener los datos de los partidos.")
+        return pd.DataFrame()
 
 # Función para mostrar los partidos con los logos
 def mostrar_partidos(partidos, logos):
