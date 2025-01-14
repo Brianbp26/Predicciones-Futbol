@@ -45,10 +45,22 @@ liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
-# Obtener los datos de partidos desde una API
-def obtener_partidos(liga):
-    api_url = f"https://api.football-data.org/v2/competitions/{liga}/matches"
-    headers = {"X-Auth-Token": "d21df9a683e74915bdb6dac39270a985"}  # Reemplaza con tu clave de API
+
+# Diccionario para mapear las ligas con sus IDs en la API
+LIGA_IDS = {
+    "LaLiga": "140",
+    "Premier League": "39",
+    "Serie A": "135",
+    "Bundesliga": "78",
+    "Ligue 1": "61"
+}
+
+# Obtener los datos de partidos desde API-Football
+def obtener_partidos(liga_id):
+    api_url = f"https://v3.football.api-sports.io/fixtures?league={liga_id}&season=2024"
+    headers = {
+        "x-apisports-key": "918b7c487455961b60f9972bc323f354"  # Reemplaza con tu clave de API
+    }
     response = requests.get(api_url, headers=headers)
     
     if response.status_code != 200:
@@ -57,17 +69,17 @@ def obtener_partidos(liga):
 
     data = response.json()
     
-    if 'matches' not in data:
-        st.error("La respuesta de la API no contiene la clave 'matches'")
+    if 'response' not in data:
+        st.error("La respuesta de la API no contiene datos esperados")
         return pd.DataFrame()
 
     partidos = []
-    for match in data['matches']:
+    for fixture in data['response']:
         partidos.append({
-            'local': match['homeTeam']['name'],
-            'visitante': match['awayTeam']['name'],
-            'fecha': match['utcDate'][:10],
-            'hora': match['utcDate'][11:16],
+            'local': fixture['teams']['home']['name'],
+            'visitante': fixture['teams']['away']['name'],
+            'fecha': fixture['fixture']['date'][:10],
+            'hora': fixture['fixture']['date'][11:16],
             'prob_local': 0.0,  # Aquí deberías poner las probabilidades reales
             'prob_empate': 0.0,
             'prob_visitante': 0.0,
@@ -76,6 +88,17 @@ def obtener_partidos(liga):
         })
 
     return pd.DataFrame(partidos)
+
+# Obtener el ID de la liga seleccionada
+liga_id = LIGA_IDS.get(liga_seleccionada)
+
+# Obtener partidos y logos de la liga seleccionada
+if liga_id:
+    partidos = obtener_partidos(liga_id)
+else:
+    st.error("Liga no válida seleccionada")
+    partidos = pd.DataFrame()
+    
 # Diccionario de logos por liga (ejemplo con LaLiga, agrega más si es necesario)
 URL_LOGOS_LALIGA = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
