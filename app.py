@@ -199,22 +199,34 @@ def agrupar_partidos_por_jornadas(partidos, liga):
     jornada_actual = []
     jornada_numero = jornada_inicial  # Comienza desde la jornada inicial
     inicio_jornada = None
+    fin_jornada = None
     
     for partido in partidos:
         fecha_partido = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
         
+        # Calcular el viernes más cercano
+        dia_semana = fecha_partido.weekday()  # Lunes = 0, Martes = 1, ..., Domingo = 6
+        dias_hasta_viernes = (4 - dia_semana) % 7  # Dias hasta el siguiente viernes
+        viernes_inicio = fecha_partido + timedelta(days=dias_hasta_viernes)
+        
+        # Calcular el miércoles de la semana siguiente a las 23:59 (final de la jornada)
+        proximo_miercoles = viernes_inicio + timedelta(days=5)  # Sumar 5 días para llegar al miércoles
+        fin_jornada = datetime(proximo_miercoles.year, proximo_miercoles.month, proximo_miercoles.day, 23, 59)
+        
+        # Si no se ha iniciado una nueva jornada
         if not inicio_jornada:
-            # Inicio de una nueva jornada
-            inicio_jornada = fecha_partido
+            # Iniciamos la jornada con el primer partido
+            inicio_jornada = viernes_inicio
             jornada_actual.append(partido)
-        elif (fecha_partido - inicio_jornada).days > 5:
-            # Cerrar la jornada actual si han pasado más de 5 días
+        elif fecha_partido > fin_jornada:
+            # Si el partido es posterior al miércoles a las 23:59, cerrar jornada actual
             jornadas.append((jornada_numero, jornada_actual))
             jornada_numero += 1
             jornada_actual = [partido]
-            inicio_jornada = fecha_partido
+            inicio_jornada = viernes_inicio
+            fin_jornada = datetime(proximo_miercoles.year, proximo_miercoles.month, proximo_miercoles.day, 23, 59)
         else:
-            # Continuar en la misma jornada
+            # Continuar en la misma jornada si el partido está dentro del rango
             jornada_actual.append(partido)
     
     # Añadir la última jornada si está incompleta
