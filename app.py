@@ -183,7 +183,7 @@ def obtener_partidos(liga):
 jornadas_iniciales = {
     'La Liga': 19,   
     'Premier League': 21,   
-    'Serie A': 20,   
+    'Serie A': 21,   
     'Ligue 1': 18,   
     'Bundesliga': 17  
 }
