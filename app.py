@@ -136,7 +136,7 @@ PARTIDOS_PREMIER = pd.DataFrame({
     'pred_goles_visitante': [1, 1, 0, 0, 1]
 })
 PARTIDOS_SERIE_A = pd.DataFrame({
-    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna],
+    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna'],
     'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
     'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
     'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
