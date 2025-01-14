@@ -47,11 +47,11 @@ liga_seleccionada = st.sidebar.selectbox(
 
 # Diccionario de logos de ligas
 logos_ligas = {
-    "LaLiga": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7e/LaLiga_Santander.svg/1200px-LaLiga_Santander.svg.png",
-    "Premier League": "https://assets.premierleague.com/premierleague/photo/2021/02/02/2a02336d-8cbb-4a8d-9d50-bc9b8b0d2b6e/PL-Lion.png",
-    "Serie A": "https://upload.wikimedia.org/wikipedia/en/0/03/Serie_A_logo.png",
-    "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/6/67/Bundesliga_logo_%282017%29.png",
-    "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/a/a7/Ligue_1_Uber_Eats_Logo.png",
+    "LaLiga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/laliga.png",
+    "Premier League": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/premier.png",
+    "Serie A": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/serie a.png",
+    "Bundesliga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/bundesliga.png",
+    "Ligue 1": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/ligue 1.png",
 }
 # Diccionario de logos de equipos (de acuerdo a las ligas)
 logos = {
