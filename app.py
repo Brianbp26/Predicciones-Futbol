@@ -136,42 +136,15 @@ PARTIDOS_PREMIER = pd.DataFrame({
     'pred_goles_visitante': [1, 1, 0, 0, 1]
 })
 PARTIDOS_SERIE_A = pd.DataFrame({
-    'local': [
-        'Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna',
-        'Torino', 'Cagliari', 'Empoli', 'Lecce', 'Parma'
-    ],
-    'visitante': [
-        'Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese',
-        'Monza', 'Genoa', 'Hellas Verona', 'Como', 'Venezia'
-    ],
-    'fecha': [
-        '2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19',
-        '2024-01-19', '2024-01-20', '2024-01-20', '2024-01-21', '2024-01-21'
-    ],
-    'hora': [
-        '18:00', '20:45', '15:00', '18:00', '12:30',
-        '15:00', '18:00', '20:45', '12:30', '15:00'
-    ],
-    'prob_local': [
-        0.45, 0.50, 0.40, 0.55, 0.35,
-        0.50, 0.40, 0.30, 0.55, 0.60
-    ],
-    'prob_empate': [
-        0.30, 0.25, 0.35, 0.30, 0.30,
-        0.25, 0.30, 0.35, 0.25, 0.20
-    ],
-    'prob_visitante': [
-        0.25, 0.25, 0.25, 0.15, 0.35,
-        0.25, 0.30, 0.35, 0.20, 0.20
-    ],
-    'pred_goles_local': [
-        2, 3, 1, 2, 1,
-        2, 1, 1, 2, 3
-    ],
-    'pred_goles_visitante': [
-        1, 1, 1, 0, 1,
-        1, 1, 1, 0, 0
-    ]
+    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna],
+    'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
 })
 
 
