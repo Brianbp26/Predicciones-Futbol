@@ -9,62 +9,19 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS para mejorar el estilo de la página
 st.markdown("""
     <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f0f2f6;
-        color: #333;
-    }
     .main {
-        padding: 2rem;
+        padding: 0rem 1rem;
     }
     .stButton>button {
         width: 100%;
-        background-color: #008CBA;
-        color: white;
-        font-size: 16px;
-        border: none;
-        padding: 10px;
-        border-radius: 8px;
-        transition: background-color 0.3s;
-    }
-    .stButton>button:hover {
-        background-color: #005f73;
     }
     .match-container {
-        background-color: #ffffff;
+        background-color: #f0f2f6;
         border-radius: 10px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        margin: 1.5rem 0;
-    }
-    .match-header {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #004d40;
-    }
-    .match-teams {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .match-teams img {
-        width: 50px;
-        height: 50px;
-    }
-    .match-info {
-        text-align: center;
-        font-size: 1.2rem;
-        margin-top: 1rem;
-    }
-    .sidebar-title {
-        font-size: 1.8rem;
-        color: #008CBA;
-    }
-    .sidebar-select {
-        font-size: 1.2rem;
+        padding: 1rem;
+        margin: 1rem 0;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -73,12 +30,10 @@ st.markdown("""
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
-    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"],
-    key="liga_seleccionada",
-    index=0
+    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
 
-# Diccionario de logos por liga
+# Diccionario de logos por liga (ejemplo con LaLiga, agrega más si es necesario)
 URL_LOGOS_LALIGA = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
     "atleticomadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/atleticomadrid.png",
@@ -101,6 +56,8 @@ URL_LOGOS_LALIGA = {
     "valladolid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/valladolid.png",
     "villarreal": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/villarreal.png"
 }
+
+
 URL_LOGOS_PREMIER = {
     "newcastle": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/newcastle.png",
     "bournemouth": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/bournemouth.png",
@@ -190,59 +147,134 @@ URL_LOGOS_BUNDESLIGA = {
 }
 
 
-# Mostrar información de la liga seleccionada
-st.markdown(f"## Predicciones para **{liga_seleccionada}**")
+URL_LOGOS = {
+    "LaLiga": URL_LOGOS_LALIGA,
+    "Premier League": URL_LOGOS_PREMIER,
+    "Serie A": URL_LOGOS_SERIE_A,
+    "Ligue 1": URL_LOGOS_LIGUE_1,
+    "Bundesliga": URL_LOGOS_BUNDESLIGA
+}
+
+# Partidos de ejemplo por liga
+PARTIDOS_LALIGA = pd.DataFrame({
+    'local': ['Espanyol', 'Osasuna', 'Leganes', 'Celta', 'Getafe'],
+    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atletico Madrid', 'Athletic', 'Barcelona'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
+    'prob_empate': [0.30, 0.30, 0.35, 0.30, 0.25],
+    'prob_visitante': [0.35, 0.30, 0.35, 0.35, 0.50],
+    'pred_goles_local': [1, 2, 1, 1, 1],
+    'pred_goles_visitante': [1, 1, 2, 1, 2]
+})
+
+PARTIDOS_PREMIER = pd.DataFrame({
+    'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
+    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Ipswich'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
+    'prob_empate': [0.30, 0.25, 0.20, 0.20, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.20, 0.15, 0.15],
+    'pred_goles_local': [2, 1, 3, 3, 2],
+    'pred_goles_visitante': [1, 1, 0, 0, 1]
+})
+
+PARTIDOS_SERIE_A = pd.DataFrame({
+    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
+    'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+PARTIDOS_LIGUE_1 = pd.DataFrame({
+    'local': ['Psg', 'Niza', 'Marsella', 'Angers', 'Lille'],
+    'visitante': ['Monaco', 'Lyon', 'Nantes', 'Lens', 'Havre'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+PARTIDOS_BUNDESLIGA = pd.DataFrame({
+    'local': ['Bayern Munich', 'Bochum', 'Union Berlin', 'Friburgo', 'Augsburgo'],
+    'visitante': ['Borussia Dortmund', 'Mainz', 'RB Leipzig', 'Wolfsburgo', 'Bayer Leverkusen'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+
+PARTIDOS = {
+    "LaLiga": PARTIDOS_LALIGA,
+    "Premier League": PARTIDOS_PREMIER,
+    "Serie A": PARTIDOS_SERIE_A,
+    "Ligue 1": PARTIDOS_LIGUE_1,
+    "Bundesliga": PARTIDOS_BUNDESLIGA
+}
+
+# Obtener partidos y logos de la liga seleccionada
+partidos = PARTIDOS.get(liga_seleccionada, pd.DataFrame())
+logos = URL_LOGOS.get(liga_seleccionada, {})
+
+# Función para cargar logo
+def cargar_logo(equipo):
+    nombre_archivo = equipo.lower().replace(" ", "").replace(".", "").replace("'", "")
+    return logos.get(nombre_archivo, None)
+
+# Header principal
+st.title(f"Predicciones {liga_seleccionada}")
 st.markdown("---")
+st.subheader(f"Jornada 20 de 38 - Próximos partidos ({liga_seleccionada})")
 
-# Generar y mostrar los partidos de la liga seleccionada
-if liga_seleccionada == "LaLiga":
-    equipos = list(URL_LOGOS_LALIGA.keys())
-elif liga_seleccionada == "Premier League":
-    equipos = list(URL_LOGOS_PREMIER.keys())
-elif liga_seleccionada == "Serie A":
-    equipos = list(URL_LOGOS_SERIE_A.keys())
-elif liga_seleccionada == "Bundesliga":
-    equipos = list(URL_LOGOS_BUNDESLIGA.keys())
-else:
-    equipos = list(URL_LOGOS_LIGUE_1.keys())
+# Mostrar los partidos
+for idx, partido in partidos.iterrows():
+    col1, col2, col3 = st.columns([2, 3, 2])
 
-# Ejemplo de cómo mostrar un partido
-st.markdown("### Partido de ejemplo")
-col1, col2 = st.columns(2)
+    with col1:
+        logo_local = cargar_logo(partido['local'])
+        if logo_local:
+            st.image(logo_local, width=100)
+        else:
+            st.warning(f"Logo no encontrado para: {partido['local']}")
 
-with col1:
-    st.image(URL_LOGOS_LALIGA["barcelona"], width=80)
-    st.markdown("**Barcelona**")
+    with col2:
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(
+            f"<h2 style='text-align: center;'>{partido['pred_goles_local']} - {partido['pred_goles_visitante']}</h2>",
+            unsafe_allow_html=True,
+        )
+        # Mostrar probabilidades
+        col_prob1, col_prob2, col_prob3 = st.columns(3)
+        with col_prob1:
+            st.metric("Victoria Local", f"{int(partido['prob_local'] * 100)}%")
+        with col_prob2:
+            st.metric("Empate", f"{int(partido['prob_empate'] * 100)}%")
+        with col_prob3:
+            st.metric("Victoria Visitante", f"{int(partido['prob_visitante'] * 100)}%")
 
-with col2:
-    st.image(URL_LOGOS_LALIGA["athletic"], width=80)
-    st.markdown("**Athletic Club**")
+    with col3:
+        logo_visitante = cargar_logo(partido['visitante'])
+        if logo_visitante:
+            st.image(logo_visitante, width=100)
+        else:
+            st.warning(f"Logo no encontrado para: {partido['visitante']}")
 
-# Contenedor de predicción para el partido
-st.markdown("""
-    <div class="match-container">
-        <div class="match-header">Próximo partido</div>
-        <div class="match-teams">
-            <div>
-                <img src="https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/barcelona.png" alt="Barcelona">
-                <p>Barcelona</p>
-            </div>
-            <div>
-                <img src="https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png" alt="Athletic Club">
-                <p>Athletic Club</p>
-            </div>
-        </div>
-        <div class="match-info">
-            <p><strong>Fecha:</strong> 20 de Enero 2025</p>
-            <p><strong>Hora:</strong> 18:00</p>
-            <button>Haz tu predicción</button>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-
-# Botón para predicción
-if st.button("Haz tu predicción"):
-    st.success("¡Tu predicción ha sido registrada!")
-
-
+# Métricas adicionales en el sidebar
+st.sidebar.markdown("---")
+st.sidebar.subheader("Estadísticas del Modelo")
+st.sidebar.metric("Precisión Global", "73%")
+st.sidebar.metric("Partidos Predichos", "152")
 
