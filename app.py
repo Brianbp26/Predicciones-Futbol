@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # Rutas base
-LOGOS_PATH = "logos"
+LOGOS_PATH = Path(__file__).parent / "logos"
 
 # Aplicar algunos estilos CSS personalizados
 st.markdown("""
@@ -66,12 +66,12 @@ NOMBRES_EQUIPOS = {
 # Función para cargar logos
 def cargar_logo(equipo):
     nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    logo_path = os.path.join(LOGOS_PATH, "España", "Primera División", f"{nombre_archivo}.png")
-    if os.path.exists(logo_path):
-        return logo_path
+    logo_path = LOGOS_PATH / "España" / "Primera División" / f"{nombre_archivo}.png"
+    
+    if logo_path.is_file():
+        return str(logo_path)
     else:
-        st.error(f"No se encontró el logo para {equipo} en la ruta {logo_path}")
-        return None
+        return str(LOGOS_PATH / "default.png")
 # Datos de ejemplo con los partidos de la jornada 20
 partidos_ejemplo = pd.DataFrame({
     'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 
