@@ -180,13 +180,24 @@ def obtener_partidos(liga):
         st.error("No se pudieron obtener los partidos.")
         return []
 
-def agrupar_partidos_por_jornadas(partidos):
+jornadas_iniciales = {
+    'La Liga': 19,   
+    'Premier League': 21,   
+    'Serie A': 20,   
+    'Ligue 1': 18,   
+    'Bundesliga': 17  
+}
+
+def agrupar_partidos_por_jornadas(partidos, liga):
+    # Obtener la jornada inicial de la liga seleccionada
+    jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
+    
     # Ordenar partidos por fecha
     partidos.sort(key=lambda p: p['utcDate'])
     
     jornadas = []
     jornada_actual = []
-    jornada_numero = 20
+    jornada_numero = jornada_inicial  # Comienza desde la jornada inicial
     inicio_jornada = None
     
     for partido in partidos:
@@ -214,7 +225,7 @@ def agrupar_partidos_por_jornadas(partidos):
 
 def mostrar_partidos(partidos, liga):
     # Agrupar partidos en jornadas
-    jornadas = agrupar_partidos_por_jornadas(partidos)
+    jornadas = agrupar_partidos_por_jornadas(partidos, liga)
     
     for numero_jornada, partidos_jornada in jornadas:
         # Mostrar título de la jornada
