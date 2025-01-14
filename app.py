@@ -155,62 +155,61 @@ logos = {
         }
 }
 
-# Función para obtener los partidos de la API
+# Función para obtener partidos de la API
 def obtener_partidos(liga):
-    url = f'https://api.football-data.org/v4/matches'
+    url = f'https://api.football-data.org/v4/competitions/{liga}/matches'
     headers = {
-        'X-Auth-Token': 'd21df9a683e74915bdb6dac39270a985'  # Reemplaza con tu clave de API
+        'X-Auth-Token': 'd21df9a683e74915bdb6dac39270a985'
     }
-    params = {
-        'competitions': liga,
-        'season': datetime.now().year,
-    }
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, headers=headers)
+    
     if response.status_code == 200:
-        return response.json()['matches']
+        data = response.json()
+        return data['matches']
     else:
-        st.error("Error al obtener los partidos")
+        st.error("No se pudieron obtener los partidos.")
         return []
 
-# Diccionario para liga a código de competencia en la API
-ligas_api = {
-    "LaLiga": "PD",  # Competición LaLiga
-    "Premier League": "PL",  # Premier League
-    "Serie A": "IT1",  # Serie A
-    "Bundesliga": "DE1",  # Bundesliga
-    "Ligue 1": "FR1"  # Ligue 1
-}
-
-# Obtener partidos de la liga seleccionada
-liga_api_code = ligas_api[liga_seleccionada]
-partidos = obtener_partidos(liga_api_code)
-
-# Mostrar los partidos
-if partidos:
+# Función para mostrar los partidos
+def mostrar_partidos(partidos, liga):
     for partido in partidos:
-        equipo_local = partido['homeTeam']['name']
-        equipo_visitante = partido['awayTeam']['name']
+        local = partido['homeTeam']['name']
+        visitante = partido['awayTeam']['name']
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
-        hora = fecha.strftime('%H:%M')
-        
-        # Mostrar información del partido
-        st.markdown(f"### {equipo_local} vs {equipo_visitante} - {hora} ({fecha.strftime('%d/%m/%Y')})")
-        
-        # Mostrar logos
+        fecha = fecha.strftime('%d/%m/%Y %H:%M')
+
+        logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
+        logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
+
         st.markdown(f"""
-        <div class="match-container">
-            <div class="team-logo">
-                <img src="{logos[liga_seleccionada].get(equipo_local, 'default_logo_url')}" alt="{equipo_local} Logo"/>
-                <div class="team-name">{equipo_local}</div>
+            <div class="match-container">
+                <div class="team-logo">
+                    <img src="{logo_local}" alt="{local}">
+                    <div class="team-name">{local}</div>
+                </div>
+                <div class="team-logo">
+                    <img src="{logo_visitante}" alt="{visitante}">
+                    <div class="team-name">{visitante}</div>
+                </div>
+                <div class="match-time">
+                    <strong>{fecha}</strong>
+                </div>
             </div>
-            <div class="team-logo">
-                <img src="{logos[liga_seleccionada].get(equipo_visitante, 'default_logo_url')}" alt="{equipo_visitante} Logo"/>
-                <div class="team-name">{equipo_visitante}</div>
-            </div>
-        </div>
         """, unsafe_allow_html=True)
 
-else:
-    st.write("No hay partidos disponibles para la liga seleccionada.")
+# Obtener partidos según la liga seleccionada
+if liga_seleccionada == "Premier League":
+    liga_id = "PL"
+elif liga_seleccionada == "LaLiga":
+    liga_id = "PD"
+elif liga_seleccionada == "Serie A":
+    liga_id = "SA"
+elif liga_seleccionada == "Bundesliga":
+    liga_id = "BL1"
+elif liga_seleccionada == "Ligue 1":
+    liga_id = "L1"
+
+partidos = obtener_partidos(liga_id)
+mostrar_partidos(partidos, liga_seleccionada)
 
 
