@@ -188,9 +188,6 @@ jornadas_iniciales = {
     'Bundesliga': 17  
 }
 
-Here is the updated implementation of the function `agrupar_partidos_por_jornadas` to ensure that the grouping of matches starts on Fridays and ends on Thursdays by the night.
-
-```python
 def agrupar_partidos_por_jornadas(partidos, liga):
     # Obtener la jornada inicial de la liga seleccionada
     jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
