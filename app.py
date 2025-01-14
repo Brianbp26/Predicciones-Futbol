@@ -42,12 +42,12 @@ st.markdown("""
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
-    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
+    ["La Liga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
 
 # Diccionario de logos de equipos (de acuerdo a las ligas)
 logos = {
-    "LaLiga": {
+    "La Liga": {
     "athleticclub": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
     "clubatléticodemadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/atleticomadrid.png",
     "fcbarcelona": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/barcelona.png",
@@ -220,7 +220,7 @@ st.markdown("---")
 # Obtener partidos según la liga seleccionada
 if liga_seleccionada == "Premier League":
     liga_id = "PL"
-elif liga_seleccionada == "LaLiga":
+elif liga_seleccionada == "La Liga":
     liga_id = "PD"
 elif liga_seleccionada == "Serie A":
     liga_id = "SA"
