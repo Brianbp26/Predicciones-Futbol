@@ -23,6 +23,17 @@ st.markdown("""
         padding: 1rem;
         margin: 1rem 0;
     }
+    .team-logo {
+        text-align: center;
+    }
+    .team-logo img {
+        width: 100px;
+        height: 100px;
+    }
+    .team-name {
+        font-weight: bold;
+        margin-top: 0.5rem;
+    }
     </style>
 """, unsafe_allow_html=True)
 
