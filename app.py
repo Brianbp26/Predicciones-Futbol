@@ -125,12 +125,34 @@ URL_LOGOS_LIGUE_1 = {
     "toulouse": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/toulouse.png"
 }
 
+URL_LOGOS_BUNDESLIGA = {
+    "augsburgo": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/augsburgo.png",
+    "bayerleverkusen": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/bayerleverkusen.png",
+    "bayernmunich": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/bayernmunich.png",
+    "bochum": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/bochum.png",
+    "borussiadortmund": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/borussiadortmund.png",
+    "borussiamgladbach": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/borussiamgladbach.png",
+    "eintrachtfrankfurt": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/eintrachtfrankfurt.png",
+    "friburgo": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/friburgo.png",
+    "heidenheim": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/heidenheim.png",
+    "hoffenheim": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/hoffenheim.png",
+    "holsteinkiel": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/holsteinkiel.png",
+    "mainz": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/mainz.png",
+    "rbleipzig": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/rbleipzig.png",
+    "st_pauli": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/st_pauli.png",
+    "stuttgart": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/stuttgart.png",
+    "unionberlin": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/unionberlin.png",
+    "werderbremen": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/werderbremen.png",
+    "wolfsburgo": "https://raw.githubusercontent.com/Brianbp26/Logos/dfd5d4d28184c436605a74a19076f3859eef0ade/wolfsburgo.png"
+}
+
 
 URL_LOGOS = {
     "LaLiga": URL_LOGOS_LALIGA,
     "Premier League": URL_LOGOS_PREMIER,
     "Serie A": URL_LOGOS_SERIE_A,
-    "Ligue 1": URL_LOGOS_LIGUE_1
+    "Ligue 1": URL_LOGOS_LIGUE_1,
+    "Bundesliga": URL_LOGOS_BUNDESLIGA
 }
 
 # Partidos de ejemplo por liga
@@ -182,13 +204,25 @@ PARTIDOS_LIGUE_1 = pd.DataFrame({
     'pred_goles_visitante': [1, 1, 1, 0, 1]
 })
 
+PARTIDOS_BUNDESLIGA = pd.DataFrame({
+    'local': ['Bayern Munich', 'Bochum', 'Union Berlin', 'Friburgo', 'Augsburgo'],
+    'visitante': ['Borussia Dortmund', 'Mainz', 'RB Leipzig', 'Wolfsburgo', 'Bayer Leverkusen'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
 
 PARTIDOS = {
     "LaLiga": PARTIDOS_LALIGA,
     "Premier League": PARTIDOS_PREMIER,
     "Serie A": PARTIDOS_SERIE_A,
-    "Ligue 1": PARTIDOS_LIGUE_1
-    # Agrega más ligas aquí
+    "Ligue 1": PARTIDOS_LIGUE_1,
+    "Bundesliga": PARTIDOS_BUNDESLIGA
 }
 
 # Obtener partidos y logos de la liga seleccionada
