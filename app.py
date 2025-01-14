@@ -57,7 +57,6 @@ URL_LOGOS_LALIGA = {
     "villarreal": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/villarreal.png"
 }
 
-}
 
 URL_LOGOS_PREMIER = {
     "newcastle": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/newcastle.png",
