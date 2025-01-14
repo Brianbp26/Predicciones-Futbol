@@ -207,7 +207,7 @@ elif liga_seleccionada == "Serie A":
 elif liga_seleccionada == "Bundesliga":
     liga_id = "BL1"
 elif liga_seleccionada == "Ligue 1":
-    liga_id = "L1"
+    liga_id = "FL1"
 
 partidos = obtener_partidos(liga_id)
 mostrar_partidos(partidos, liga_seleccionada)
