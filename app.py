@@ -8,6 +8,7 @@ st.set_page_config(
     page_icon="⚽",
     layout="wide"
 )
+
 st.markdown("""
     <style>
     .main {
@@ -24,14 +25,16 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
+
 # Sidebar para selección de liga
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
-# URLs de los logos
-URL_LOGOS = {
+
+# Diccionario de logos por liga (ejemplo con LaLiga, agrega más si es necesario)
+URL_LOGOS_LALIGA = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
     "atleticomadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/atleticomadrid.png",
     "barcelona": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/barcelona.png",
@@ -54,75 +57,84 @@ URL_LOGOS = {
     "villarreal": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/villarreal.png"
 }
 
-
-# Diccionario para mapear nombres de equipos a nombres de archivo
-NOMBRES_EQUIPOS = {
-    'RCD Espanyol': 'espanyol',
-    'Valladolid': 'valladolid',
-    'Osasuna': 'osasuna',
-    'Rayo Vallecano': 'rayovallecano',
-    'Leganés': 'leganes',
-    'Atlético Madrid': 'atleticomadrid',
-    'Celta de Vigo': 'celta',
-    'Athletic': 'athletic',
-    'Getafe': 'getafe',
-    'Barcelona': 'barcelona',
-    'Betis': 'betis',
-    'Alavés': 'alaves',
-    'Real Madrid': 'realmadrid',
-    'U. D. Las Palmas': 'laspalmas',
-    'Valencia C. F.': 'valencia',
-    'Real Sociedad': 'realsociedad',
-    'Girona': 'girona',
-    'Sevilla': 'sevilla',
-    'Villarreal': 'villarreal',
-    'R.C.D. Mallorca': 'mallorca'
 }
 
-# Función para cargar logos
-def cargar_logo(equipo):
-    nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    return URL_LOGOS.get(nombre_archivo, None)
+URL_LOGOS_PREMIER = {
+    "newcastle": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/newcastle.png",
+    "bournemouth": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/bournemouth.png",
+    "arsenal": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/arsenal.png",
+    "astonvilla": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/astonvilla.png",
+    "brentford": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/brentford.png",
+    "brighton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/brighton.png",
+    "chelsea": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/chelsea.png",
+    "crystalpalace": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/crystalpalace.png",
+    "everton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/everton.png",
+    "leeds": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/leeds.png",
+    "leicester": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/leicester.png",
+    "liverpool": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/liverpool.png",
+    "manchesterunited": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/manchesterunited.png",
+    "manchestercity": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/manchestercity.png",
+    "southampton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/southampton.png",
+    "tottenham": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/tottenham.png",
+    "westham": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/westham.png",
+    "wolverhampton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/wolverhampton.png"
+}
 
-# Datos de ejemplo con los partidos de la jornada 20
-partidos_ejemplo = pd.DataFrame({
-    'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 
-              'Getafe', 'Betis', 'Real Madrid', 'Valencia C. F.', 
-              'Girona', 'Villarreal'],
-    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atlético Madrid', 'Athletic',
-                  'Barcelona', 'Alavés', 'U. D. Las Palmas', 'Real Sociedad',
-                  'Sevilla', 'R.C.D. Mallorca'],
-    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18',
-              '2024-01-18', '2024-01-19', '2024-01-19', '2024-01-19',
-              '2024-01-19', '2024-01-20'],
-    'hora': ['21:00', '14:00', '16:15', '18:30',
-             '21:00', '14:00', '16:15', '18:30',
-             '21:00', '21:00'],
-    'prob_local': [0.35, 0.40, 0.30, 0.35,
-                   0.25, 0.45, 0.60, 0.40,
-                   0.45, 0.50],
-    'prob_empate': [0.30, 0.30, 0.35, 0.30,
-                    0.25, 0.30, 0.25, 0.30,
-                    0.30, 0.30],
-    'prob_visitante': [0.35, 0.30, 0.35, 0.35,
-                       0.50, 0.25, 0.15, 0.30,
-                       0.25, 0.20],
-    'pred_goles_local': [1, 2, 1, 1,
-                         1, 2, 3, 2,
-                         2, 2],
-    'pred_goles_visitante': [1, 1, 2, 1,
-                            2, 0, 0, 1,
-                            1, 0]
+}
+
+URL_LOGOS = {
+    "LaLiga": URL_LOGOS_LALIGA,
+    "Premier League": URL_LOGOS_PREMIER,
+    # Agrega más ligas aquí
+}
+
+# Partidos de ejemplo por liga
+PARTIDOS_LALIGA = pd.DataFrame({
+    'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 'Getafe'],
+    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atlético Madrid', 'Athletic', 'Barcelona'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
+    'prob_empate': [0.30, 0.30, 0.35, 0.30, 0.25],
+    'prob_visitante': [0.35, 0.30, 0.35, 0.35, 0.50],
+    'pred_goles_local': [1, 2, 1, 1, 1],
+    'pred_goles_visitante': [1, 1, 2, 1, 2]
 })
 
-# Header principal
+PARTIDOS_PREMIER = pd.DataFrame({
+    'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
+    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Leeds'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
+    'prob_empate': [0.30, 0.25, 0.20, 0.20, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.20, 0.15, 0.15],
+    'pred_goles_local': [2, 1, 3, 3, 2],
+    'pred_goles_visitante': [1, 1, 0, 0, 1]
+})
+
+PARTIDOS = {
+    "LaLiga": PARTIDOS_LALIGA,
+    "Premier League": PARTIDOS_PREMIER,
+    # Agrega más ligas aquí
+}
+
+# Obtener partidos y logos de la liga seleccionada
+partidos = PARTIDOS.get(liga_seleccionada, pd.DataFrame())
+logos = URL_LOGOS.get(liga_seleccionada, {})
+
+# Función para cargar logo
+def cargar_logo(equipo):
+    nombre_archivo = equipo.lower().replace(" ", "").replace(".", "").replace("'", "")
+    return logos.get(nombre_archivo, None)
+
 # Header principal
 st.title(f"Predicciones {liga_seleccionada}")
 st.markdown("---")
-st.subheader("Jornada 20 de 38 - Próximos partidos")
+st.subheader(f"Jornada 20 de 38 - Próximos partidos ({liga_seleccionada})")
 
 # Mostrar los partidos
-for idx, partido in partidos_ejemplo.iterrows():
+for idx, partido in partidos.iterrows():
     col1, col2, col3 = st.columns([2, 3, 2])
 
     with col1:
@@ -153,12 +165,10 @@ for idx, partido in partidos_ejemplo.iterrows():
             st.image(logo_visitante, width=100)
         else:
             st.warning(f"Logo no encontrado para: {partido['visitante']}")
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
 
 # Métricas adicionales en el sidebar
 st.sidebar.markdown("---")
 st.sidebar.subheader("Estadísticas del Modelo")
 st.sidebar.metric("Precisión Global", "73%")
 st.sidebar.metric("Partidos Predichos", "152")
+
