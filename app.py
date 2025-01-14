@@ -88,8 +88,8 @@ URL_LOGOS = {
 
 # Partidos de ejemplo por liga
 PARTIDOS_LALIGA = pd.DataFrame({
-    'local': ['RCD Espanyol', 'Osasuna', 'Leganes', 'Celta de Vigo', 'Getafe'],
-    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atlético Madrid', 'Athletic', 'Barcelona'],
+    'local': ['RCD Espanyol', 'Osasuna', 'Leganes', 'Celta', 'Getafe'],
+    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atletico Madrid', 'Athletic', 'Barcelona'],
     'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
     'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
     'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
