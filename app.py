@@ -221,8 +221,6 @@ URL_LOGOS = {
     "Bundesliga": URL_LOGOS_BUNDESLIGA
 }
 
-# Obtener partidos y logos de la liga seleccionada
-partidos = obtener_partidos(liga_seleccionada)
 logos = URL_LOGOS.get(liga_seleccionada, {})
 
 # Función para cargar logo
