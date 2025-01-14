@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
-import requests
 
 # Configuración de la página
 st.set_page_config(
@@ -46,59 +45,6 @@ liga_seleccionada = st.sidebar.selectbox(
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
 
-# Diccionario para mapear las ligas con sus IDs en la API
-LIGA_IDS = {
-    "LaLiga": "PD",
-    "Premier League": "PL",
-    "Serie A": "SA",
-    "Bundesliga": "BL1",
-    "Ligue 1": "FL1"
-}
-
-# Obtener los datos de partidos desde Football-Data.org
-def obtener_partidos(liga_id):
-    api_url = f"https://api.football-data.org/v2/competitions/{liga_id}/matches"
-    headers = {
-        "X-Auth-Token": "d21df9a683e74915bdb6dac39270a985"  # Reemplaza con tu clave de API
-    }
-    response = requests.get(api_url, headers=headers)
-    
-    if response.status_code != 200:
-        st.error(f"Error al obtener datos de la API: {response.status_code}")
-        return pd.DataFrame()
-
-    data = response.json()
-    
-    if 'matches' not in data:
-        st.error("La respuesta de la API no contiene datos esperados")
-        return pd.DataFrame()
-
-    partidos = []
-    for match in data['matches']:
-        partidos.append({
-            'local': match['homeTeam']['name'],
-            'visitante': match['awayTeam']['name'],
-            'fecha': match['utcDate'][:10],
-            'hora': match['utcDate'][11:16],
-            'prob_local': 0.0,  # Aquí deberías poner las probabilidades reales
-            'prob_empate': 0.0,
-            'prob_visitante': 0.0,
-            'pred_goles_local': 0,  # Aquí deberías poner las predicciones reales
-            'pred_goles_visitante': 0
-        })
-
-    return pd.DataFrame(partidos)
-
-# Obtener el ID de la liga seleccionada
-liga_id = LIGA_IDS.get(liga_seleccionada)
-
-# Obtener partidos y logos de la liga seleccionada
-if liga_id:
-    partidos = obtener_partidos(liga_id)
-else:
-    st.error("Liga no válida seleccionada")
-    partidos = pd.DataFrame()
-    
 # Diccionario de logos por liga (ejemplo con LaLiga, agrega más si es necesario)
 URL_LOGOS_LALIGA = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
@@ -221,6 +167,78 @@ URL_LOGOS = {
     "Bundesliga": URL_LOGOS_BUNDESLIGA
 }
 
+# Partidos de ejemplo por liga
+PARTIDOS_LALIGA = pd.DataFrame({
+    'local': ['Espanyol', 'Osasuna', 'Leganes', 'Celta', 'Getafe'],
+    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atletico Madrid', 'Athletic', 'Barcelona'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
+    'prob_empate': [0.30, 0.30, 0.35, 0.30, 0.25],
+    'prob_visitante': [0.35, 0.30, 0.35, 0.35, 0.50],
+    'pred_goles_local': [1, 2, 1, 1, 1],
+    'pred_goles_visitante': [1, 1, 2, 1, 2]
+})
+
+PARTIDOS_PREMIER = pd.DataFrame({
+    'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
+    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Ipswich'],
+    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
+    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
+    'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
+    'prob_empate': [0.30, 0.25, 0.20, 0.20, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.20, 0.15, 0.15],
+    'pred_goles_local': [2, 1, 3, 3, 2],
+    'pred_goles_visitante': [1, 1, 0, 0, 1]
+})
+
+PARTIDOS_SERIE_A = pd.DataFrame({
+    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
+    'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+PARTIDOS_LIGUE_1 = pd.DataFrame({
+    'local': ['Psg', 'Niza', 'Marsella', 'Angers', 'Lille'],
+    'visitante': ['Monaco', 'Lyon', 'Nantes', 'Lens', 'Havre'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+PARTIDOS_BUNDESLIGA = pd.DataFrame({
+    'local': ['Bayern Munich', 'Bochum', 'Union Berlin', 'Friburgo', 'Augsburgo'],
+    'visitante': ['Borussia Dortmund', 'Mainz', 'RB Leipzig', 'Wolfsburgo', 'Bayer Leverkusen'],
+    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
+    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
+    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
+    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
+    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
+    'pred_goles_local': [2, 3, 1, 2, 1],
+    'pred_goles_visitante': [1, 1, 1, 0, 1]
+})
+
+
+PARTIDOS = {
+    "LaLiga": PARTIDOS_LALIGA,
+    "Premier League": PARTIDOS_PREMIER,
+    "Serie A": PARTIDOS_SERIE_A,
+    "Ligue 1": PARTIDOS_LIGUE_1,
+    "Bundesliga": PARTIDOS_BUNDESLIGA
+}
+
+# Obtener partidos y logos de la liga seleccionada
+partidos = PARTIDOS.get(liga_seleccionada, pd.DataFrame())
 logos = URL_LOGOS.get(liga_seleccionada, {})
 
 # Función para cargar logo
@@ -274,4 +292,5 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("Estadísticas del Modelo")
 st.sidebar.metric("Precisión Global", "73%")
 st.sidebar.metric("Partidos Predichos", "152")
+
 
