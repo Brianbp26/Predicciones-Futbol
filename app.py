@@ -57,7 +57,7 @@ LIGA_IDS = {
 
 # Obtener los datos de partidos desde API-Football
 def obtener_partidos(liga_id):
-    api_url = f"https://v3.football.api-sports.io/fixtures?league={liga_id}&season=2024"
+    api_url = f"https://v3.football.api-sports.io/fixtures?league={liga_id}&season=2023"
     headers = {
         "x-apisports-key": "918b7c487455961b60f9972bc323f354"  # Reemplaza con tu clave de API
     }
