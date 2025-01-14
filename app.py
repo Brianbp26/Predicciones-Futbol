@@ -1,6 +1,7 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
+import requests
 
 # Configuración de la página
 st.set_page_config(
@@ -44,7 +45,29 @@ liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
+# Obtener los datos de partidos desde una API
+def obtener_partidos(liga):
+    # Aquí deberías usar una API real para obtener los datos
+    api_url = f"https://api.football-data.org/v2/competitions/{liga}/matches"
+    headers = {"X-Auth-Token": "d21df9a683e74915bdb6dac39270a985"}  # Reemplaza con tu clave de API
+    response = requests.get(api_url, headers=headers)
+    data = response.json()
 
+    partidos = []
+    for match in data['matches']:
+        partidos.append({
+            'local': match['homeTeam']['name'],
+            'visitante': match['awayTeam']['name'],
+            'fecha': match['utcDate'][:10],
+            'hora': match['utcDate'][11:16],
+            'prob_local': 0.0,  # Aquí deberías poner las probabilidades reales
+            'prob_empate': 0.0,
+            'prob_visitante': 0.0,
+            'pred_goles_local': 0,  # Aquí deberías poner las predicciones reales
+            'pred_goles_visitante': 0
+        })
+
+    return pd.DataFrame(partidos)
 # Diccionario de logos por liga (ejemplo con LaLiga, agrega más si es necesario)
 URL_LOGOS_LALIGA = {
     "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
@@ -238,7 +261,7 @@ PARTIDOS = {
 }
 
 # Obtener partidos y logos de la liga seleccionada
-partidos = PARTIDOS.get(liga_seleccionada, pd.DataFrame())
+partidos = obtener_partidos(liga_seleccionada)
 logos = URL_LOGOS.get(liga_seleccionada, {})
 
 # Función para cargar logo
