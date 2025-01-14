@@ -186,8 +186,11 @@ def mostrar_partidos(partidos, liga):
         local = partido['homeTeam']['name']
         visitante = partido['awayTeam']['name']
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
-        fecha = fecha.strftime('%d/%m/%Y %H:%M')
-
+         # Verificar si la hora es 00:00
+        if fecha.strftime('%H:%M') == '00:00':
+            fecha = fecha.strftime('%d/%m/%Y')  # Solo día, mes y año
+        else:
+            fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
         logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
         logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
 
