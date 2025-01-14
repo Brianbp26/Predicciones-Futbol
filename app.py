@@ -82,7 +82,7 @@ URL_LOGOS_PREMIER = {
 }
 URL_LOGOS_SERIE_A = {
     "atalanta": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/atalanta.png",
-    "bologna": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/bologna.png",
+    "bolonia": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/bolonia.png",
     "cagliari": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/cagliari.png",
     "empoli": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/empoli.png",
     "fiorentina": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/fiorentina.png",
@@ -136,7 +136,7 @@ PARTIDOS_PREMIER = pd.DataFrame({
     'pred_goles_visitante': [1, 1, 0, 0, 1]
 })
 PARTIDOS_SERIE_A = pd.DataFrame({
-    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna'],
+    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
     'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
     'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
     'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
