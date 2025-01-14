@@ -192,20 +192,28 @@ def mostrar_partidos(partidos, liga):
         logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
 
         st.markdown(f"""
-            <div class="match-container">
-                <div class="team-logo">
-                    <img src="{logo_local}" alt="{local}">
-                    <div class="team-name">{local}</div>
-                </div>
-                <div class="team-logo">
-                    <img src="{logo_visitante}" alt="{visitante}">
-                    <div class="team-name">{visitante}</div>
-                </div>
-                <div class="match-time">
-                    <strong>{fecha}</strong>
-                </div>
+    <div class="match-container">
+        <div class="team-container" style="text-align: center; width: 40%;">
+            <div class="team-logo">
+                <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
             </div>
-        """, unsafe_allow_html=True)
+            <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+                {local}
+            </div>
+        </div>
+        <div class="match-time" style="text-align: center; width: 20%; font-size: 1.2rem; font-weight: bold;">
+            <strong>{fecha}</strong>
+        </div>
+        <div class="team-container" style="text-align: center; width: 40%;">
+            <div class="team-logo">
+                <img src="{logo_visitante}" alt="{visitante}" style="width: 100px; height: 100px;">
+            </div>
+            <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+                {visitante}
+            </div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
 # Obtener partidos según la liga seleccionada
 if liga_seleccionada == "Premier League":
