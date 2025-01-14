@@ -131,8 +131,6 @@ for idx, partido in partidos_ejemplo.iterrows():
             st.image(logo_visitante, width=100)
         else:
             st.warning(f"Logo no encontrado para: {partido['visitante']}")
-
-        st.markdown(f"<h3 style='text-align: center;'>{partido['visitante']}</h3>", unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
