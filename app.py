@@ -281,7 +281,7 @@ def mostrar_partidos(partidos, liga):
             
             # Generar el HTML
             st.markdown(f"""
-<div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #00FF00; margin-bottom: 0.5rem; border-radius: 8px;">
+<div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #231573; margin-bottom: 0.5rem; border-radius: 8px;">
     <div class="team-container" style="text-align: center; width: 40%;">
         <div class="team-logo">
             <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
