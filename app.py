@@ -71,7 +71,7 @@ def cargar_logo(equipo):
     if logo_path.is_file():
         return str(logo_path)
     else:
-        return str(LOGOS_PATH / "default.png")
+        return None
 # Datos de ejemplo con los partidos de la jornada 20
 partidos_ejemplo = pd.DataFrame({
     'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 
