@@ -267,7 +267,6 @@ for idx, partido in partidos.iterrows():
             f"<h2 style='text-align: center;'>{partido['pred_goles_local']} - {partido['pred_goles_visitante']}</h2>",
             unsafe_allow_html=True,
         )
-        st.markdown(f"<div class='team-name'>{equipo.capitalize()}</div>", unsafe_allow_html=True)
         # Mostrar probabilidades
         col_prob1, col_prob2, col_prob3 = st.columns(3)
         with col_prob1:
