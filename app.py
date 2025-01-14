@@ -14,7 +14,7 @@ st.markdown("""
     .main {
         padding: 0rem 1rem;
         background-color: #000000;
-        color: #ffffff;  /* Optional: Change text color to white for better visibility */
+        color: #ffffff;
     }
     .stButton>button {
         width: 100%;
