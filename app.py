@@ -191,8 +191,8 @@ def mostrar_partidos(partidos, liga):
         logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
         logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
 
-        st.markdown(f"""
-    <div class="match-container">
+       st.markdown(f"""
+    <div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem;">
         <div class="team-container" style="text-align: center; width: 40%;">
             <div class="team-logo">
                 <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
