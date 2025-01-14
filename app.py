@@ -47,11 +47,19 @@ liga_seleccionada = st.sidebar.selectbox(
 )
 # Obtener los datos de partidos desde una API
 def obtener_partidos(liga):
-    # Aquí deberías usar una API real para obtener los datos
     api_url = f"https://api.football-data.org/v2/competitions/{liga}/matches"
     headers = {"X-Auth-Token": "d21df9a683e74915bdb6dac39270a985"}  # Reemplaza con tu clave de API
     response = requests.get(api_url, headers=headers)
+    
+    if response.status_code != 200:
+        st.error(f"Error al obtener datos de la API: {response.status_code}")
+        return pd.DataFrame()
+
     data = response.json()
+    
+    if 'matches' not in data:
+        st.error("La respuesta de la API no contiene la clave 'matches'")
+        return pd.DataFrame()
 
     partidos = []
     for match in data['matches']:
@@ -188,76 +196,6 @@ URL_LOGOS = {
     "Serie A": URL_LOGOS_SERIE_A,
     "Ligue 1": URL_LOGOS_LIGUE_1,
     "Bundesliga": URL_LOGOS_BUNDESLIGA
-}
-
-# Partidos de ejemplo por liga
-PARTIDOS_LALIGA = pd.DataFrame({
-    'local': ['Espanyol', 'Osasuna', 'Leganes', 'Celta', 'Getafe'],
-    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atletico Madrid', 'Athletic', 'Barcelona'],
-    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
-    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
-    'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
-    'prob_empate': [0.30, 0.30, 0.35, 0.30, 0.25],
-    'prob_visitante': [0.35, 0.30, 0.35, 0.35, 0.50],
-    'pred_goles_local': [1, 2, 1, 1, 1],
-    'pred_goles_visitante': [1, 1, 2, 1, 2]
-})
-
-PARTIDOS_PREMIER = pd.DataFrame({
-    'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
-    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Ipswich'],
-    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
-    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
-    'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
-    'prob_empate': [0.30, 0.25, 0.20, 0.20, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.20, 0.15, 0.15],
-    'pred_goles_local': [2, 1, 3, 3, 2],
-    'pred_goles_visitante': [1, 1, 0, 0, 1]
-})
-
-PARTIDOS_SERIE_A = pd.DataFrame({
-    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
-    'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-PARTIDOS_LIGUE_1 = pd.DataFrame({
-    'local': ['Psg', 'Niza', 'Marsella', 'Angers', 'Lille'],
-    'visitante': ['Monaco', 'Lyon', 'Nantes', 'Lens', 'Havre'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-PARTIDOS_BUNDESLIGA = pd.DataFrame({
-    'local': ['Bayern Munich', 'Bochum', 'Union Berlin', 'Friburgo', 'Augsburgo'],
-    'visitante': ['Borussia Dortmund', 'Mainz', 'RB Leipzig', 'Wolfsburgo', 'Bayer Leverkusen'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-
-PARTIDOS = {
-    "LaLiga": PARTIDOS_LALIGA,
-    "Premier League": PARTIDOS_PREMIER,
-    "Serie A": PARTIDOS_SERIE_A,
-    "Ligue 1": PARTIDOS_LIGUE_1,
-    "Bundesliga": PARTIDOS_BUNDESLIGA
 }
 
 # Obtener partidos y logos de la liga seleccionada
