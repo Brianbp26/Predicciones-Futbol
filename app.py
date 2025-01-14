@@ -281,28 +281,28 @@ def mostrar_partidos(partidos, liga):
             
             # Generar el HTML
             st.markdown(f"""
-            <div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #f9f9f9; margin-bottom: 0.5rem; border-radius: 8px;">
-                <div class="team-container" style="text-align: center; width: 40%;">
-                    <div class="team-logo">
-                        <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
-                    </div>
-                    <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
-                        {local}
-                    </div>
-                </div>
-                <div class="match-time" style="text-align: center; width: 20%; font-size: 1.2rem; font-weight: bold;">
-                    <strong>{fecha}</strong>
-                </div>
-                <div class="team-container" style="text-align: center; width: 40%;">
-                    <div class="team-logo">
-                        <img src="{logo_visitante}" alt="{visitante}" style="width: 100px; height: 100px;">
-                    </div>
-                    <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
-                        {visitante}
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+<div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #00FF00; margin-bottom: 0.5rem; border-radius: 8px;">
+    <div class="team-container" style="text-align: center; width: 40%;">
+        <div class="team-logo">
+            <img src="{logo_local}" alt="{local}" style="width: 100px; height: 100px;">
+        </div>
+        <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+            {local}
+        </div>
+    </div>
+    <div class="match-time" style="text-align: center; width: 20%; font-size: 1.2rem; font-weight: bold;">
+        <strong>{fecha}</strong>
+    </div>
+    <div class="team-container" style="text-align: center; width: 40%;">
+        <div class="team-logo">
+            <img src="{logo_visitante}" alt="{visitante}" style="width: 100px; height: 100px;">
+        </div>
+        <div class="team-name" style="font-weight: bold; margin-top: 0.5rem; font-size: 1.2rem;">
+            {visitante}
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 # Header principal con logo de la liga
 st.markdown(f"""
 <div style="display: flex; align-items: center; gap: 1rem;">
