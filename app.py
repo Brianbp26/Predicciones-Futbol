@@ -69,6 +69,9 @@ def obtener_partidos(liga_id):
 
     data = response.json()
     
+    # Imprimir la respuesta completa de la API para verificar el formato
+    st.write(data)
+    
     if 'response' not in data:
         st.error("La respuesta de la API no contiene datos esperados")
         return pd.DataFrame()
