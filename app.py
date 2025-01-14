@@ -165,34 +165,39 @@ def obtener_partidos(liga):
     
     if response.status_code == 200:
         data = response.json()
-        return data['matches']
+        partidos = data['matches']
+        
+        # Filtrar partidos desde hoy hasta un mes en el futuro
+        hoy = datetime.utcnow()
+        un_mes_despues = hoy + timedelta(days=30)
+        partidos_filtrados = [
+            partido for partido in partidos 
+            if hoy <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= un_mes_despues
+        ]
+        
+        return partidos_filtrados
     else:
         st.error("No se pudieron obtener los partidos.")
         return []
 
 # Función para mostrar los partidos
-def mostrar_partidos(partidos, liga):
+def mostrar_partidos(partidos):
     for partido in partidos:
         local = partido['homeTeam']['name']
         visitante = partido['awayTeam']['name']
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
-        fecha = fecha.strftime('%d/%m/%Y %H:%M')
-
-        logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
-        logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
+        fecha_formateada = fecha.strftime('%d/%m/%Y %H:%M')
 
         st.markdown(f"""
             <div class="match-container">
                 <div class="team-logo">
-                    <img src="{logo_local}" alt="{local}">
                     <div class="team-name">{local}</div>
                 </div>
                 <div class="team-logo">
-                    <img src="{logo_visitante}" alt="{visitante}">
                     <div class="team-name">{visitante}</div>
                 </div>
                 <div class="match-time">
-                    <strong>{fecha}</strong>
+                    <strong>{fecha_formateada}</strong>
                 </div>
             </div>
         """, unsafe_allow_html=True)
@@ -210,6 +215,6 @@ elif liga_seleccionada == "Ligue 1":
     liga_id = "FL1"
 
 partidos = obtener_partidos(liga_id)
-mostrar_partidos(partidos, liga_seleccionada)
+mostrar_partidos(partidos)
 
 
