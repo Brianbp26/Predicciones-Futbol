@@ -37,7 +37,6 @@ st.markdown("""
     }
     </style>
 """, unsafe_allow_html=True)
-
 # Sidebar para selección de liga
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
@@ -159,133 +158,93 @@ URL_LOGOS_BUNDESLIGA = {
 }
 
 
-URL_LOGOS = {
-    "LaLiga": URL_LOGOS_LALIGA,
-    "Premier League": URL_LOGOS_PREMIER,
-    "Serie A": URL_LOGOS_SERIE_A,
-    "Ligue 1": URL_LOGOS_LIGUE_1,
-    "Bundesliga": URL_LOGOS_BUNDESLIGA
+# Función para obtener los partidos de la API
+API_KEY = 'd21df9a683e74915bdb6dac39270a985'  # Debes reemplazar 'tu_api_key' por tu propia clave de API
+BASE_URL = 'https://api-football-v1.p.rapidapi.com/v3'
+
+def obtener_partidos(liga, temporada):
+    url = f"{BASE_URL}/fixtures"
+    headers = {
+        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com",
+        "X-RapidAPI-Key": API_KEY
+    }
+    params = {
+        'league': liga,
+        'season': temporada
+    }
+    
+    response = requests.get(url, headers=headers, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        return data['response']
+    else:
+        st.error("Error al obtener los partidos.")
+        return []
+
+# Función para mostrar los partidos con los logos
+def mostrar_partidos(partidos, logos):
+    for partido in partidos:
+        home_team = partido['teams']['home']['name']
+        away_team = partido['teams']['away']['name']
+        home_score = partido['scores']['home']['ft']
+        away_score = partido['scores']['away']['ft']
+        
+        # Mostrar los partidos en tarjetas
+        st.markdown(f"### {home_team} vs {away_team}")
+        col1, col2, col3 = st.columns([1, 1, 1])
+        
+        with col1:
+            logo_home = logos.get(home_team.lower(), '')
+            if logo_home:
+                st.image(logo_home, width=100)
+            st.markdown(f"**{home_team}**")
+        
+        with col2:
+            st.markdown(f"**{home_score} - {away_score}**")
+        
+        with col3:
+            logo_away = logos.get(away_team.lower(), '')
+            if logo_away:
+                st.image(logo_away, width=100)
+            st.markdown(f"**{away_team}**")
+        
+        st.markdown("---")
+
+# Selección de temporada
+temporada = st.sidebar.selectbox("Selecciona una temporada", ["2023", "2024"])
+
+# Obtener los partidos de la liga seleccionada y temporada
+liga_map = {
+    "LaLiga": 140,
+    "Premier League": 39,
+    "Serie A": 135,
+    "Bundesliga": 78,
+    "Ligue 1": 61
 }
 
-# Partidos de ejemplo por liga
-PARTIDOS_LALIGA = pd.DataFrame({
-    'local': ['Espanyol', 'Osasuna', 'Leganes', 'Celta', 'Getafe'],
-    'visitante': ['Valladolid', 'Rayo Vallecano', 'Atletico Madrid', 'Athletic', 'Barcelona'],
-    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
-    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
-    'prob_local': [0.35, 0.40, 0.30, 0.35, 0.25],
-    'prob_empate': [0.30, 0.30, 0.35, 0.30, 0.25],
-    'prob_visitante': [0.35, 0.30, 0.35, 0.35, 0.50],
-    'pred_goles_local': [1, 2, 1, 1, 1],
-    'pred_goles_visitante': [1, 1, 2, 1, 2]
-})
+# Obtener los partidos de la liga seleccionada y temporada
+liga_id = liga_map[liga_seleccionada]
+partidos = obtener_partidos(liga_id, temporada)
 
-PARTIDOS_PREMIER = pd.DataFrame({
-    'local': ['Arsenal', 'Chelsea', 'Liverpool', 'Man City', 'Man United'],
-    'visitante': ['Tottenham', 'Everton', 'Brighton', 'Newcastle', 'Ipswich'],
-    'fecha': ['2024-01-17', '2024-01-18', '2024-01-18', '2024-01-18', '2024-01-18'],
-    'hora': ['21:00', '14:00', '16:15', '18:30', '21:00'],
-    'prob_local': [0.45, 0.50, 0.60, 0.65, 0.55],
-    'prob_empate': [0.30, 0.25, 0.20, 0.20, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.20, 0.15, 0.15],
-    'pred_goles_local': [2, 1, 3, 3, 2],
-    'pred_goles_visitante': [1, 1, 0, 0, 1]
-})
+# Mostrar partidos con los logos correspondientes
+if liga_seleccionada == "LaLiga":
+    logos = URL_LOGOS_LALIGA
+elif liga_seleccionada == "Premier League":
+    logos = URL_LOGOS_PREMIER
+elif liga_seleccionada == "Serie A":
+    logos = URL_LOGOS_SERIE_A
+elif liga_seleccionada == "Ligue 1":
+    logos = URL_LOGOS_LIGUE_1
+elif liga_seleccionada == "Bundesliga":
+    logos = URL_LOGOS_BUNDESLIGA
+else:
+    logos = {}
 
-PARTIDOS_SERIE_A = pd.DataFrame({
-    'local': ['Atalanta', 'Inter', 'Roma', 'Lazio', 'Bolonia'],
-    'visitante': ['Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-PARTIDOS_LIGUE_1 = pd.DataFrame({
-    'local': ['Psg', 'Niza', 'Marsella', 'Angers', 'Lille'],
-    'visitante': ['Monaco', 'Lyon', 'Nantes', 'Lens', 'Havre'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-PARTIDOS_BUNDESLIGA = pd.DataFrame({
-    'local': ['Bayern Munich', 'Bochum', 'Union Berlin', 'Friburgo', 'Augsburgo'],
-    'visitante': ['Borussia Dortmund', 'Mainz', 'RB Leipzig', 'Wolfsburgo', 'Bayer Leverkusen'],
-    'fecha': ['2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19'],
-    'hora': ['18:00', '20:45', '15:00', '18:00', '12:30'],
-    'prob_local': [0.45, 0.50, 0.40, 0.55, 0.35],
-    'prob_empate': [0.30, 0.25, 0.35, 0.30, 0.30],
-    'prob_visitante': [0.25, 0.25, 0.25, 0.15, 0.35],
-    'pred_goles_local': [2, 3, 1, 2, 1],
-    'pred_goles_visitante': [1, 1, 1, 0, 1]
-})
-
-
-PARTIDOS = {
-    "LaLiga": PARTIDOS_LALIGA,
-    "Premier League": PARTIDOS_PREMIER,
-    "Serie A": PARTIDOS_SERIE_A,
-    "Ligue 1": PARTIDOS_LIGUE_1,
-    "Bundesliga": PARTIDOS_BUNDESLIGA
-}
-
-# Obtener partidos y logos de la liga seleccionada
-partidos = PARTIDOS.get(liga_seleccionada, pd.DataFrame())
-logos = URL_LOGOS.get(liga_seleccionada, {})
-
-# Función para cargar logo
-def cargar_logo(equipo):
-    nombre_archivo = equipo.lower().replace(" ", "").replace(".", "").replace("'", "")
-    return logos.get(nombre_archivo, None)
-
-# Header principal
-st.title(f"Predicciones {liga_seleccionada}")
-st.markdown("---")
-st.subheader(f"Jornada 20 de 38 - Próximos partidos ({liga_seleccionada})")
-
-# Mostrar los partidos
-# Mostrar los partidos
-for idx, partido in partidos.iterrows():
-    col1, col2, col3 = st.columns([2, 3, 2])
-
-    with col1:
-        logo_local = cargar_logo(partido['local'])
-        if logo_local:
-            st.image(logo_local, width=100)
-        else:
-            st.warning(f"Logo no encontrado para: {partido['local']}")
-        st.markdown(f"<div class='team-name'>{partido['local']}</div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(
-            f"<h2 style='text-align: center;'>{partido['pred_goles_local']} - {partido['pred_goles_visitante']}</h2>",
-            unsafe_allow_html=True,
-        )
-        # Mostrar probabilidades
-        col_prob1, col_prob2, col_prob3 = st.columns(3)
-        with col_prob1:
-            st.metric("Victoria Local", f"{int(partido['prob_local'] * 100)}%")
-        with col_prob2:
-            st.metric("Empate", f"{int(partido['prob_empate'] * 100)}%")
-        with col_prob3:
-            st.metric("Victoria Visitante", f"{int(partido['prob_visitante'] * 100)}%")
-
-    with col3:
-        logo_visitante = cargar_logo(partido['visitante'])
-        if logo_visitante:
-            st.image(logo_visitante, width=100)
-        else:
-            st.warning(f"Logo no encontrado para: {partido['visitante']}")
-        st.markdown(f"<div class='team-name'>{partido['visitante']}</div>", unsafe_allow_html=True)
+if partidos:
+    mostrar_partidos(partidos, logos)
+else:
+    st.write("No se encontraron partidos para esta liga y temporada.")
 
 # Métricas adicionales en el sidebar
 st.sidebar.markdown("---")
