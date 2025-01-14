@@ -45,6 +45,14 @@ liga_seleccionada = st.sidebar.selectbox(
     ["La Liga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
 
+# Diccionario de logos de ligas
+logos_ligas = {
+    "La Liga": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7e/LaLiga_Santander.svg/1200px-LaLiga_Santander.svg.png",
+    "Premier League": "https://assets.premierleague.com/premierleague/photo/2021/02/02/2a02336d-8cbb-4a8d-9d50-bc9b8b0d2b6e/PL-Lion.png",
+    "Serie A": "https://upload.wikimedia.org/wikipedia/en/0/03/Serie_A_logo.png",
+    "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/6/67/Bundesliga_logo_%282017%29.png",
+    "Ligue 1": "https://upload.wikimedia.org/wikipedia/en/a/a7/Ligue_1_Uber_Eats_Logo.png",
+}
 # Diccionario de logos de equipos (de acuerdo a las ligas)
 logos = {
     "La Liga": {
@@ -277,8 +285,13 @@ def mostrar_partidos(partidos, liga):
                 </div>
             </div>
             """, unsafe_allow_html=True)
-# Header principal
-st.title(f"Predicciones {liga_seleccionada}")
+# Header principal con logo de la liga
+st.markdown(f"""
+<div style="display: flex; align-items: center; gap: 1rem;">
+    <h1 style="margin: 0;">Predicciones {liga_seleccionada}</h1>
+    <img src="{logos_ligas[liga_seleccionada]}" alt="{liga_seleccionada}" style="width: 50px; height: 50px;">
+</div>
+""", unsafe_allow_html=True)
 st.markdown("---")
 # Obtener partidos según la liga seleccionada
 if liga_seleccionada == "Premier League":
