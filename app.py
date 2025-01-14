@@ -214,7 +214,9 @@ def mostrar_partidos(partidos, liga):
         </div>
     </div>
 """, unsafe_allow_html=True)
-
+# Header principal
+st.title(f"Predicciones {liga_seleccionada}")
+st.markdown("---")
 # Obtener partidos según la liga seleccionada
 if liga_seleccionada == "Premier League":
     liga_id = "PL"
