@@ -66,7 +66,7 @@ NOMBRES_EQUIPOS = {
 # Función para cargar logos
 def cargar_logo(equipo):
     nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    logo_path = os.path.join(LOGOS_PATH, "España", "Primera División", f"{nombre_archivo}.png").lower()  # Convertir a minúsculas
+    logo_path = os.path.join(LOGOS_PATH, "España", "Primera División", f"{nombre_archivo}.png")
     if os.path.exists(logo_path):
         return logo_path
     else:
