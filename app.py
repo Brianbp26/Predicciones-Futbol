@@ -37,6 +37,22 @@ st.markdown("""
         margin-top: 0.5rem;
         text-align: center;
     }
+    /* Media queries for responsive design */
+    @media (max-width: 768px) {
+        .match-container {
+            flex-direction: column;
+        }
+        .team-logo img {
+            width: 80px;
+            height: 80px;
+        }
+        .team-name {
+            font-size: 1rem;
+        }
+        .match-time {
+            font-size: 1rem;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
