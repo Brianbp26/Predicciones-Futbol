@@ -80,11 +80,34 @@ URL_LOGOS_PREMIER = {
     "westham": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/westham.png",
     "wolves": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/wolves.png"
 }
+URL_LOGOS_SERIE_A = {
+    "atalanta": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/atalanta.png",
+    "bologna": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/bologna.png",
+    "cagliari": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/cagliari.png",
+    "empoli": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/empoli.png",
+    "fiorentina": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/fiorentina.png",
+    "hellasverona": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/hellasverona.png",
+    "genoa": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/genoa.png",
+    "inter": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/inter.png",
+    "juventus": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/juventus.png",
+    "lazio": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/lazio.png",
+    "lecce": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/lecce.png",
+    "milan": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/milan.png",
+    "monza": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/monza.png",
+    "napoles": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/napoles.png",
+    "roma": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/roma.png",
+    "parma": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/parma.png",
+    "como": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/como.png",
+    "torino": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/torino.png",
+    "udinese": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/udinese.png",
+    "venezia": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/venezia.png"
+}
 
 
 URL_LOGOS = {
     "LaLiga": URL_LOGOS_LALIGA,
     "Premier League": URL_LOGOS_PREMIER,
+    "Serie A": URL_LOGOS_SERIE_A
     # Agrega más ligas aquí
 }
 
@@ -112,10 +135,50 @@ PARTIDOS_PREMIER = pd.DataFrame({
     'pred_goles_local': [2, 1, 3, 3, 2],
     'pred_goles_visitante': [1, 1, 0, 0, 1]
 })
+PARTIDOS_SERIE_A = pd.DataFrame({
+    'local': [
+        'Atalanta', 'Inter', 'Roma', 'Lazio', 'Bologna',
+        'Torino', 'Cagliari', 'Empoli', 'Lecce', 'Parma'
+    ],
+    'visitante': [
+        'Juventus', 'Milan', 'Napoles', 'Fiorentina', 'Udinese',
+        'Monza', 'Genoa', 'Hellas Verona', 'Como', 'Venezia'
+    ],
+    'fecha': [
+        '2024-01-17', '2024-01-17', '2024-01-18', '2024-01-18', '2024-01-19',
+        '2024-01-19', '2024-01-20', '2024-01-20', '2024-01-21', '2024-01-21'
+    ],
+    'hora': [
+        '18:00', '20:45', '15:00', '18:00', '12:30',
+        '15:00', '18:00', '20:45', '12:30', '15:00'
+    ],
+    'prob_local': [
+        0.45, 0.50, 0.40, 0.55, 0.35,
+        0.50, 0.40, 0.30, 0.55, 0.60
+    ],
+    'prob_empate': [
+        0.30, 0.25, 0.35, 0.30, 0.30,
+        0.25, 0.30, 0.35, 0.25, 0.20
+    ],
+    'prob_visitante': [
+        0.25, 0.25, 0.25, 0.15, 0.35,
+        0.25, 0.30, 0.35, 0.20, 0.20
+    ],
+    'pred_goles_local': [
+        2, 3, 1, 2, 1,
+        2, 1, 1, 2, 3
+    ],
+    'pred_goles_visitante': [
+        1, 1, 1, 0, 1,
+        1, 1, 1, 0, 0
+    ]
+})
+
 
 PARTIDOS = {
     "LaLiga": PARTIDOS_LALIGA,
     "Premier League": PARTIDOS_PREMIER,
+    "Serie A": PARTIDOS_SERIE_A
     # Agrega más ligas aquí
 }
 
