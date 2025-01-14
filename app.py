@@ -198,35 +198,25 @@ def agrupar_partidos_por_jornadas(partidos, liga):
     jornadas = []
     jornada_actual = []
     jornada_numero = jornada_inicial  # Comienza desde la jornada inicial
+    inicio_jornada = None
     
-    # Iteramos sobre todos los partidos
     for partido in partidos:
         fecha_partido = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
         
-        # Calcular el viernes más cercano
-        dia_semana = fecha_partido.weekday()  # Lunes = 0, Martes = 1, ..., Domingo = 6
-        dias_hasta_viernes = (4 - dia_semana) % 7  # Dias hasta el siguiente viernes
-        viernes_inicio = fecha_partido + timedelta(days=dias_hasta_viernes)
-        
-        # Calcular el miércoles de la semana siguiente a las 23:59 (final de la jornada)
-        proximo_miercoles = viernes_inicio + timedelta(days=5)  # Sumar 5 días para llegar al miércoles
-        fin_jornada = datetime(proximo_miercoles.year, proximo_miercoles.month, proximo_miercoles.day, 23, 59)
-        
-        # Si la jornada actual está vacía, iniciamos la primera jornada
-        if not jornada_actual:
+        if not inicio_jornada:
+            # Inicio de una nueva jornada
+            inicio_jornada = fecha_partido
             jornada_actual.append(partido)
-            inicio_jornada = viernes_inicio
+        elif (fecha_partido - inicio_jornada).days > 5:
+            # Cerrar la jornada actual si han pasado más de 5 días
+            jornadas.append((jornada_numero, jornada_actual))
+            jornada_numero += 1
+            jornada_actual = [partido]
+            inicio_jornada = fecha_partido
         else:
-            # Si el partido está dentro del rango de la jornada (viernes a miércoles 23:59)
-            if fecha_partido <= fin_jornada:
-                jornada_actual.append(partido)
-            else:
-                # Si el partido es después del miércoles a las 23:59, se cierra la jornada
-                jornadas.append((jornada_numero, jornada_actual))
-                jornada_numero += 1
-                jornada_actual = [partido]  # Comienza una nueva jornada
-                inicio_jornada = viernes_inicio  # La nueva jornada comienza el viernes
-        
+            # Continuar en la misma jornada
+            jornada_actual.append(partido)
+    
     # Añadir la última jornada si está incompleta
     if jornada_actual:
         jornadas.append((jornada_numero, jornada_actual))
@@ -304,5 +294,6 @@ elif liga_seleccionada == "Ligue 1":
 
 partidos = obtener_partidos(liga_id)
 mostrar_partidos(partidos, liga_seleccionada)
+
 
 
