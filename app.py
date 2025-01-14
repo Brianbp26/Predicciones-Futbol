@@ -12,20 +12,60 @@ st.set_page_config(
 st.markdown("""
     <style>
     .main {
-        padding: 0rem 1rem;
+        padding: 0rem 2rem;
+        background-color: #f4f5f7;
     }
     .stButton>button {
         width: 100%;
+        background-color: #006400;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+        padding: 15px;
+        transition: background-color 0.3s;
+    }
+    .stButton>button:hover {
+        background-color: #004d00;
+    }
+    .sidebar .sidebar-content {
+        background-color: #1a1a1a;
+        color: white;
+        padding: 2rem;
+    }
+    .sidebar .sidebar-content h1 {
+        font-size: 2rem;
+        font-family: 'Arial', sans-serif;
     }
     .match-container {
-        background-color: #f0f2f6;
-        border-radius: 10px;
+        background-color: #ffffff;
+        border-radius: 12px;
         padding: 1rem;
         margin: 1rem 0;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .team-logo {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+        margin-right: 10px;
+    }
+    .match-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    .match-info h3 {
+        font-size: 1.5rem;
+        color: #333;
+    }
+    .match-info .score {
+        font-size: 1.2rem;
+        color: #ff4500;
     }
     </style>
 """, unsafe_allow_html=True)
-
 # Sidebar para selección de liga
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
