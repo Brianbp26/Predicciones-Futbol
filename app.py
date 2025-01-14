@@ -159,7 +159,7 @@ URL_LOGOS_BUNDESLIGA = {
 
 
 # Función para obtener los partidos de la API
-API_KEY = 'd21df9a683e74915bdb6dac39270a985'  # Debes reemplazar 'tu_api_key' por tu propia clave de API
+API_KEY = '918b7c487455961b60f9972bc323f354'  # Debes reemplazar 'tu_api_key' por tu propia clave de API
 BASE_URL = 'https://api-football-v1.p.rapidapi.com/v3'
 
 def obtener_partidos(liga, temporada):
@@ -212,7 +212,7 @@ def mostrar_partidos(partidos, logos):
         st.markdown("---")
 
 # Selección de temporada
-temporada = st.sidebar.selectbox("Selecciona una temporada", ["2023", "2024"])
+temporada = st.sidebar.selectbox("Selecciona una temporada", ["2022", "2023"])
 
 # Obtener los partidos de la liga seleccionada y temporada
 liga_map = {
