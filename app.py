@@ -42,12 +42,12 @@ st.markdown("""
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
-    ["La Liga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
+    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
 
 # Diccionario de logos de ligas
 logos_ligas = {
-    "La Liga": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7e/LaLiga_Santander.svg/1200px-LaLiga_Santander.svg.png",
+    "LaLiga": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7e/LaLiga_Santander.svg/1200px-LaLiga_Santander.svg.png",
     "Premier League": "https://assets.premierleague.com/premierleague/photo/2021/02/02/2a02336d-8cbb-4a8d-9d50-bc9b8b0d2b6e/PL-Lion.png",
     "Serie A": "https://upload.wikimedia.org/wikipedia/en/0/03/Serie_A_logo.png",
     "Bundesliga": "https://upload.wikimedia.org/wikipedia/commons/6/67/Bundesliga_logo_%282017%29.png",
@@ -55,7 +55,7 @@ logos_ligas = {
 }
 # Diccionario de logos de equipos (de acuerdo a las ligas)
 logos = {
-    "La Liga": {
+    "LaLiga": {
     "athleticclub": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
     "clubatléticodemadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/atleticomadrid.png",
     "fcbarcelona": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/barcelona.png",
@@ -189,7 +189,7 @@ def obtener_partidos(liga):
         return []
 
 jornadas_iniciales = {
-    'La Liga': 20,   
+    'LaLiga': 20,   
     'Premier League': 21,   
     'Serie A': 21,   
     'Ligue 1': 18,   
@@ -296,7 +296,7 @@ st.markdown("---")
 # Obtener partidos según la liga seleccionada
 if liga_seleccionada == "Premier League":
     liga_id = "PL"
-elif liga_seleccionada == "La Liga":
+elif liga_seleccionada == "LaLiga":
     liga_id = "PD"
 elif liga_seleccionada == "Serie A":
     liga_id = "SA"
