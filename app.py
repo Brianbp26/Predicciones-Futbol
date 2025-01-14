@@ -48,18 +48,18 @@ liga_seleccionada = st.sidebar.selectbox(
 
 # Diccionario para mapear las ligas con sus IDs en la API
 LIGA_IDS = {
-    "LaLiga": "140",
-    "Premier League": "39",
-    "Serie A": "135",
-    "Bundesliga": "78",
-    "Ligue 1": "61"
+    "LaLiga": "PD",
+    "Premier League": "PL",
+    "Serie A": "SA",
+    "Bundesliga": "BL1",
+    "Ligue 1": "FL1"
 }
 
-# Obtener los datos de partidos desde API-Football
+# Obtener los datos de partidos desde Football-Data.org
 def obtener_partidos(liga_id):
-    api_url = f"https://v3.football.api-sports.io/fixtures?league={liga_id}&season=2023"
+    api_url = f"https://api.football-data.org/v2/competitions/{liga_id}/matches"
     headers = {
-        "x-apisports-key": "918b7c487455961b60f9972bc323f354"  # Reemplaza con tu clave de API
+        "X-Auth-Token": "d21df9a683e74915bdb6dac39270a985"  # Reemplaza con tu clave de API
     }
     response = requests.get(api_url, headers=headers)
     
@@ -69,20 +69,17 @@ def obtener_partidos(liga_id):
 
     data = response.json()
     
-    # Imprimir la respuesta completa de la API para verificar el formato
-    st.write(data)
-    
-    if 'response' not in data:
+    if 'matches' not in data:
         st.error("La respuesta de la API no contiene datos esperados")
         return pd.DataFrame()
 
     partidos = []
-    for fixture in data['response']:
+    for match in data['matches']:
         partidos.append({
-            'local': fixture['teams']['home']['name'],
-            'visitante': fixture['teams']['away']['name'],
-            'fecha': fixture['fixture']['date'][:10],
-            'hora': fixture['fixture']['date'][11:16],
+            'local': match['homeTeam']['name'],
+            'visitante': match['awayTeam']['name'],
+            'fecha': match['utcDate'][:10],
+            'hora': match['utcDate'][11:16],
             'prob_local': 0.0,  # Aquí deberías poner las probabilidades reales
             'prob_empate': 0.0,
             'prob_visitante': 0.0,
