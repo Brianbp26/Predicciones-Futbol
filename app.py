@@ -234,18 +234,11 @@ def mostrar_partidos(partidos, logos):
 # Selección de temporada
 temporada = st.sidebar.selectbox("Selecciona una temporada", ["2022", "2023"])
 
-# Obtener los partidos de la liga seleccionada y temporada
-liga_map = {
-    "LaLiga": 140,
-    "Premier League": 39,
-    "Serie A": 135,
-    "Bundesliga": 78,
-    "Ligue 1": 61
-}
+
 
 # Obtener los partidos de la liga seleccionada y temporada
 liga_id = liga_map[liga_seleccionada]
-partidos = obtener_partidos(liga_id, temporada)
+partidos = obtener_partidos(liga_ids)
 
 # Mostrar partidos con los logos correspondientes
 if liga_seleccionada == "LaLiga":
