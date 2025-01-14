@@ -12,8 +12,7 @@ st.set_page_config(
 )
 
 # Rutas base
-BASE_PATH = r"C:\\Users\\brian\\OneDrive - Universidad Politécnica de Madrid\\Escritorio\\CDIA 2º\\Practica3-Streamlit"
-LOGOS_PATH = os.path.join(BASE_PATH, "logos")
+LOGOS_PATH = "logos"
 
 # Aplicar algunos estilos CSS personalizados
 st.markdown("""
@@ -71,7 +70,7 @@ def cargar_logo(equipo):
     if os.path.exists(logo_path):
         return logo_path
     else:
-        st.error(f"No se encontró el logo para {equipo} en la ruta {logo_path}")
+        st.error(f"No se encontró el logo para {equipo}")
         return None
 # Datos de ejemplo con los partidos de la jornada 20
 partidos_ejemplo = pd.DataFrame({
