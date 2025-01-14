@@ -1,8 +1,6 @@
 import streamlit as st
 from datetime import datetime
 import pandas as pd
-from pathlib import Path
-import os
 
 # Configuración de la página
 st.set_page_config(
@@ -11,33 +9,29 @@ st.set_page_config(
     layout="wide"
 )
 
-# Rutas base
-LOGOS_PATH = Path(__file__).parent / "logos"
-
-# Aplicar algunos estilos CSS personalizados
-st.markdown("""
-    <style>
-    .main {
-        padding: 0rem 1rem;
-    }
-    .stButton>button {
-        width: 100%;
-    }
-    .match-container {
-        background-color: #f0f2f6;
-        border-radius: 10px;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-# Sidebar para selección de liga
-st.sidebar.title("⚽ Predicciones Fútbol")
-liga_seleccionada = st.sidebar.selectbox(
-    "Selecciona una liga",
-    ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
-)
+# URLs de los logos
+URL_LOGOS = {
+    "espanyol": "https://example.com/logos/espanyol.png",
+    "valladolid": "https://example.com/logos/valladolid.png",
+    "osasuna": "https://example.com/logos/osasuna.png",
+    "rayovallecano": "https://example.com/logos/rayovallecano.png",
+    "leganes": "https://example.com/logos/leganes.png",
+    "atleticomadrid": "https://example.com/logos/atleticomadrid.png",
+    "celta": "https://example.com/logos/celta.png",
+    "athletic": "https://example.com/logos/athletic.png",
+    "getafe": "https://example.com/logos/getafe.png",
+    "barcelona": "https://example.com/logos/barcelona.png",
+    "betis": "https://example.com/logos/betis.png",
+    "alaves": "https://example.com/logos/alaves.png",
+    "realmadrid": "https://example.com/logos/realmadrid.png",
+    "laspalmas": "https://example.com/logos/laspalmas.png",
+    "valencia": "https://example.com/logos/valencia.png",
+    "realsociedad": "https://example.com/logos/realsociedad.png",
+    "girona": "https://example.com/logos/girona.png",
+    "sevilla": "https://example.com/logos/sevilla.png",
+    "villarreal": "https://example.com/logos/villarreal.png",
+    "mallorca": "https://example.com/logos/mallorca.png"
+}
 
 # Diccionario para mapear nombres de equipos a nombres de archivo
 NOMBRES_EQUIPOS = {
@@ -66,12 +60,8 @@ NOMBRES_EQUIPOS = {
 # Función para cargar logos
 def cargar_logo(equipo):
     nombre_archivo = NOMBRES_EQUIPOS.get(equipo, equipo.lower().replace(' ', ''))
-    logo_path = LOGOS_PATH / "España" / "Primera División" / f"{nombre_archivo}.png"
-    
-    if logo_path.is_file():
-        return str(logo_path)
-    else:
-        return None
+    return URL_LOGOS.get(nombre_archivo, None)
+
 # Datos de ejemplo con los partidos de la jornada 20
 partidos_ejemplo = pd.DataFrame({
     'local': ['RCD Espanyol', 'Osasuna', 'Leganés', 'Celta de Vigo', 
@@ -104,47 +94,44 @@ partidos_ejemplo = pd.DataFrame({
 })
 
 # Header principal
-st.title(f"Predicciones {liga_seleccionada}")
+st.title("⚽ Predicciones Fútbol")
 st.markdown("---")
-
-# Información de la jornada
 st.subheader("Jornada 20 de 38 - Próximos partidos")
 
 # Mostrar los partidos
 for idx, partido in partidos_ejemplo.iterrows():
-    # Crear tres columnas para cada partido
-    col1, col2, col3 = st.columns([2,3,2])
-    
-    with st.container():
-        st.markdown('<div class="match-container">', unsafe_allow_html=True)
-        
-        # Columna equipo local
-        with col1:
-            logo_local = cargar_logo(partido['local'])
-            if logo_local:
-                st.image(logo_local, width=100)
-            st.markdown(f"<h3 style='text-align: center;'>{partido['local']}</h3>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([2, 3, 2])
 
-        # Columna central con predicciones
-        with col2:
-            st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown(f"<h2 style='text-align: center;'>{partido['pred_goles_local']} - {partido['pred_goles_visitante']}</h2>", unsafe_allow_html=True)
-            
-            # Mostrar probabilidades
-            col_prob1, col_prob2, col_prob3 = st.columns(3)
-            with col_prob1:
-                st.metric("Victoria Local", f"{int(partido['prob_local']*100)}%")
-            with col_prob2:
-                st.metric("Empate", f"{int(partido['prob_empate']*100)}%")
-            with col_prob3:
-                st.metric("Victoria Visitante", f"{int(partido['prob_visitante']*100)}%")
+    with col1:
+        logo_local = cargar_logo(partido['local'])
+        if logo_local:
+            st.image(logo_local, width=100)
+        else:
+            st.warning(f"Logo no encontrado para: {partido['local']}")
 
-        # Columna equipo visitante
-        with col3:
-            logo_visitante = cargar_logo(partido['visitante'])
-            if logo_visitante:
-                st.image(logo_visitante, width=100)
-            st.markdown(f"<h3 style='text-align: center;'>{partido['visitante']}</h3>", unsafe_allow_html=True)
+    with col2:
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(
+            f"<h2 style='text-align: center;'>{partido['pred_goles_local']} - {partido['pred_goles_visitante']}</h2>",
+            unsafe_allow_html=True,
+        )
+        # Mostrar probabilidades
+        col_prob1, col_prob2, col_prob3 = st.columns(3)
+        with col_prob1:
+            st.metric("Victoria Local", f"{int(partido['prob_local'] * 100)}%")
+        with col_prob2:
+            st.metric("Empate", f"{int(partido['prob_empate'] * 100)}%")
+        with col_prob3:
+            st.metric("Victoria Visitante", f"{int(partido['prob_visitante'] * 100)}%")
+
+    with col3:
+        logo_visitante = cargar_logo(partido['visitante'])
+        if logo_visitante:
+            st.image(logo_visitante, width=100)
+        else:
+            st.warning(f"Logo no encontrado para: {partido['visitante']}")
+
+        st.markdown(f"<h3 style='text-align: center;'>{partido['visitante']}</h3>", unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
