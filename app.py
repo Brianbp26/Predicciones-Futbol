@@ -79,7 +79,6 @@ URL_LOGOS_PREMIER = {
     "wolverhampton": "https://raw.githubusercontent.com/Brianbp26/Logos/8e59d34d0708184b05fca212a58335b28b7c4cdd/wolverhampton.png"
 }
 
-}
 
 URL_LOGOS = {
     "LaLiga": URL_LOGOS_LALIGA,
