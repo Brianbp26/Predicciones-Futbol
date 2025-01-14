@@ -11,27 +11,28 @@ st.set_page_config(
 
 # URLs de los logos
 URL_LOGOS = {
-    "espanyol": "https://example.com/logos/espanyol.png",
-    "valladolid": "https://example.com/logos/valladolid.png",
-    "osasuna": "https://example.com/logos/osasuna.png",
-    "rayovallecano": "https://example.com/logos/rayovallecano.png",
-    "leganes": "https://example.com/logos/leganes.png",
-    "atleticomadrid": "https://example.com/logos/atleticomadrid.png",
-    "celta": "https://example.com/logos/celta.png",
-    "athletic": "https://example.com/logos/athletic.png",
-    "getafe": "https://example.com/logos/getafe.png",
-    "barcelona": "https://example.com/logos/barcelona.png",
-    "betis": "https://example.com/logos/betis.png",
-    "alaves": "https://example.com/logos/alaves.png",
-    "realmadrid": "https://example.com/logos/realmadrid.png",
-    "laspalmas": "https://example.com/logos/laspalmas.png",
-    "valencia": "https://example.com/logos/valencia.png",
-    "realsociedad": "https://example.com/logos/realsociedad.png",
-    "girona": "https://example.com/logos/girona.png",
-    "sevilla": "https://example.com/logos/sevilla.png",
-    "villarreal": "https://example.com/logos/villarreal.png",
-    "mallorca": "https://example.com/logos/mallorca.png"
+    "athletic": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/athletic.png",
+    "atleticomadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/atleticomadrid.png",
+    "barcelona": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/barcelona.png",
+    "alaves": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/alaves.png",
+    "betis": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/betis.png",
+    "celta": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/celta.png",
+    "espanyol": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/espanyol.png",
+    "getafe": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/getafe.png",
+    "girona": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/girona.png",
+    "laspalmas": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/laspalmas.png",
+    "leganes": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/leganes.png",
+    "mallorca": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/mallorca.png",
+    "osasuna": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/osasuna.png",
+    "rayovallecano": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/rayovallecano.png",
+    "realmadrid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/realmadrid.png",
+    "realsociedad": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/realsociedad.png",
+    "sevilla": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/sevilla.png",
+    "valencia": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/valencia.png",
+    "valladolid": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/valladolid.png",
+    "villarreal": "https://raw.githubusercontent.com/Brianbp26/Logos/587d8554343bb8bbecf8de5342f7446a83c1d8ce/villarreal.png"
 }
+
 
 # Diccionario para mapear nombres de equipos a nombres de archivo
 NOMBRES_EQUIPOS = {
