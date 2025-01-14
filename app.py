@@ -232,7 +232,6 @@ def agrupar_partidos_por_jornadas(partidos, liga):
         jornadas.append((jornada_numero, jornada_actual))
     
     return jornadas
-```
 
 This implementation ensures that the grouping of matches starts on Fridays and ends on Thursdays by the night.
 
