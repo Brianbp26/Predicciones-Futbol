@@ -82,6 +82,14 @@ liga_ids = {
     "Bundesliga": "BL1",  # Bundesliga
     "Ligue 1": "FL1"  # Ligue 1
 }
+# Header principal con logo de la liga
+st.markdown(f"""
+<div style="display: flex; align-items: center; gap: 1rem;">
+    <h1 style="margin: 0;">Predicciones {liga_seleccionada}</h1>
+    <img src="{logos_ligas[liga_seleccionada]}" alt="{liga_seleccionada}" style="width: 50px; height: 50px;">
+</div>
+""", unsafe_allow_html=True)
+st.markdown("---")
 
 # Lógica principal
 if liga_seleccionada:
