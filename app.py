@@ -203,7 +203,13 @@ st.markdown("---")
 mapeo_equipos = {
     "Manchester United FC": "Man United",
     "Fulham FC": "Fulham",
-    "Arsenal FC": "arsenal",
+    "Arsenal FC": "Arsenal",
+    "Liverpool FC": "Liverpool",
+    " Nottingham Forest FC": "Nott'm Forest",
+    " Newcastle United FC": "Newcastle",
+    " Chelsea FC": "Chelsea",
+    " Manchester City FC": "Man City",
+    " Manchester City FC": "Man City",
     # Añade todos los equipos necesarios aquí...
 }
 
