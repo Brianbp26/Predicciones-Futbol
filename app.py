@@ -202,25 +202,25 @@ st.markdown("---")
 # Diccionario de mapeo de nombres de equipos
 mapeo_equipos = {
     "newcastleunitedfc": "Newcastle",
-    "afcbournemouth": " ",
+    "afcbournemouth": "Bournemouth",
     "arsenalfc": "Arsenal",
-    "astonvillafc": " ",
-    "brentfordfc": " ",
-    "brighton&hovealbionfc": " ",
+    "astonvillafc": "Aston Villa",
+    "brentfordfc": "Brentford",
+    "brighton&hovealbionfc": "Brighton",
     "chelseafc": "Chelsea",
-    "crystalpalacefc": " ",
-    "evertonfc": " ",
-    "ipswichtownfc": " ",
+    "crystalpalacefc": "Crystal Palace",
+    "evertonfc": "Everton",
+    "ipswichtownfc": "Ipswich",
     "nottinghamforestfc": "Nott'm Forest",
     "fulhamfc": "Fulham",
-    "leicestercityfc": " ",
+    "leicestercityfc": "Leicester",
     "liverpoolfc": "Liverpool",
     "manchesterunitedfc": "Man United",
     "manchestercityfc": "Man City",
-    "southamptonfc": " ",
-    "tottenhamhotspurfc": " ",
-    "westhamunitedfc": " ",
-    "wolverhamptonwanderersfc": " "
+    "southamptonfc": "Southampton",
+    "tottenhamhotspurfc": "Tottenham",
+    "westhamunitedfc": "West Ham",
+    "wolverhamptonwanderersfc": "Wolves"
 }
 
 def estandarizar_nombre_equipo(nombre_equipo):
