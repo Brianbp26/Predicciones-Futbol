@@ -398,8 +398,6 @@ def predict_match(df, home_team, away_team):
         print(f"Victoria {home_team}: {prediccion['probabilidades']['victoria_local']}")
         print(f"Empate: {prediccion['probabilidades']['empate']}")
         print(f"Victoria {away_team}: {prediccion['probabilidades']['victoria_visitante']}")
-        print(f"\nResultado más probable: {prediccion['resultado_mas_probable']}")
-        print(f"Confianza: {prediccion['confianza_prediccion']}")
         
         return prediccion
         
