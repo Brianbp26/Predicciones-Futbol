@@ -270,7 +270,10 @@ if liga_seleccionada:
         for partido in partidos:
             home_team = estandarizar_nombre_equipo(partido['homeTeam']['name'])
             away_team = estandarizar_nombre_equipo(partido['awayTeam']['name'])
-
+            
+            # Mostrar los partidos de la jornada
+            mostrar_partidos([partido], liga_seleccionada, logos)
+            
             try:
                 prediccion = predict_match(df_historico, home_team, away_team)
                 if prediccion:
@@ -305,8 +308,6 @@ if liga_seleccionada:
                     st.warning(f"No se pudo generar predicción para {partido['homeTeam']['name']} vs {partido['awayTeam']['name']}")
             except Exception as e:
                 st.error(f"Error al procesar predicción: {str(e)}")
-
-        mostrar_partidos(partidos, liga_seleccionada, logos)
 
 
 
