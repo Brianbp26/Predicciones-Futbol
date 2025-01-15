@@ -249,6 +249,10 @@ def mostrar_clasificacion(clasificacion):
 
 
 # Función para obtener partidos de la API
+import requests
+from datetime import datetime, timedelta
+import streamlit as st
+
 def obtener_partidos(liga):
     url = f'https://api.football-data.org/v4/competitions/{liga}/matches'
     headers = {
@@ -260,20 +264,24 @@ def obtener_partidos(liga):
         data = response.json()
         partidos = data['matches']
         
-        # Filtrar partidos desde hoy hasta un mes en el futuro
+        # Fecha "hoy" como string, luego convertirla a datetime
         hoy = "2025-01-15 10:45:43.394385"
         hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
-
+        
+        # Sumar 90 días a la fecha actual
         un_mes_despues = hoy_datetime + timedelta(days=90)
+        
+        # Filtrar los partidos entre hoy y un mes después
         partidos_filtrados = [
             partido for partido in partidos 
-            if hoy <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= un_mes_despues
+            if hoy_datetime <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= un_mes_despues
         ]
         
         return partidos_filtrados
     else:
         st.error("No se pudieron obtener los partidos.")
         return []
+
 
 jornadas_iniciales = {
     'LaLiga': 20,   
