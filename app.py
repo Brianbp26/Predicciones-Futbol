@@ -183,7 +183,13 @@ liga_ids = {
     "Bundesliga": "BL1",  # Bundesliga
     "Ligue 1": "FL1"  # Ligue 1
 }
-
+liga_archivos = {
+    "LaLiga": "España/LaLigaEASPORTS",  # Primera División Española
+    "Premier League": "Inglaterra/PremierLeague",  # Premier League
+    "Serie A": "Italia/SerieA",  # Serie A
+    "Bundesliga": "Alemania/Bundesliga",  # Bundesliga
+    "Ligue 1": "Francia/Ligue1"  # Ligue 1
+}
 # Header principal con logo de la liga
 st.markdown(f"""
 <div style="display: flex; align-items: center; gap: 1rem;">
@@ -193,62 +199,63 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown("---")
 
-# Lógica principal
+# Función para cargar datos históricos según la liga seleccionada
+@st.cache_resource
+def cargar_datos_historicos(liga_seleccionada):
+    base_path = liga_archivos.get(liga_seleccionada, "")
+    datos_historicos_ruta = f"archivos/{base_path}_*_*_.csv"
+    return load_data(datos_historicos_ruta)
+
 if liga_seleccionada:
     liga_id = liga_ids.get(liga_seleccionada)
     if liga_id:
         clasificacion = obtener_clasificacion(liga_id)
         mostrar_clasificacion(clasificacion, liga_seleccionada, logos)
-        
-        @st.cache_resource
-def cargar_datos_historicos():
-    datos_historicos_ruta = "archivos/España/LaLigaEASPORTS_*_*.csv"
-    return load_data(datos_historicos_ruta)
 
-df_historico = cargar_datos_historicos()
-        
+        df_historico = cargar_datos_historicos(liga_seleccionada)
+
         # Obtener los partidos y hacer predicciones
-partidos = obtener_partidos(liga_id)
-st.markdown("## 🎲 Predicciones próximos partidos")
+        partidos = obtener_partidos(liga_id)
+        st.markdown("## 🎲 Predicciones próximos partidos")
 
-for partido in partidos:
-    home_team = partido['homeTeam']['name']
-    away_team = partido['awayTeam']['name']
-    
-    try:
-        prediccion = predict_match(df_historico, home_team, away_team)
-        if prediccion:
-            col1, col2, col3 = st.columns([1,2,1])
-            with col2:
-                st.markdown(f"""
-                <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0;'>
-                    <h3 style='text-align: center;'>{home_team} vs {away_team}</h3>
-                    <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
-                        <div style='text-align: center; width: 30%;'>
-                            <p>Victoria Local</p>
-                            <h2>{prediccion['probabilidades']['victoria_local']}</h2>
+        for partido in partidos:
+            home_team = partido['homeTeam']['name']
+            away_team = partido['awayTeam']['name']
+
+            try:
+                prediccion = predict_match(df_historico, home_team, away_team)
+                if prediccion:
+                    col1, col2, col3 = st.columns([1, 2, 1])
+                    with col2:
+                        st.markdown(f"""
+                        <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0;'>
+                            <h3 style='text-align: center;'>{home_team} vs {away_team}</h3>
+                            <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
+                                <div style='text-align: center; width: 30%;'>
+                                    <p>Victoria Local</p>
+                                    <h2>{prediccion['probabilidades']['victoria_local']}</h2>
+                                </div>
+                                <div style='text-align: center; width: 30%;'>
+                                    <p>Empate</p>
+                                    <h2>{prediccion['probabilidades']['empate']}</h2>
+                                </div>
+                                <div style='text-align: center; width: 30%;'>
+                                    <p>Victoria Visitante</p>
+                                    <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
+                                </div>
+                            </div>
+                            <p style='text-align: center; font-weight: bold;'>
+                                Resultado más probable: {prediccion['resultado_mas_probable']}
+                            </p>
+                            <p style='text-align: center;'>
+                                Confianza: {prediccion['confianza_prediccion']}
+                            </p>
                         </div>
-                        <div style='text-align: center; width: 30%;'>
-                            <p>Empate</p>
-                            <h2>{prediccion['probabilidades']['empate']}</h2>
-                        </div>
-                        <div style='text-align: center; width: 30%;'>
-                            <p>Victoria Visitante</p>
-                            <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
-                        </div>
-                    </div>
-                    <p style='text-align: center; font-weight: bold;'>
-                        Resultado más probable: {prediccion['resultado_mas_probable']}
-                    </p>
-                    <p style='text-align: center;'>
-                        Confianza: {prediccion['confianza_prediccion']}
-                    </p>
-                </div>
-                """, unsafe_allow_html=True)
-        else:
-            st.warning(f"No se pudo generar predicción para {home_team} vs {away_team}")
-    except Exception as e:
-        st.error(f"Error al procesar predicción: {str(e)}")
+                        """, unsafe_allow_html=True)
+                else:
+                    st.warning(f"No se pudo generar predicción para {home_team} vs {away_team}")
+            except Exception as e:
+                st.error(f"Error al procesar predicción: {str(e)}")
 
         mostrar_partidos(partidos, liga_seleccionada, logos)
 
