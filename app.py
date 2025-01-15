@@ -199,6 +199,17 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown("---")
 
+# Diccionario de mapeo de nombres de equipos
+mapeo_equipos = {
+    "Manchester United FC": "Man United",
+    "Fulham": "Fulham",
+    "Arsenal FC": "arsenal",
+    # Añade todos los equipos necesarios aquí...
+}
+
+def estandarizar_nombre_equipo(nombre_equipo):
+    return mapeo_equipos.get(nombre_equipo)
+
 # Función para cargar datos históricos según la liga seleccionada
 @st.cache_resource
 def cargar_datos_historicos(liga_seleccionada):
@@ -220,8 +231,8 @@ if liga_seleccionada:
         st.markdown("## 🎲 Predicciones próximos partidos")
 
         for partido in partidos:
-            home_team = partido['homeTeam']['name']
-            away_team = partido['awayTeam']['name']
+            home_team = estandarizar_nombre_equipo(partido['homeTeam']['name'])
+            away_team = estandarizar_nombre_equipo(partido['awayTeam']['name'])
 
             try:
                 prediccion = predict_match(df_historico, home_team, away_team)
@@ -230,7 +241,7 @@ if liga_seleccionada:
                     with col2:
                         st.markdown(f"""
                         <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0;'>
-                            <h3 style='text-align: center;'>{home_team} vs {away_team}</h3>
+                            <h3 style='text-align: center;'>{partido['homeTeam']['name']} vs {partido['awayTeam']['name']}</h3>
                             <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
                                 <div style='text-align: center; width: 30%;'>
                                     <p>Victoria Local</p>
@@ -254,7 +265,7 @@ if liga_seleccionada:
                         </div>
                         """, unsafe_allow_html=True)
                 else:
-                    st.warning(f"No se pudo generar predicción para {home_team} vs {away_team}")
+                    st.warning(f"No se pudo generar predicción para {partido['homeTeam']['name']} vs {partido['awayTeam']['name']}")
             except Exception as e:
                 st.error(f"Error al procesar predicción: {str(e)}")
 
