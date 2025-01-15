@@ -220,27 +220,7 @@ mapeo_equipos = {
     "southamptonfc": "Southampton",
     "tottenhamhotspurfc": "Tottenham",
     "westhamunitedfc": "West Ham",
-    "wolverhamptonwanderersfc": "Wolves",
-    "athleticclub": "Ath Bilbao",
-    "clubatléticodemadrid": "Ath Madrid",
-    "fcbarcelona": "Barcelona",
-    "deportivoalavés": "Alaves",
-    "realbetisbalompié": "Betis",
-    "rcceltadevigo": "Celta",
-    "rcdespanyoldebarcelona": "Espanol",
-    "getafecf": "Getafe",
-    "gironafc": "Girona",
-    "udlaspalmas": "Las Palmas",
-    "cdleganés": "Leganes",
-    "rcdmallorca": "Mallorca",
-    "caosasuna": "Osasuna",
-    "rayovallecanodemadrid": "Vallecano",
-    "realmadridcf": "Real Madrid",
-    "realsociedaddefútbol": "Sociedad",
-    "sevillafc": "Sevilla",
-    "valenciacf": "Valencia",
-    "realvalladolidcf": "Valladolid",
-    "villarrealcf": "Villarreal"
+    "wolverhamptonwanderersfc": "Wolves"
 }
 
 def estandarizar_nombre_equipo(nombre_equipo):
