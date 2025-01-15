@@ -183,6 +183,7 @@ liga_ids = {
     "Bundesliga": "BL1",  # Bundesliga
     "Ligue 1": "FL1"  # Ligue 1
 }
+
 # Header principal con logo de la liga
 st.markdown(f"""
 <div style="display: flex; align-items: center; gap: 1rem;">
@@ -208,6 +209,9 @@ def obtener_clasificacion(liga_id):
         st.error(f"Error al obtener la clasificación: {response.status_code}")
         return []
         
+import pandas as pd
+import streamlit as st
+
 def mostrar_clasificacion(clasificacion):
     if clasificacion:
         st.subheader("Clasificación Actual")
@@ -237,8 +241,12 @@ def mostrar_clasificacion(clasificacion):
             "DG", "Pts"
         ]
         
-        # Mostrar la tabla con los datos
-        st.table(pd.DataFrame(data, columns=columns))
+        # Crear DataFrame y configurar "Posición" como índice
+        df = pd.DataFrame(data, columns=columns).set_index("Posición")
+        
+        # Mostrar la tabla con el índice configurado
+        st.table(df)
+
 
 # Función para obtener partidos de la API
 def obtener_partidos(liga):
