@@ -83,9 +83,6 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 st.markdown("---")
 
-
-
-
 # Lógica principal
 if liga_seleccionada:
     liga_id = liga_ids.get(liga_seleccionada)
