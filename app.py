@@ -261,7 +261,8 @@ def obtener_partidos(liga):
         partidos = data['matches']
         
         # Filtrar partidos desde hoy hasta un mes en el futuro
-        hoy = 2025-01-15 10:45:43.394385
+        hoy = "2025-01-15 10:45:43.394385"
+
         un_mes_despues = hoy + timedelta(days=90)
         partidos_filtrados = [
             partido for partido in partidos 
