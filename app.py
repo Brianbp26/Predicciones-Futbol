@@ -218,7 +218,7 @@ def mostrar_clasificacion(clasificacion, liga):
             dg_diferencia_goles = equipo["goalsFor"] - equipo["goalsAgainst"]
             
             # Obtener el logo del equipo
-            club_name = equipo["team"]["name"].replace(" FC", "").lower().replace(" ", "")
+            club_name = equipo["team"]["name"].lower().replace(" ", "")
             logo_url = logos[liga].get(club_name, "")
             logo_html = f'<img src="{logo_url}" alt="{equipo["team"]["name"]}" style="width: 20px; height: 20px; vertical-align: middle;"> '
             
