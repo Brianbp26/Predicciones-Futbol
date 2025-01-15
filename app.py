@@ -208,11 +208,8 @@ def obtener_clasificacion(liga_id):
     else:
         st.error(f"Error al obtener la clasificación: {response.status_code}")
         return []
-        
-import pandas as pd
-import streamlit as st
 
-def mostrar_clasificacion(clasificacion):
+def mostrar_clasificacion(clasificacion, liga):
     if clasificacion:
         st.subheader("Clasificación Actual")
         data = []
@@ -220,10 +217,15 @@ def mostrar_clasificacion(clasificacion):
             # Cálculo de Diferencia de Goles
             dg_diferencia_goles = equipo["goalsFor"] - equipo["goalsAgainst"]
             
+            # Obtener el logo del equipo
+            club_name = equipo["team"]["name"].replace(" FC", "").lower().replace(" ", "")
+            logo_url = logos[liga].get(club_name, "")
+            logo_html = f'<img src="{logo_url}" alt="{equipo["team"]["name"]}" style="width: 20px; height: 20px; vertical-align: middle;"> '
+            
             # Preparar fila de datos en el formato solicitado
             data.append([
                 equipo["position"],
-                equipo["team"]["name"].replace(" FC", ""),  # Quitamos el "FC" del nombre
+                logo_html + equipo["team"]["name"].replace(" FC", ""),  # Añadir el logo al nombre del equipo
                 equipo["playedGames"],
                 equipo["won"],
                 equipo["draw"],
@@ -244,8 +246,11 @@ def mostrar_clasificacion(clasificacion):
         # Crear DataFrame y configurar "Posición" como índice
         df = pd.DataFrame(data, columns=columns).set_index("Posición")
         
+        # Convertir el DataFrame a HTML
+        df_html = df.to_html(escape=False)
+        
         # Mostrar la tabla con el índice configurado
-        st.table(df)
+        st.markdown(df_html, unsafe_allow_html=True)
 
 
 # Función para obtener partidos de la API
@@ -386,7 +391,7 @@ if liga_seleccionada:
     liga_id = liga_ids.get(liga_seleccionada)
     if liga_id:
         clasificacion = obtener_clasificacion(liga_id)
-        mostrar_clasificacion(clasificacion)
+        mostrar_clasificacion(clasificacion,liga_seleccionada)
         partidos = obtener_partidos(liga_id)
         mostrar_partidos(partidos, liga_seleccionada)
         
