@@ -201,20 +201,30 @@ st.markdown("---")
 
 # Diccionario de mapeo de nombres de equipos
 mapeo_equipos = {
-    "Manchester United FC": "Man United",
-    "Fulham FC": "Fulham",
-    "Arsenal FC": "Arsenal",
-    "Liverpool FC": "Liverpool",
-    " Nottingham Forest FC": "Nott'm Forest",
-    " Newcastle United FC": "Newcastle",
-    " Chelsea FC": "Chelsea",
-    " Manchester City FC": "Man City",
-    " Manchester City FC": "Man City",
-    # Añade todos los equipos necesarios aquí...
+    "newcastleunitedfc": "Newcastle",
+    "afcbournemouth": " ",
+    "arsenalfc": "Arsenal",
+    "astonvillafc": " ",
+    "brentfordfc": " ",
+    "brighton&hovealbionfc": " ",
+    "chelseafc": "Chelsea",
+    "crystalpalacefc": " ",
+    "evertonfc": " ",
+    "ipswichtownfc": " ",
+    "nottinghamforestfc": "Nott'm Forest",
+    "fulhamfc": "Fulham",
+    "leicestercityfc": " ",
+    "liverpoolfc": "Liverpool",
+    "manchesterunitedfc": "Man United",
+    "manchestercityfc": "Man City",
+    "southamptonfc": " ",
+    "tottenhamhotspurfc": " ",
+    "westhamunitedfc": " ",
+    "wolverhamptonwanderersfc": " "
 }
 
 def estandarizar_nombre_equipo(nombre_equipo):
-    return mapeo_equipos.get(nombre_equipo)
+    return mapeo_equipos.get(nombre_equipo, nombre_equipo.lower().replace(" ", ""))
 
 # Función para cargar datos históricos según la liga seleccionada
 @st.cache_resource
