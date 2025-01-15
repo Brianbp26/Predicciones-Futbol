@@ -85,7 +85,7 @@ def prepare_data_for_model(df, home_team, away_team):
     """
     Prepara los datos para el modelo usando todas las temporadas con ponderación
     """
-    df['Date'] = pd.to_datetime(df['Date'], utc=True)
+    df['Date'] = pd.to_datetime(df['Date'])
     df = df.sort_values('Date')
     
     # Obtener todas las temporadas ordenadas
