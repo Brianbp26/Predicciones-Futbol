@@ -296,12 +296,68 @@ if liga_seleccionada:
                                     <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
                                 </div>
                             </div>
+                            <p style='text-align: center; font-weight: bold;'>
+                                Resultado más probable: {prediccion['resultado_mas_probable']}
+                            </p>
+                            <p style='text-align: center;'>
+                                Confianza: {prediccion['confianza_prediccion']}
+                            </p>
                         </div>
                         """, unsafe_allow_html=True)
                 else:
                     st.warning(f"No se pudo generar predicción para {partido['homeTeam']['name']} vs {partido['awayTeam']['name']}")
             except Exception as e:
                 st.error(f"Error al procesar predicción: {str(e)}")
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+
+
+
+
+        
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+
+
 
 
 
