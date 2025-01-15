@@ -190,6 +190,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 st.markdown("---")
+
 # Obtener la clasificación
 def obtener_clasificacion(liga_id):
     url = f"https://api.football-data.org/v4/competitions/{liga_id}/standings"
