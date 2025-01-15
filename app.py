@@ -201,26 +201,26 @@ st.markdown("---")
 
 # Diccionario de mapeo de nombres de equipos
 mapeo_equipos = {
-    "newcastleunitedfc": "Newcastle",
-    "afcbournemouth": "Bournemouth",
-    "arsenalfc": "Arsenal",
-    "astonvillafc": "Aston Villa",
-    "brentfordfc": "Brentford",
-    "brighton&hovealbionfc": "Brighton",
-    "chelseafc": "Chelsea",
-    "crystalpalacefc": "Crystal Palace",
-    "evertonfc": "Everton",
-    "ipswichtownfc": "Ipswich",
-    "nottinghamforestfc": "Nott'm Forest",
-    "fulhamfc": "Fulham",
-    "leicestercityfc": "Leicester",
-    "liverpoolfc": "Liverpool",
-    "manchesterunitedfc": "Man United",
-    "manchestercityfc": "Man City",
-    "southamptonfc": "Southampton",
-    "tottenhamhotspurfc": "Tottenham",
-    "westhamunitedfc": "West Ham",
-    "wolverhamptonwanderersfc": "Wolves"
+    "athleticclub": "Ath Bilbao",
+    "clubatléticodemadrid": "Ath Madrid",
+    "fcbarcelona": "Barcelona",
+    "deportivoalavés": "Alaves",
+    "realbetisbalompié": "Betis",
+    "rcceltadevigo": "Celta",
+    "rcdespanyoldebarcelona": "Espanol",
+    "getafecf": "Getafe",
+    "gironafc": "Girona",
+    "udlaspalmas": "Las Palmas",
+    "cdleganés": "Leganes",
+    "rcdmallorca": "Mallorca",
+    "caosasuna": "Osasuna",
+    "rayovallecanodemadrid": "Vallecano",
+    "realmadridcf": "Real Madrid",
+    "realsociedaddefútbol": "Sociedad",
+    "sevillafc": "Sevilla",
+    "valenciacf": "Valencia",
+    "realvalladolidcf": "Valladolid",
+    "villarrealcf": "Villarreal"
 }
 
 def estandarizar_nombre_equipo(nombre_equipo):
