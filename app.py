@@ -235,9 +235,9 @@ def mostrar_clasificacion(clasificacion):
         
         # Encabezados de la tabla
         columns = [
-            "Posición", "Club", "PJPartidos jugados", "VVictorias", "EEmpates", 
-            "DDerrotas", "GFGoles marcados", "GCGoles en contra", 
-            "DGDiferencia de goles", "PtsPuntos"
+            "Posición", "Club", "PJ", "V", "E", 
+            "D", "GF", "GC", 
+            "DG", "Pts"
         ]
         
         # Mostrar la tabla con los datos
