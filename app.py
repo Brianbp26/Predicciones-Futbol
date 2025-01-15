@@ -200,25 +200,55 @@ if liga_seleccionada:
         clasificacion = obtener_clasificacion(liga_id)
         mostrar_clasificacion(clasificacion, liga_seleccionada, logos)
         
-        # Cargar datos históricos y entrenar el modelo
-        datos_historicos_ruta = "archivos/España/LaLigaEASPORTS_*_*.csv"  # Reemplaza con la ruta a tus datos históricos
-        df_historico = load_data(datos_historicos_ruta)
-        modelo, escalador, train_score, test_score = train_model(df_historico)
+        @st.cache_resource
+def cargar_datos_historicos():
+    datos_historicos_ruta = "archivos/España/LaLigaEASPORTS_*_*.csv"
+    return load_data(datos_historicos_ruta)
+
+df_historico = cargar_datos_historicos()
         
         # Obtener los partidos y hacer predicciones
-        partidos = obtener_partidos(liga_id)
-        for partido in partidos:
-            home_team = partido['homeTeam']['name']
-            away_team = partido['awayTeam']['name']
-            match_date = partido['utcDate']
-            
-            features = prepare_new_match_data(df_historico, home_team, away_team, match_date)
-            prediccion = predict_match(modelo, escalador, features)
-            
-            st.write(f"Predicción para {home_team} vs {away_team} en {match_date}:")
-            st.write(f"Probabilidad de victoria local: {prediccion['home_win']:.2f}")
-            st.write(f"Probabilidad de empate: {prediccion['draw']:.2f}")
-            st.write(f"Probabilidad de victoria visitante: {prediccion['away_win']:.2f}")
+partidos = obtener_partidos(liga_id)
+st.markdown("## 🎲 Predicciones próximos partidos")
+
+for partido in partidos:
+    home_team = partido['homeTeam']['name']
+    away_team = partido['awayTeam']['name']
+    
+    try:
+        prediccion = predict_match(df_historico, home_team, away_team)
+        if prediccion:
+            col1, col2, col3 = st.columns([1,2,1])
+            with col2:
+                st.markdown(f"""
+                <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0;'>
+                    <h3 style='text-align: center;'>{home_team} vs {away_team}</h3>
+                    <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
+                        <div style='text-align: center; width: 30%;'>
+                            <p>Victoria Local</p>
+                            <h2>{prediccion['probabilidades']['victoria_local']}</h2>
+                        </div>
+                        <div style='text-align: center; width: 30%;'>
+                            <p>Empate</p>
+                            <h2>{prediccion['probabilidades']['empate']}</h2>
+                        </div>
+                        <div style='text-align: center; width: 30%;'>
+                            <p>Victoria Visitante</p>
+                            <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
+                        </div>
+                    </div>
+                    <p style='text-align: center; font-weight: bold;'>
+                        Resultado más probable: {prediccion['resultado_mas_probable']}
+                    </p>
+                    <p style='text-align: center;'>
+                        Confianza: {prediccion['confianza_prediccion']}
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+        else:
+            st.warning(f"No se pudo generar predicción para {home_team} vs {away_team}")
+    except Exception as e:
+        st.error(f"Error al procesar predicción: {str(e)}")
 
         mostrar_partidos(partidos, liga_seleccionada, logos)
 
