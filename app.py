@@ -4,13 +4,6 @@ import pandas as pd
 from datetime import datetime, timedelta
 from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, agrupar_partidos_por_jornadas, mostrar_partidos
 from main import load_data, train_model, prepare_new_match_data, predict_match
-import numpy as np
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-import os
-import glob
-
 # Configuración de la página
 st.set_page_config(
     page_title="Predicciones Fútbol",
