@@ -174,6 +174,47 @@ logos = {
         "toulousefc": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/toulouse.png"
         }
 }
+# Obtener la clasificación
+def obtener_clasificacion(liga_id):
+    url = f"https://api.football-data.org/v4/competitions/{liga_id}/standings"
+     headers = {
+        'X-Auth-Token': 'd21df9a683e74915bdb6dac39270a985'
+    }
+    response = requests.get(url, headers=headers)
+
+    if response.status_code == 200:
+        data = response.json()
+        standings = data.get("standings", [])[0].get("table", [])
+        return standings
+    else:
+        st.error(f"Error al obtener la clasificación: {response.status_code}")
+        return []
+
+# Mostrar la clasificación en una tabla
+def mostrar_clasificacion(clasificacion):
+    if clasificacion:
+        st.subheader("Clasificación Actual")
+        data = []
+        for equipo in clasificacion:
+            data.append([
+                equipo["position"],
+                equipo["team"]["name"],
+                equipo["playedGames"],
+                equipo["won"],
+                equipo["draw"],
+                equipo["lost"],
+                equipo["points"],
+                equipo["goalsFor"],
+                equipo["goalsAgainst"]
+            ])
+        st.table(data)
+
+# Lógica principal
+if liga_seleccionada:
+    liga_id = liga_ids.get(liga_seleccionada)
+    if liga_id:
+        clasificacion = obtener_clasificacion(liga_id)
+        mostrar_clasificacion(clasificacion)
 
 # Función para obtener partidos de la API
 def obtener_partidos(liga):
