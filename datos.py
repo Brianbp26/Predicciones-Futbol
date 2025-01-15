@@ -51,8 +51,12 @@ def obtener_partidos(liga):
         data = response.json()
         partidos = data['matches']
         
-        hoy_datetime = datetime.now()
-        un_mes_despues = hoy_datetime + timedelta(days=30)
+        # Fecha "hoy" como string, luego convertirla a datetime
+        hoy = "2025-01-17 10:45:43.394385"
+        hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
+        
+        # Sumar 90 días a la fecha actual
+        un_mes_despues = hoy_datetime + timedelta(days=5)
         
         partidos_filtrados = [
             partido for partido in partidos 
