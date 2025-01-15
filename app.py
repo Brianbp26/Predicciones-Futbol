@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 from datetime import datetime, timedelta
 
 # Configuración de la página
@@ -206,11 +207,7 @@ def obtener_clasificacion(liga_id):
     else:
         st.error(f"Error al obtener la clasificación: {response.status_code}")
         return []
-
-# Mostrar la clasificación en una tabla
-import pandas as pd
-import streamlit as st
-
+        
 def mostrar_clasificacion(clasificacion):
     if clasificacion:
         st.subheader("Clasificación Actual")
@@ -242,14 +239,6 @@ def mostrar_clasificacion(clasificacion):
         
         # Mostrar la tabla con los datos
         st.table(pd.DataFrame(data, columns=columns))
-
-
-# Lógica principal
-if liga_seleccionada:
-    liga_id = liga_ids.get(liga_seleccionada)
-    if liga_id:
-        clasificacion = obtener_clasificacion(liga_id)
-        mostrar_clasificacion(clasificacion)
 
 # Función para obtener partidos de la API
 def obtener_partidos(liga):
@@ -373,21 +362,15 @@ def mostrar_partidos(partidos, liga):
     </div>
 </div>
 """, unsafe_allow_html=True)
-# Obtener partidos según la liga seleccionada
-if liga_seleccionada == "Premier League":
-    liga_id = "PL"
-elif liga_seleccionada == "LaLiga":
-    liga_id = "PD"
-elif liga_seleccionada == "Serie A":
-    liga_id = "SA"
-elif liga_seleccionada == "Bundesliga":
-    liga_id = "BL1"
-elif liga_seleccionada == "Ligue 1":
-    liga_id = "FL1"
 
-partidos = obtener_partidos(liga_id)
-mostrar_partidos(partidos, liga_seleccionada)
-
+# Lógica principal
+if liga_seleccionada:
+    liga_id = liga_ids.get(liga_seleccionada)
+    if liga_id:
+        partidos = obtener_partidos(liga_id)
+        mostrar_partidos(partidos, liga_seleccionada)
+        clasificacion = obtener_clasificacion(liga_id)
+        mostrar_clasificacion(clasificacion)
 
 
 
