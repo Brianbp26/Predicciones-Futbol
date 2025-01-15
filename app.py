@@ -203,7 +203,8 @@ st.markdown("---")
 @st.cache_resource
 def cargar_datos_historicos(liga_seleccionada):
     base_path = liga_archivos.get(liga_seleccionada, "")
-    datos_historicos_ruta = f"archivos/{base_path}_*_*_.csv"
+    datos_historicos_ruta = f"archivos/{base_path}*_*_.csv"
+    print(f"Buscando archivos en la ruta: {datos_historicos_ruta}")
     return load_data(datos_historicos_ruta)
 
 if liga_seleccionada:
