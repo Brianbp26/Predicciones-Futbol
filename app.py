@@ -64,7 +64,7 @@ logos_ligas = {
     "Premier League": "https://raw.githubusercontent.com/Brianbp26/Logos/038dae8a150d6cd90da2c99b08c461f3887b6095/premier.png",
     "Serie A": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/serie a.png",
     "Bundesliga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/bundesliga.png",
-    "Ligue 1": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/ligue 1.png",
+    "Ligue 1": "https://raw.githubusercontent.com/Brianbp26/Logos/1c5abf834ac8bd4e0a1b9b76a270721e4a5420a8/ligue 1.png",
 }
 # Diccionario de logos de equipos (de acuerdo a las ligas)
 logos = {
