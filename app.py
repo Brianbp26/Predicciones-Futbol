@@ -174,6 +174,14 @@ logos = {
         "toulousefc": "https://raw.githubusercontent.com/Brianbp26/Logos/86bca5f130397bbc8c33368e275ce9a299f1e5ed/toulouse.png"
         }
 }
+
+liga_ids = {
+    "LaLiga": "PD",  # Primera División Española
+    "Premier League": "PL",  # Premier League
+    "Serie A": "SA",  # Serie A
+    "Bundesliga": "BL1",  # Bundesliga
+    "Ligue 1": "FL1"  # Ligue 1
+}
 # Obtener la clasificación
 def obtener_clasificacion(liga_id):
     url = f"https://api.football-data.org/v4/competitions/{liga_id}/standings"
