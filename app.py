@@ -224,7 +224,8 @@ mapeo_equipos = {
 }
 
 def estandarizar_nombre_equipo(nombre_equipo):
-    return mapeo_equipos.get(nombre_equipo, nombre_equipo.lower().replace(" ", ""))
+    equipo = nombre_equipo.lower().replace(" ", "")
+    return mapeo_equipos.get(equipo)
 
 # Función para cargar datos históricos según la liga seleccionada
 @st.cache_resource
