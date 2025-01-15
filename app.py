@@ -201,7 +201,7 @@ if liga_seleccionada:
         mostrar_clasificacion(clasificacion, liga_seleccionada, logos)
         
         # Cargar datos históricos y entrenar el modelo
-        datos_historicos_ruta = "path/to/historical/data/*.csv"  # Reemplaza con la ruta a tus datos históricos
+        datos_historicos_ruta = "archivos/España/LaLigaEASPORTS_*_*.csv"  # Reemplaza con la ruta a tus datos históricos
         df_historico = load_data(datos_historicos_ruta)
         modelo, escalador, train_score, test_score = train_model(df_historico)
         
