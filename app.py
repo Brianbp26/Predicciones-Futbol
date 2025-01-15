@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, agrupar_partidos_por_jornadas, mostrar_partidos
+from main import load_data, train_model, prepare_new_match_data, predict_match
 # Configuración de la página
 st.set_page_config(
     page_title="Predicciones Fútbol",
@@ -197,9 +198,46 @@ if liga_seleccionada:
     liga_id = liga_ids.get(liga_seleccionada)
     if liga_id:
         clasificacion = obtener_clasificacion(liga_id)
-        mostrar_clasificacion(clasificacion,liga_seleccionada,logos)
+        mostrar_clasificacion(clasificacion, liga_seleccionada, logos)
+        
+        # Cargar datos históricos y entrenar el modelo
+        datos_historicos_ruta = "archivos/España/LaLigaEASPORTS_*_*.csv"  # Reemplaza con la ruta a tus datos históricos
+        df_historico = load_data(datos_historicos_ruta)
+        modelo, escalador, train_score, test_score = train_model(df_historico)
+        
+        # Obtener los partidos y hacer predicciones
         partidos = obtener_partidos(liga_id)
-        mostrar_partidos(partidos, liga_seleccionada,logos)
+        for partido in partidos:
+            home_team = partido['homeTeam']['name']
+            away_team = partido['awayTeam']['name']
+            match_date = partido['utcDate']
+            
+            features = prepare_new_match_data(df_historico, home_team, away_team, match_date)
+            prediccion = predict_match(modelo, escalador, features)
+            
+            st.write(f"Predicción para {home_team} vs {away_team} en {match_date}:")
+            st.write(f"Probabilidad de victoria local: {prediccion['home_win']:.2f}")
+            st.write(f"Probabilidad de empate: {prediccion['draw']:.2f}")
+            st.write(f"Probabilidad de victoria visitante: {prediccion['away_win']:.2f}")
+
+        mostrar_partidos(partidos, liga_seleccionada, logos)
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+
+
+
+
         
 
 
