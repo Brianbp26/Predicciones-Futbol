@@ -85,7 +85,19 @@ def prepare_data_for_model(df, home_team, away_team):
     """
     Prepara los datos para el modelo usando todas las temporadas con ponderación
     """
-    df['Date'] = pd.to_datetime(df['Date'])
+    # Intentar múltiples formatos de fecha
+    date_formats = ["%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d"]
+    for fmt in date_formats:
+        try:
+            df['Date'] = pd.to_datetime(df['Date'], format=fmt)
+            break
+        except ValueError:
+            continue
+    else:
+        # Si todos los formatos fallan, intentar con dayfirst=True
+        df['Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
+    
+    df = df.dropna(subset=['Date'])  # Eliminar filas con fechas no válidas
     df = df.sort_values('Date')
     
     # Obtener todas las temporadas ordenadas
@@ -95,7 +107,7 @@ def prepare_data_for_model(df, home_team, away_team):
     # Crear diccionario de pesos para cada temporada
     # La temporada más reciente tendrá peso 1, y las anteriores irán disminuyendo
     pesos_temporadas = {temp: 1 - (0.8 * (num_temporadas - i - 1) / (num_temporadas - 1)) 
-                       for i, temp in enumerate(temporadas)}
+                        for i, temp in enumerate(temporadas)}
     
     # Inicializar variables para acumular estadísticas ponderadas
     stats = {
@@ -200,6 +212,7 @@ def prepare_data_for_model(df, home_team, away_team):
     features['away_last5_losses'] = 5 - (features['away_last5_wins'] + features['away_last5_draws'])
     
     return pd.DataFrame([features])
+
 
 def train_model(df, home_team, away_team):
     """
