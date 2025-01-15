@@ -11,50 +11,44 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    .main {
-        padding: 0rem 1rem;
-        background-color: #000000;
-        color: #000000;
+    body {
+        font-family: 'Arial', sans-serif;
     }
-    .stButton>button {
-        width: 100%;
+    .main {
+        background-color: #101820;
+        color: #ffffff;
     }
     .match-container {
-        background-color: #f0f2f6;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #1e272e;
+        color: #ffffff;
         border-radius: 10px;
-        padding: 1rem;
-        margin: 1rem 0;
-    }
-    .team-logo {
-        text-align: center;
+        padding: 20px;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     .team-logo img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
     .team-name {
-        font-weight: bold;
-        margin-top: 0.5rem;
+        margin-top: 10px;
+        font-size: 1.2rem;
         text-align: center;
     }
-    /* Media queries for responsive design */
-    @media (max-width: 768px) {
-        .match-container {
-            flex-direction: column;
-        }
-        .team-logo img {
-            width: 80px;
-            height: 80px;
-        }
-        .team-name {
-            font-size: 1rem;
-        }
-        .match-time {
-            font-size: 1rem;
-        }
+    .match-info {
+        text-align: center;
+        font-size: 1.1rem;
+    }
+    .stButton>button:hover {
+        background-color: #f39c12;
+        color: #ffffff;
     }
     </style>
 """, unsafe_allow_html=True)
+
 
 # Sidebar para selección de liga
 st.sidebar.title("⚽ Predicciones Fútbol")
