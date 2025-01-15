@@ -59,7 +59,27 @@ liga_seleccionada = st.sidebar.selectbox(
 )
 #Sidebar para ver la sección sobre nosotros
 st.sidebar.title("Sobre nosotros")
+# Desplegable con opciones de propósito y predicciones
+opcion = st.sidebar.selectbox(
+    "Selecciona una opción:",
+    ["Propósito", "Predicciones"]
+)
 
+# Mostrar contenido dependiendo de la opción seleccionada
+if opcion == "Propósito":
+    st.write("### Propósito")
+    st.write("""
+        El propósito de esta aplicación es proporcionar predicciones de partidos de fútbol en distintas ligas del mundo,
+        basadas en estadísticas y datos históricos. El objetivo es ayudar a los usuarios a entender las probabilidades de 
+        los partidos y seguir de cerca el rendimiento de los equipos.
+    """)
+elif opcion == "Predicciones":
+    st.write("### Predicciones")
+    st.write("""
+        Aquí encontrarás las predicciones de los próximos partidos de fútbol según las ligas seleccionadas.
+        Selecciona la liga que más te interese y empieza a ver las probabilidades de los partidos.
+    """)
+    
 # Diccionario de logos de ligas
 logos_ligas = {
     "LaLiga": "https://raw.githubusercontent.com/Brianbp26/Logos/d6015e93917a71eee579fca028b9e03c5cfe0067/laliga.png",
