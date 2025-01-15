@@ -50,38 +50,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
 # Sidebar para selección de liga
 st.sidebar.title("⚽ Predicciones Fútbol")
 liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
-
-# Barra lateral para la sección "Sobre nosotros"
-st.sidebar.title("Sobre nosotros")
-
-# Desplegable con las opciones "Propósito" y "Predicciones"
-opcion = st.sidebar.selectbox(
-    "Selecciona una opción:",
-    ["Propósito", "Predicciones"]
-)
-
-# Mostrar contenido dependiendo de la opción seleccionada, independiente de la liga
-if opcion == "Propósito":
-    st.write("### Propósito")
-    st.write("""
-        El propósito de esta aplicación es proporcionar predicciones de partidos de fútbol en distintas ligas del mundo,
-        basadas en estadísticas y datos históricos. El objetivo es ayudar a los usuarios a entender las probabilidades de 
-        los partidos y seguir de cerca el rendimiento de los equipos.
-    """)
-
-elif opcion == "Predicciones":
-    st.write("### Predicciones")
-    st.write("""
-        Aquí encontrarás las predicciones de los próximos partidos de fútbol según las ligas seleccionadas.
-        Selecciona la liga que más te interese en la barra lateral y empieza a ver las probabilidades de los partidos.
-    """)
     
 # Diccionario de logos de ligas
 logos_ligas = {
@@ -277,12 +251,6 @@ def mostrar_clasificacion(clasificacion, liga):
         # Mostrar la tabla con el índice configurado
         st.markdown(df_html, unsafe_allow_html=True)
 
-
-# Función para obtener partidos de la API
-import requests
-from datetime import datetime, timedelta
-import streamlit as st
-
 def obtener_partidos(liga):
     url = f'https://api.football-data.org/v4/competitions/{liga}/matches'
     headers = {
@@ -311,7 +279,6 @@ def obtener_partidos(liga):
     else:
         st.error("No se pudieron obtener los partidos.")
         return []
-
 
 jornadas_iniciales = {
     'LaLiga': 20,   
