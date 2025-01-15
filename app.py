@@ -262,8 +262,9 @@ def obtener_partidos(liga):
         
         # Filtrar partidos desde hoy hasta un mes en el futuro
         hoy = "2025-01-15 10:45:43.394385"
+        hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
 
-        un_mes_despues = hoy + timedelta(days=90)
+        un_mes_despues = hoy_datetime + timedelta(days=90)
         partidos_filtrados = [
             partido for partido in partidos 
             if hoy <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= un_mes_despues
