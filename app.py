@@ -57,6 +57,8 @@ liga_seleccionada = st.sidebar.selectbox(
     "Selecciona una liga",
     ["LaLiga", "Premier League", "Serie A", "Bundesliga", "Ligue 1"]
 )
+#Sidebar para ver la sección sobre nosotros
+st.st.sidebar.title("Sobre nosotros")
 
 # Diccionario de logos de ligas
 logos_ligas = {
