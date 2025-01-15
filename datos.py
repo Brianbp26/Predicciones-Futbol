@@ -77,7 +77,7 @@ def obtener_partidos(liga):
         hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
         
         # Sumar 90 días a la fecha actual
-        un_mes_despues = hoy_datetime + timedelta(days=5)
+        un_mes_despues = hoy_datetime + timedelta(days=1)
         
         # Filtrar los partidos entre hoy y un mes después
         partidos_filtrados = [
