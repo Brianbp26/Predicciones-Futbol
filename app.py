@@ -208,23 +208,41 @@ def obtener_clasificacion(liga_id):
         return []
 
 # Mostrar la clasificación en una tabla
+import pandas as pd
+import streamlit as st
+
 def mostrar_clasificacion(clasificacion):
     if clasificacion:
         st.subheader("Clasificación Actual")
         data = []
         for equipo in clasificacion:
+            # Cálculo de Diferencia de Goles
+            dg_diferencia_goles = equipo["goalsFor"] - equipo["goalsAgainst"]
+            
+            # Preparar fila de datos en el formato solicitado
             data.append([
                 equipo["position"],
-                equipo["team"]["name"],
+                equipo["team"]["name"].replace(" FC", ""),  # Quitamos el "FC" del nombre
                 equipo["playedGames"],
                 equipo["won"],
                 equipo["draw"],
                 equipo["lost"],
-                equipo["points"],
                 equipo["goalsFor"],
-                equipo["goalsAgainst"]
+                equipo["goalsAgainst"],
+                dg_diferencia_goles,
+                equipo["points"]
             ])
-        st.table(data)
+        
+        # Encabezados de la tabla
+        columns = [
+            "Posición", "Club", "PJPartidos jugados", "VVictorias", "EEmpates", 
+            "DDerrotas", "GFGoles marcados", "GCGoles en contra", 
+            "DGDiferencia de goles", "PtsPuntos"
+        ]
+        
+        # Mostrar la tabla con los datos
+        st.table(pd.DataFrame(data, columns=columns))
+
 
 # Lógica principal
 if liga_seleccionada:
