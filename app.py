@@ -367,10 +367,11 @@ def mostrar_partidos(partidos, liga):
 if liga_seleccionada:
     liga_id = liga_ids.get(liga_seleccionada)
     if liga_id:
-        partidos = obtener_partidos(liga_id)
-        mostrar_partidos(partidos, liga_seleccionada)
         clasificacion = obtener_clasificacion(liga_id)
         mostrar_clasificacion(clasificacion)
+        partidos = obtener_partidos(liga_id)
+        mostrar_partidos(partidos, liga_seleccionada)
+        
 
 
 
