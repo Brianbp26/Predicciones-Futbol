@@ -202,7 +202,7 @@ st.markdown("---")
 # Diccionario de mapeo de nombres de equipos
 mapeo_equipos = {
     "Manchester United FC": "Man United",
-    "Fulham": "Fulham",
+    "Fulham FC": "Fulham",
     "Arsenal FC": "arsenal",
     # Añade todos los equipos necesarios aquí...
 }
