@@ -176,7 +176,7 @@ logos = {
 }
 # Obtener la clasificación
 def obtener_clasificacion(liga_id):
-    url = f"https://api.football-data.org/v4/competitions/{liga_id}/standings"
+     url = f"https://api.football-data.org/v4/competitions/{liga_id}/standings"
      headers = {
         'X-Auth-Token': 'd21df9a683e74915bdb6dac39270a985'
     }
