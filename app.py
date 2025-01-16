@@ -18,8 +18,11 @@ st.markdown("""
         background-color: #000000;  /* Set the background color to black */
     }
     .main {
-        background-color: #101820;
+        background-color: #000000;  /* Set the background color to black */
         color: #ffffff;
+    }
+    .css-18e3th9 {
+        background-color: #000000;  /* Set the background color to black */
     }
     .match-container {
         display: flex;
