@@ -322,31 +322,6 @@ def train_model(df, home_team, away_team):
     
     return model, scaler, train_score, test_score
 
-def prepare_new_match_data(df, home_team, away_team, match_date):
-    """
-    Prepara los datos para un nuevo partido
-    """
-    # Convertir fecha a datetime si es string
-    if isinstance(match_date, str):
-        match_date = pd.to_datetime(match_date)
-        
-    # Crear un DataFrame con un solo partido
-    new_match = pd.DataFrame({
-        'Date': [match_date],
-        'HomeTeam': [home_team],
-        'AwayTeam': [away_team],
-        'Temporada': [str(match_date.year)],
-        'FTR': ['H']  # Valor temporal, no afecta la predicción
-    })
-    
-    # Concatenar con datos históricos
-    df_with_new = pd.concat([df, new_match], ignore_index=True)
-    
-    # Preparar datos
-    X, _ = prepare_data_for_model(df_with_new)
-    
-    # Devolver solo la última fila (el nuevo partido)
-    return X[-1:] if len(X) > 0 else None
 
 def predict_match(df, home_team, away_team):
     """
@@ -401,7 +376,84 @@ def predict_match(df, home_team, away_team):
     except Exception as e:
         print(f"Error al realizar la predicción: {e}")
         return None
-
+        
+def predict_match_score(df, home_team, away_team):
+    """
+    Predice el resultado y marcador del partido usando modelo entrenado y estadísticas.
+    
+    Args:
+        df: DataFrame con histórico de partidos
+        home_team: Equipo local
+        away_team: Equipo visitante
+    
+    Returns:
+        tuple: (goles_local, goles_visitante)
+    """
+    try:
+        # Entrenar el modelo para predecir el resultado
+        model, scaler, train_score, test_score = train_model(df, home_team, away_team)
+        
+        # Obtener características para el partido actual
+        current_features = prepare_data_for_model(df, home_team, away_team)
+        
+        if current_features is None:
+            raise ValueError("No se pudieron preparar las características del partido")
+        
+        # Escalar características
+        features_scaled = scaler.transform(current_features)
+        
+        # Obtener probabilidades del modelo
+        probabilities = model.predict_proba(features_scaled)[0]
+        
+        # Obtener resultado más probable
+        resultado_idx = probabilities.argmax()
+        resultados = ['Victoria Visitante', 'Empate', 'Victoria Local']
+        resultado_probable = resultados[resultado_idx]
+        
+        # Calcular goles esperados usando estadísticas recientes
+        recent_matches = df.tail(10*20)
+        
+        # Estadísticas equipo local
+        home_recent = recent_matches[recent_matches['HomeTeam'] == home_team]['FTHG'].mean()
+        home_historical = df[df['HomeTeam'] == home_team]['FTHG'].mean()
+        
+        # Estadísticas equipo visitante
+        away_recent = recent_matches[recent_matches['AwayTeam'] == away_team]['FTAG'].mean()
+        away_historical = df[df['AwayTeam'] == away_team]['FTAG'].mean()
+        
+        # Manejar NaN
+        home_recent = home_recent if not pd.isna(home_recent) else home_historical
+        away_recent = away_recent if not pd.isna(away_recent) else away_historical
+        
+        # Calcular goles esperados (70% forma reciente, 30% histórico)
+        home_expected = (0.7 * home_recent + 0.3 * home_historical)
+        away_expected = (0.7 * away_recent + 0.3 * away_historical)
+        
+        # Predecir marcador según resultado predicho por el modelo
+        if resultado_probable == 'Victoria Local':
+            home_score = round(max(home_expected, away_expected + 1))
+            away_score = round(min(away_expected, home_score - 1))
+        elif resultado_probable == 'Victoria Visitante':
+            away_score = round(max(away_expected, home_expected + 1))
+            home_score = round(min(home_expected, away_score - 1))
+        else:  # Empate
+            avg_goals = (home_expected + away_expected) / 2
+            home_score = away_score = max(1, round(avg_goals))
+            if home_score > 3:
+                home_score = away_score = 2
+        
+        # Ajustar resultados poco probables
+        if abs(home_score - away_score) > 3:
+            if home_score > away_score:
+                home_score = away_score + 2
+            else:
+                away_score = home_score + 2
+        
+        return home_score, away_score
+        
+    except Exception as e:
+        print(f"Error al realizar la predicción: {e}")
+        return None, None
     
 
     
