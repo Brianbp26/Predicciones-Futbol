@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, mostrar_partidos
-from main import predict_match
+from main import predict_match, load_data
 st.set_page_config(
     page_title="Predicciones Fútbol",
     page_icon="⚽",
