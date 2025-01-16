@@ -83,32 +83,31 @@ def calcular_posicion_tabla(df, equipo):
 
 def prepare_data_for_model(df, home_team, away_team):
     """
-    Prepara los datos para el modelo usando todas las temporadas con ponderación
+    Prepara los datos para el modelo usando todas las temporadas con ponderación.
     """
     # Intentar múltiples formatos de fecha
     date_formats = ["%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d"]
     for fmt in date_formats:
         try:
-            df['Date'] = pd.to_datetime(df['Date'], format=fmt)
+            df.loc[:, 'Date'] = pd.to_datetime(df['Date'], format=fmt, errors='coerce')  # Corrección aquí
             break
         except ValueError:
             continue
     else:
         # Si todos los formatos fallan, intentar con dayfirst=True
-        df['Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
-    
-    df = df.dropna(subset=['Date'])  # Eliminar filas con fechas no válidas
-    df = df.sort_values('Date')
-    
+        df.loc[:, 'Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
+
+    df = df.dropna(subset=['Date']).copy()  # Crear una copia segura
+    df = df.sort_values('Date').copy()     # Crear una copia segura después de ordenar
+
     # Obtener todas las temporadas ordenadas
     temporadas = sorted(df['Temporada'].unique())
     num_temporadas = len(temporadas)
-    
+
     # Crear diccionario de pesos para cada temporada
-    # La temporada más reciente tendrá peso 1, y las anteriores irán disminuyendo
     pesos_temporadas = {temp: 1 - (0.8 * (num_temporadas - i - 1) / (num_temporadas - 1)) 
                         for i, temp in enumerate(temporadas)}
-    
+
     # Inicializar variables para acumular estadísticas ponderadas
     stats = {
         'home_wins': 0,
@@ -126,51 +125,51 @@ def prepare_data_for_model(df, home_team, away_team):
         'h2h_away_wins': 0,
         'h2h_draws': 0
     }
-    
+
     # Calcular estadísticas ponderadas por temporada
     for temporada in temporadas:
         peso = pesos_temporadas[temporada]
-        df_temp = df[df['Temporada'] == temporada]
-        
+        df_temp = df[df['Temporada'] == temporada].copy()  # Copia explícita
+
         # Partidos como local del equipo local
-        home_local = df_temp[df_temp['HomeTeam'] == home_team]
+        home_local = df_temp[df_temp['HomeTeam'] == home_team].copy()
         stats['home_wins'] += peso * sum(home_local['FTR'] == 'H')
         stats['home_draws'] += peso * sum(home_local['FTR'] == 'D')
         stats['home_losses'] += peso * sum(home_local['FTR'] == 'A')
         stats['home_goals_scored'] += peso * home_local['FTHG'].mean() if len(home_local) > 0 else 0
         stats['home_goals_conceded'] += peso * home_local['FTAG'].mean() if len(home_local) > 0 else 0
-        
+
         # Partidos como visitante del equipo visitante
-        away_visit = df_temp[df_temp['AwayTeam'] == away_team]
+        away_visit = df_temp[df_temp['AwayTeam'] == away_team].copy()
         stats['away_wins'] += peso * sum(away_visit['FTR'] == 'A')
         stats['away_draws'] += peso * sum(away_visit['FTR'] == 'D')
         stats['away_losses'] += peso * sum(away_visit['FTR'] == 'H')
         stats['away_goals_scored'] += peso * away_visit['FTAG'].mean() if len(away_visit) > 0 else 0
         stats['away_goals_conceded'] += peso * away_visit['FTHG'].mean() if len(away_visit) > 0 else 0
-        
+
         # Enfrentamientos directos
         h2h_matches = df_temp[
             ((df_temp['HomeTeam'] == home_team) & (df_temp['AwayTeam'] == away_team)) |
             ((df_temp['HomeTeam'] == away_team) & (df_temp['AwayTeam'] == home_team))
-        ]
-        
+        ].copy()
+
         if len(h2h_matches) > 0:
             stats['h2h_matches'] += peso * len(h2h_matches)
             stats['h2h_home_wins'] += peso * sum((h2h_matches['HomeTeam'] == home_team) & (h2h_matches['FTR'] == 'H'))
             stats['h2h_away_wins'] += peso * sum((h2h_matches['HomeTeam'] == away_team) & (h2h_matches['FTR'] == 'H'))
             stats['h2h_draws'] += peso * sum(h2h_matches['FTR'] == 'D')
-    
+
     # Obtener los últimos 5 partidos (sin ponderar, son los más recientes)
     ultimos_partidos_home = df[
         (df['HomeTeam'] == home_team) | 
         (df['AwayTeam'] == home_team)
-    ].tail(5)
-    
+    ].tail(5).copy()
+
     ultimos_partidos_away = df[
         (df['HomeTeam'] == away_team) | 
         (df['AwayTeam'] == away_team)
-    ].tail(5)
-    
+    ].tail(5).copy()
+
     # Preparar features finales
     features = {
         # Posiciones en la tabla actual
@@ -206,11 +205,11 @@ def prepare_data_for_model(df, home_team, away_team):
                               (ultimos_partidos_away['AwayTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'A')),
         'away_last5_draws': sum(ultimos_partidos_away['FTR'] == 'D')
     }
-    
+
     # Añadir losses de últimos 5 partidos
     features['home_last5_losses'] = 5 - (features['home_last5_wins'] + features['home_last5_draws'])
     features['away_last5_losses'] = 5 - (features['away_last5_wins'] + features['away_last5_draws'])
-    
+
     return pd.DataFrame([features])
 
 
