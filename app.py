@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, mostrar_partidos
-from main import predict_match, load_data
+from main import predict_match, load_data, predict_match_score
 st.set_page_config(
     page_title="Predicciones Fútbol",
     page_icon="⚽",
@@ -333,8 +333,8 @@ if liga_seleccionada:
             mostrar_partidos([partido], liga_seleccionada, logos)
             
             try:
-                prediccion = predict_match(df_historico, home_team, away_team)
-                if prediccion:
+                home_score, away_score = predict_match_score(df_historico, home_team, away_team)
+                if home_score is not None and away_score is not None:
                     col1, col2, col3 = st.columns([1, 2, 1])
                     with col2:
                         st.markdown(f"""
@@ -342,16 +342,8 @@ if liga_seleccionada:
                             <h3 style='text-align: center;'>{partido['homeTeam']['name']} vs {partido['awayTeam']['name']}</h3>
                             <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
                                 <div style='text-align: center; width: 30%;'>
-                                    <p>Victoria Local</p>
-                                    <h2>{prediccion['probabilidades']['victoria_local']}</h2>
-                                </div>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Empate</p>
-                                    <h2>{prediccion['probabilidades']['empate']}</h2>
-                                </div>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Victoria Visitante</p>
-                                    <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
+                                    <p>Marcador Predicho</p>
+                                    <h2>{home_score} - {away_score}</h2>
                                 </div>
                             </div>
                         </div>
