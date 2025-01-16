@@ -2,8 +2,8 @@ import streamlit as st
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
-from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, agrupar_partidos_por_jornadas, mostrar_partidos
-from main import load_data, train_model, prepare_new_match_data, predict_match
+from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, mostrar_partidos
+from main import predict_match, predict_match_score
 # Configuración de la página
 st.set_page_config(
     page_title="Predicciones Fútbol",
