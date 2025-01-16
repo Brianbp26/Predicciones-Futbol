@@ -327,10 +327,12 @@ def train_model(df, home_team, away_team):
     
     # Obtener y entrenar modelo final con mejores parámetros
     best_model = XGBClassifier(**grid_search.best_params_,
-                              objective='multi:softprob',  # Corrected objective
-                              num_class=3,
-                              random_state=42,
-                              use_label_encoder=False)
+                               objective='multi:softprob',
+                               num_class=3,
+                               random_state=42,
+                               use_label_encoder=False)
+    # Ensure eval_metric is passed during fit
+    best_model.fit(X_scaled, y, eval_metric='mlogloss')
     
     # Realizar validación cruzada con el mejor modelo
     cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
