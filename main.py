@@ -70,6 +70,11 @@ def prepare_data_for_model(df, home_team, away_team):
             continue
     df = df.dropna(subset=['Date']).sort_values('Date')
     
+    # Ensure all necessary columns are of the correct type
+    df['FTHG'] = df['FTHG'].astype(float)
+    df['FTAG'] = df['FTAG'].astype(float)
+    df['FTR'] = df['FTR'].astype(str)
+    
     temporadas = sorted(df['Temporada'].unique())
     num_temporadas = len(temporadas)
     pesos_temporadas = {temp: 1 - (0.8 * (num_temporadas - i - 1) / (num_temporadas - 1)) for i, temp in enumerate(temporadas)}
