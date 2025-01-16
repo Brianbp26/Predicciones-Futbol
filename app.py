@@ -335,7 +335,7 @@ if liga_seleccionada:
                     col1, col2, col3 = st.columns([1, 2, 1])
                     with col2:
                         st.markdown(f"""
-                        <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0;'>
+                        <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0; color: white;'>
                             <h3 style='text-align: center;'>{partido['homeTeam']['name']} vs {partido['awayTeam']['name']}</h3>
                             <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
                                 <div style='text-align: center; width: 30%;'>
