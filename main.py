@@ -131,33 +131,38 @@ def prepare_data_for_model(df, home_team, away_team):
         peso = pesos_temporadas[temporada]
         df_temp = df[df['Temporada'] == temporada].copy()  # Copia explícita
 
-        # Partidos como local del equipo local
-        home_local = df_temp[df_temp['HomeTeam'] == home_team].copy()
-        stats['home_wins'] += peso * sum(home_local['FTR'] == 'H')
-        stats['home_draws'] += peso * sum(home_local['FTR'] == 'D')
-        stats['home_losses'] += peso * sum(home_local['FTR'] == 'A')
-        stats['home_goals_scored'] += peso * home_local['FTHG'].mean() if len(home_local) > 0 else 0
-        stats['home_goals_conceded'] += peso * home_local['FTAG'].mean() if len(home_local) > 0 else 0
+        # Manejar divisiones por cero al calcular promedios
+        try:
+            # Partidos como local del equipo local
+            home_local = df_temp[df_temp['HomeTeam'] == home_team].copy()
+            stats['home_wins'] += peso * sum(home_local['FTR'] == 'H')
+            stats['home_draws'] += peso * sum(home_local['FTR'] == 'D')
+            stats['home_losses'] += peso * sum(home_local['FTR'] == 'A')
+            stats['home_goals_scored'] += peso * home_local['FTHG'].mean() if len(home_local) > 0 else 0
+            stats['home_goals_conceded'] += peso * home_local['FTAG'].mean() if len(home_local) > 0 else 0
 
-        # Partidos como visitante del equipo visitante
-        away_visit = df_temp[df_temp['AwayTeam'] == away_team].copy()
-        stats['away_wins'] += peso * sum(away_visit['FTR'] == 'A')
-        stats['away_draws'] += peso * sum(away_visit['FTR'] == 'D')
-        stats['away_losses'] += peso * sum(away_visit['FTR'] == 'H')
-        stats['away_goals_scored'] += peso * away_visit['FTAG'].mean() if len(away_visit) > 0 else 0
-        stats['away_goals_conceded'] += peso * away_visit['FTHG'].mean() if len(away_visit) > 0 else 0
+            # Partidos como visitante del equipo visitante
+            away_visit = df_temp[df_temp['AwayTeam'] == away_team].copy()
+            stats['away_wins'] += peso * sum(away_visit['FTR'] == 'A')
+            stats['away_draws'] += peso * sum(away_visit['FTR'] == 'D')
+            stats['away_losses'] += peso * sum(away_visit['FTR'] == 'H')
+            stats['away_goals_scored'] += peso * away_visit['FTAG'].mean() if len(away_visit) > 0 else 0
+            stats['away_goals_conceded'] += peso * away_visit['FTHG'].mean() if len(away_visit) > 0 else 0
 
-        # Enfrentamientos directos
-        h2h_matches = df_temp[
-            ((df_temp['HomeTeam'] == home_team) & (df_temp['AwayTeam'] == away_team)) |
-            ((df_temp['HomeTeam'] == away_team) & (df_temp['AwayTeam'] == home_team))
-        ].copy()
+            # Enfrentamientos directos
+            h2h_matches = df_temp[
+                ((df_temp['HomeTeam'] == home_team) & (df_temp['AwayTeam'] == away_team)) |
+                ((df_temp['HomeTeam'] == away_team) & (df_temp['AwayTeam'] == home_team))
+            ].copy()
 
-        if len(h2h_matches) > 0:
-            stats['h2h_matches'] += peso * len(h2h_matches)
-            stats['h2h_home_wins'] += peso * sum((h2h_matches['HomeTeam'] == home_team) & (h2h_matches['FTR'] == 'H'))
-            stats['h2h_away_wins'] += peso * sum((h2h_matches['HomeTeam'] == away_team) & (h2h_matches['FTR'] == 'H'))
-            stats['h2h_draws'] += peso * sum(h2h_matches['FTR'] == 'D')
+            if len(h2h_matches) > 0:
+                stats['h2h_matches'] += peso * len(h2h_matches)
+                stats['h2h_home_wins'] += peso * sum((h2h_matches['HomeTeam'] == home_team) & (h2h_matches['FTR'] == 'H'))
+                stats['h2h_away_wins'] += peso * sum((h2h_matches['HomeTeam'] == away_team) & (h2h_matches['FTR'] == 'H'))
+                stats['h2h_draws'] += peso * sum(h2h_matches['FTR'] == 'D')
+
+        except ZeroDivisionError:
+            continue
 
     # Obtener los últimos 5 partidos (sin ponderar, son los más recientes)
     ultimos_partidos_home = df[
@@ -211,7 +216,6 @@ def prepare_data_for_model(df, home_team, away_team):
     features['away_last5_losses'] = 5 - (features['away_last5_wins'] + features['away_last5_draws'])
 
     return pd.DataFrame([features])
-
 
 def train_model(df, home_team, away_team):
     """
@@ -391,7 +395,6 @@ def predict_match(df, home_team, away_team):
                 'score_test': f"{test_score:.3f}"
             }
         }
-        
         
         return prediccion
         
