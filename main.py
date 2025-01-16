@@ -306,50 +306,50 @@ def train_model(df, home_team, away_team):
     }
     
    # Inicializar modelo base
-base_model = XGBClassifier(
-    objective='multi:softprob',
-    random_state=42,
-    use_label_encoder=False
-)
-
-# Realizar búsqueda de hiperparámetros con validación cruzada
-grid_search = GridSearchCV(
-    estimator=base_model,
-    param_grid=param_grid,
-    cv=5,
-    scoring='accuracy',
-    n_jobs=-1,
-    verbose=1,
-    error_score='raise'
-)
-
-grid_search.fit(X_scaled, y)
-
-# Obtener y entrenar modelo final con mejores parámetros
-best_model = XGBClassifier(
-    **grid_search.best_params_,
-    objective='multi:softprob',
-    random_state=42,
-    use_label_encoder=False
-)
-
-# Entrenar modelo final con todos los datos
-best_model.fit(X_scaled, y, eval_metric='mlogloss')
-
-# Validación cruzada
-cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
-
-# Calcular importancia de características
-feature_importance = pd.DataFrame({
-    'feature': X.columns,
-    'importance': best_model.feature_importances_
-}).sort_values('importance', ascending=False)
-
-print("\nMejores hiperparámetros encontrados:")
-print(grid_search.best_params_)
-print(f"\nScore medio de validación cruzada: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")
-print("\nCaracterísticas más importantes:")
-print(feature_importance.head(10))
+    base_model = XGBClassifier(
+        objective='multi:softprob',
+        random_state=42,
+        use_label_encoder=False
+    )
+    
+    # Realizar búsqueda de hiperparámetros con validación cruzada
+    grid_search = GridSearchCV(
+        estimator=base_model,
+        param_grid=param_grid,
+        cv=5,
+        scoring='accuracy',
+        n_jobs=-1,
+        verbose=1,
+        error_score='raise'
+    )
+    
+    grid_search.fit(X_scaled, y)
+    
+    # Obtener y entrenar modelo final con mejores parámetros
+    best_model = XGBClassifier(
+        **grid_search.best_params_,
+        objective='multi:softprob',
+        random_state=42,
+        use_label_encoder=False
+    )
+    
+    # Entrenar modelo final con todos los datos
+    best_model.fit(X_scaled, y, eval_metric='mlogloss')
+    
+    # Validación cruzada
+    cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
+    
+    # Calcular importancia de características
+    feature_importance = pd.DataFrame({
+        'feature': X.columns,
+        'importance': best_model.feature_importances_
+    }).sort_values('importance', ascending=False)
+    
+    print("\nMejores hiperparámetros encontrados:")
+    print(grid_search.best_params_)
+    print(f"\nScore medio de validación cruzada: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")
+    print("\nCaracterísticas más importantes:")
+    print(feature_importance.head(10))
     
     return best_model, scaler, cv_scores.mean(), cv_scores.std()
     
