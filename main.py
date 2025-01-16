@@ -305,10 +305,12 @@ def train_model(df, home_team, away_team):
         'min_child_weight': [1, 3, 5]
     }
     
-   # Inicializar modelo base
+    # Inicializar modelo base
     base_model = XGBClassifier(
-        objective='multi:softprob',
-        random_state=42
+        objective='multi:softproba',
+        num_class=3,
+        random_state=42,
+        eval_metric='mlogloss'
     )
     
     # Realizar búsqueda de hiperparámetros con validación cruzada
@@ -318,24 +320,23 @@ def train_model(df, home_team, away_team):
         cv=5,
         scoring='accuracy',
         n_jobs=-1,
-        verbose=1,
-        error_score='raise'
+        verbose=1
     )
     
     grid_search.fit(X_scaled, y)
     
     # Obtener y entrenar modelo final con mejores parámetros
-    best_model = XGBClassifier(
-        **grid_search.best_params_,
-        objective='multi:softprob',
-        random_state=42
-    )
+    best_model = XGBClassifier(**grid_search.best_params_,
+                              objective='multi:softproba',
+                              num_class=3,
+                              random_state=42,
+                              eval_metric='mlogloss')
+    
+    # Realizar validación cruzada con el mejor modelo
+    cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
     
     # Entrenar modelo final con todos los datos
-    best_model.fit(X_scaled, y, eval_metric='mlogloss')
-    
-    # Validación cruzada
-    cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
+    best_model.fit(X_scaled, y)
     
     # Calcular importancia de características
     feature_importance = pd.DataFrame({
