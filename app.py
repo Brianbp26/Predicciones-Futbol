@@ -121,7 +121,7 @@ logos = {
         "hellasveronafc": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/hellasverona.png",
         "genoacfc": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/genoa.png",
         "fcinternazionalemilano": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/inter.png",
-        "juventusfc": "https://raw.githubusercontent.com/Brianbp26/Logos/2e928871eab2c0c3e5f591bb426735dc23a4ad2e/juventus.png",
+        "juventusfc": "https://raw.githubusercontent.com/Brianbp26/Logos/5b2d0ea62ea0996ca36cf97b6f4ebceb7cb43d69/juventus.png",
         "sslazio": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/lazio.png",
         "uslecce": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/lecce.png",
         "acmilan": "https://raw.githubusercontent.com/Brianbp26/Logos/34d8e0a49b561f9f40530d0641b42e4905b5a09a/milan.png",
