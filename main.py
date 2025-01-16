@@ -349,33 +349,6 @@ def train_model(df, home_team, away_team):
     print(feature_importance.head(10))
     
     return best_model, scaler, cv_scores.mean(), cv_scores.std()
-    
-
-def prepare_new_match_data(df, home_team, away_team, match_date):
-    """
-    Prepara los datos para un nuevo partido
-    """
-    # Convertir fecha a datetime si es string
-    if isinstance(match_date, str):
-        match_date = pd.to_datetime(match_date)
-        
-    # Crear un DataFrame con un solo partido
-    new_match = pd.DataFrame({
-        'Date': [match_date],
-        'HomeTeam': [home_team],
-        'AwayTeam': [away_team],
-        'Temporada': [str(match_date.year)],
-        'FTR': ['H']  # Valor temporal, no afecta la predicción
-    })
-    
-    # Concatenar con datos históricos
-    df_with_new = pd.concat([df, new_match], ignore_index=True)
-    
-    # Preparar datos
-    X, _ = prepare_data_for_model(df_with_new)
-    
-    # Devolver solo la última fila (el nuevo partido)
-    return X[-1:] if len(X) > 0 else None
 
 def predict_match(df, home_team, away_team):
     """
