@@ -60,7 +60,14 @@ def prepare_data_for_model(df, home_team, away_team):
     Prepara los datos para el modelo usando todas las temporadas con ponderación
     """
     df = df.copy()  # Ensure modifications are done on a copy of the dataframe
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
+    # Specify the date format directly to avoid warnings
+    date_formats = ["%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d"]
+    for fmt in date_formats:
+        try:
+            df['Date'] = pd.to_datetime(df['Date'], format=fmt)
+            break
+        except ValueError:
+            continue
     df = df.dropna(subset=['Date']).sort_values('Date')
     
     temporadas = sorted(df['Temporada'].unique())
