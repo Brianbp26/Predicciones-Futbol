@@ -307,11 +307,10 @@ def train_model(df, home_team, away_team):
     
     # Inicializar modelo base
     base_model = XGBClassifier(
-        objective='multi:softproba',
+        objective='multi:softprob',  # Corrected objective
         num_class=3,
         random_state=42,
-        use_label_encoder=False,
-        eval_metric='mlogloss'
+        use_label_encoder=False
     )
     
     # Realizar búsqueda de hiperparámetros con validación cruzada
@@ -328,17 +327,16 @@ def train_model(df, home_team, away_team):
     
     # Obtener y entrenar modelo final con mejores parámetros
     best_model = XGBClassifier(**grid_search.best_params_,
-                              objective='multi:softproba',
+                              objective='multi:softprob',  # Corrected objective
                               num_class=3,
                               random_state=42,
-                              use_label_encoder=False,
-                              eval_metric='mlogloss')
+                              use_label_encoder=False)
     
     # Realizar validación cruzada con el mejor modelo
     cv_scores = cross_val_score(best_model, X_scaled, y, cv=5)
     
     # Entrenar modelo final con todos los datos
-    best_model.fit(X_scaled, y)
+    best_model.fit(X_scaled, y, eval_metric='mlogloss')
     
     # Calcular importancia de características
     feature_importance = pd.DataFrame({
@@ -353,7 +351,7 @@ def train_model(df, home_team, away_team):
     print(feature_importance.head(10))
     
     return best_model, scaler, cv_scores.mean(), cv_scores.std()
-
+    
 def predict_match(df, home_team, away_team):
     """
     Entrena el modelo para los equipos específicos y predice el resultado del partido.
