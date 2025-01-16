@@ -15,6 +15,7 @@ st.markdown("""
     <style>
     body {
         font-family: 'Arial', sans-serif;
+        background-color: #000000;  /* Set the background color to black */
     }
     .main {
         background-color: #101820;
