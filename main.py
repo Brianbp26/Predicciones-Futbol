@@ -308,8 +308,7 @@ def train_model(df, home_team, away_team):
    # Inicializar modelo base
     base_model = XGBClassifier(
         objective='multi:softprob',
-        random_state=42,
-        use_label_encoder=False
+        random_state=42
     )
     
     # Realizar búsqueda de hiperparámetros con validación cruzada
@@ -329,8 +328,7 @@ def train_model(df, home_team, away_team):
     best_model = XGBClassifier(
         **grid_search.best_params_,
         objective='multi:softprob',
-        random_state=42,
-        use_label_encoder=False
+        random_state=42
     )
     
     # Entrenar modelo final con todos los datos
