@@ -354,10 +354,10 @@ if liga_seleccionada:
                                     <p>Victoria Visitante</p>
                                     <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
                                 </div>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Marcador Predicho</p>
-                                    <h2>{home_score} - {away_score}</h2>
-                                </div>
+                            </div>
+                            <div style='text-align: center; margin-top: 20px;'>
+                                <p>Marcador Predicho</p>
+                                <h2>{home_score} - {away_score}</h2>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
