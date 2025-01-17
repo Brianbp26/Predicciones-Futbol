@@ -37,50 +37,37 @@ def calcular_posicion_tabla(df, equipo):
     """
     Calcula la posición en la tabla de un equipo para la temporada actual
     """
-    # Obtener la temporada más reciente
     ultima_temporada = df['Temporada'].max()
-    
-    # Filtrar solo los partidos de la temporada actual
     partidos_temporada = df[df['Temporada'] == ultima_temporada]
-    
+
     if len(partidos_temporada) == 0:
-        return 10  # Posición media por defecto
-        
-    equipos_stats = {}
-    
-    # Inicializar estadísticas para todos los equipos
-    equipos = set(partidos_temporada['HomeTeam'].unique()) | set(partidos_temporada['AwayTeam'].unique())
-    for eq in equipos:
-        equipos_stats[eq] = {'puntos': 0, 'gf': 0, 'gc': 0}
-    
-    # Calcular estadísticas
-    for _, partido in partidos_temporada.iterrows():
-        # Actualizar goles
-        equipos_stats[partido['HomeTeam']]['gf'] += partido['FTHG']
-        equipos_stats[partido['HomeTeam']]['gc'] += partido['FTAG']
-        equipos_stats[partido['AwayTeam']]['gf'] += partido['FTAG']
-        equipos_stats[partido['AwayTeam']]['gc'] += partido['FTHG']
-        
-        # Actualizar puntos
-        if partido['FTR'] == 'H':
-            equipos_stats[partido['HomeTeam']]['puntos'] += 3
-        elif partido['FTR'] == 'A':
-            equipos_stats[partido['AwayTeam']]['puntos'] += 3
-        else:
-            equipos_stats[partido['HomeTeam']]['puntos'] += 1
-            equipos_stats[partido['AwayTeam']]['puntos'] += 1
-    
-    # Ordenar equipos por puntos y diferencia de goles
-    tabla = sorted(equipos_stats.items(), 
-                  key=lambda x: (x[1]['puntos'], x[1]['gf'] - x[1]['gc'], x[1]['gf']), 
-                  reverse=True)
-    
-    # Encontrar posición del equipo
-    for pos, (team, _) in enumerate(tabla, 1):
-        if team == equipo:
-            return pos
-    
-    return 10  # Posición media por defecto si no se encuentra
+        return 10
+
+    equipos_stats_home = partidos_temporada.groupby('HomeTeam').agg(
+        puntos_home=('FTR', lambda x: (x == 'H').sum() * 3 + (x == 'D').sum()),
+        gf_home=('FTHG', 'sum'),
+        gc_home=('FTAG', 'sum')
+    ).reset_index()
+
+    equipos_stats_away = partidos_temporada.groupby('AwayTeam').agg(
+        puntos_away=('FTR', lambda x: (x == 'A').sum() * 3 + (x == 'D').sum()),
+        gf_away=('FTAG', 'sum'),
+        gc_away=('FTHG', 'sum')
+    ).reset_index()
+
+    equipos_stats = pd.merge(equipos_stats_home, equipos_stats_away, left_on='HomeTeam', right_on='AwayTeam', how='outer').fillna(0)
+    equipos_stats['equipo'] = equipos_stats['HomeTeam'].combine_first(equipos_stats['AwayTeam'])
+    equipos_stats['puntos'] = equipos_stats['puntos_home'] + equipos_stats['puntos_away']
+    equipos_stats['gf'] = equipos_stats['gf_home'] + equipos_stats['gf_away']
+    equipos_stats['gc'] = equipos_stats['gc_home'] + equipos_stats['gc_away']
+
+    equipos_stats['dif_goles'] = equipos_stats['gf'] - equipos_stats['gc']
+    equipos_stats = equipos_stats.sort_values(by=['puntos', 'dif_goles', 'gf'], ascending=False).reset_index(drop=True)
+
+    try:
+        return equipos_stats[equipos_stats['equipo'] == equipo].index[0] + 1
+    except IndexError:
+        return 10
 
 def prepare_data_for_model(df, home_team, away_team):
     """
