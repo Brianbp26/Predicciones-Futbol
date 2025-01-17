@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from datetime import datetime, timedelta
 from datos import obtener_clasificacion, mostrar_clasificacion, obtener_partidos, mostrar_partidos
+import matplotlib.pyplot as plt
 from main import predict_match, load_data, predict_match_score
 st.set_page_config(
     page_title="Predicciones Fútbol",
@@ -338,23 +339,20 @@ if liga_seleccionada:
                 if prediccion:
                     col1, col2, col3 = st.columns([1, 2, 1])
                     with col2:
+                        fig, ax = plt.subplots()
+                        labels = ['Victoria Local', 'Empate', 'Victoria Visitante']
+                        sizes = [
+                            prediccion['probabilidades']['victoria_local'],
+                            prediccion['probabilidades']['empate'],
+                            prediccion['probabilidades']['victoria_visitante']
+                        ]
+                        ax.pie(sizes, labels=labels, autopct='%1.1f%%', startangle=90)
+                        ax.axis('equal')  # Igualar ejes para mantener el círculo
+                        st.pyplot(fig)
+
                         st.markdown(f"""
                         <div style='background-color: #1e272e; padding: 20px; border-radius: 10px; margin: 10px 0; color: white;'>
                             <h3 style='text-align: center;'>{partido['homeTeam']['name']} vs {partido['awayTeam']['name']}</h3>
-                            <div style='display: flex; justify-content: space-between; margin: 20px 0;'>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Victoria Local</p>
-                                    <h2>{prediccion['probabilidades']['victoria_local']}</h2>
-                                </div>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Empate</p>
-                                    <h2>{prediccion['probabilidades']['empate']}</h2>
-                                </div>
-                                <div style='text-align: center; width: 30%;'>
-                                    <p>Victoria Visitante</p>
-                                    <h2>{prediccion['probabilidades']['victoria_visitante']}</h2>
-                                </div>
-                            </div>
                             <div style='text-align: center; margin-top: 20px;'>
                                 <p>Marcador Predicho</p>
                                 <h2>{home_score} - {away_score}</h2>
@@ -365,156 +363,3 @@ if liga_seleccionada:
                     st.warning(f"No se pudo generar predicción para {partido['homeTeam']['name']} vs {partido['awayTeam']['name']}")
             except Exception as e:
                 st.error(f"Error al procesar predicción: {str(e)}")
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-
-
-
-
