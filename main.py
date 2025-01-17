@@ -463,20 +463,3 @@ def predict_match_score(df, home_team, away_team):
     except Exception as e:
         print(f"Error al realizar la predicción: {e}")
         return None, None
-    
-
-    
-
-
-    
-
-    
-
-    
-
-    
-
-
-    
-
-    
