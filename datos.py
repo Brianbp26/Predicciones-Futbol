@@ -132,8 +132,8 @@ def mostrar_partidos(partidos, liga, logos):
         local = partido['homeTeam']['name']
         visitante = partido['awayTeam']['name']
         
-        # Convertir la fecha
-        fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ')
+        # Convertir la fecha y sumar una hora
+        fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(hours=1)
         
         # Verificar si la hora es 00:00
         if fecha.strftime('%H:%M') == '00:00':
