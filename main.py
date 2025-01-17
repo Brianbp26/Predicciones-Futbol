@@ -104,9 +104,13 @@ def prepare_data_for_model(df, home_team, away_team):
     temporadas = sorted(df['Temporada'].unique())
     num_temporadas = len(temporadas)
 
-    # Crear diccionario de pesos para cada temporada
+    # Crear diccionario de pesos para cada temporada, con mayor peso para la última temporada
     pesos_temporadas = {temp: 1 - (0.8 * (num_temporadas - i - 1) / (num_temporadas - 1)) 
                         for i, temp in enumerate(temporadas)}
+
+    # Incrementar el peso de la última temporada
+    if temporadas:
+        pesos_temporadas[temporadas[-1]] *= 1.5
 
     # Inicializar variables para acumular estadísticas ponderadas
     stats = {
@@ -123,7 +127,9 @@ def prepare_data_for_model(df, home_team, away_team):
         'h2h_matches': 0,
         'h2h_home_wins': 0,
         'h2h_away_wins': 0,
-        'h2h_draws': 0
+        'h2h_draws': 0,
+        'home_win_streak': 0,
+        'away_win_streak': 0
     }
 
     # Calcular estadísticas ponderadas por temporada
@@ -175,6 +181,12 @@ def prepare_data_for_model(df, home_team, away_team):
         (df['AwayTeam'] == away_team)
     ].tail(5).copy()
 
+    # Calcular racha de victorias
+    stats['home_win_streak'] = sum((ultimos_partidos_home['HomeTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'H') |
+                                   (ultimos_partidos_home['AwayTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'A'))
+    stats['away_win_streak'] = sum((ultimos_partidos_away['HomeTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'H') |
+                                   (ultimos_partidos_away['AwayTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'A'))
+
     # Preparar features finales
     features = {
         # Posiciones en la tabla actual
@@ -208,7 +220,11 @@ def prepare_data_for_model(df, home_team, away_team):
         
         'away_last5_wins': sum((ultimos_partidos_away['HomeTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'H') |
                               (ultimos_partidos_away['AwayTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'A')),
-        'away_last5_draws': sum(ultimos_partidos_away['FTR'] == 'D')
+        'away_last5_draws': sum(ultimos_partidos_away['FTR'] == 'D'),
+
+        # Racha de victorias
+        'home_win_streak': stats['home_win_streak'],
+        'away_win_streak': stats['away_win_streak']
     }
 
     # Añadir losses de últimos 5 partidos
