@@ -3,6 +3,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV, cross_val_score
 import os
 import glob
 
@@ -307,36 +308,40 @@ def train_model(df, home_team, away_team):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     
-    # Entrenar modelo
-    model = RandomForestClassifier(
-        n_estimators=300,
-        max_depth=20,
-        min_samples_split=8,
-        min_samples_leaf=4,
-        class_weight='balanced',
-        random_state=42,
-        n_jobs=-1
-    )
+    # Definir el modelo y los hiperparámetros a optimizar
+    model = RandomForestClassifier(random_state=42)
+    param_grid = {
+        'n_estimators': [100, 200, 300],
+        'max_depth': [10, 20, 30],
+        'min_samples_split': [2, 5, 10],
+        'min_samples_leaf': [1, 2, 4],
+        'class_weight': ['balanced']
+    }
     
-    model.fit(X_train_scaled, y_train)
+    # Realizar búsqueda de hiperparámetros
+    grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, n_jobs=-1, scoring='accuracy')
+    grid_search.fit(X_train_scaled, y_train)
+    
+    best_model = grid_search.best_estimator_
     
     # Evaluar el modelo
-    train_score = model.score(X_train_scaled, y_train)
-    test_score = model.score(X_test_scaled, y_test)
+    train_score = best_model.score(X_train_scaled, y_train)
+    test_score = best_model.score(X_test_scaled, y_test)
     
+    print(f"Mejores hiperparámetros: {grid_search.best_params_}")
     print(f"Score en entrenamiento: {train_score:.3f}")
     print(f"Score en test: {test_score:.3f}")
     
     # Mostrar importancia de características
     feature_importance = pd.DataFrame({
         'feature': X.columns,
-        'importance': model.feature_importances_
+        'importance': best_model.feature_importances_
     }).sort_values('importance', ascending=False)
     
     print("\nCaracterísticas más importantes:")
     print(feature_importance.head(10))
     
-    return model, scaler, train_score, test_score
+    return best_model, scaler, train_score, test_score
 
 
 def predict_match(df, home_team, away_team):
