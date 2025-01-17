@@ -14,14 +14,14 @@ st.markdown("""
     <style>
     body {
         font-family: 'Arial', sans-serif;
-        background-color: #000000;  
+        background-color: #000000;  /* Set the background color to black */
     }
     .main {
-        background-color: #000000;  
+        background-color: #000000;  /* Set the background color to black */
         color: #ffffff;
     }
     .css-18e3th9 {
-        background-color: #000000;  
+        background-color: #000000;  /* Set the background color to black */
     }
     .match-container {
         display: flex;
@@ -365,4 +365,3 @@ if liga_seleccionada:
                     st.warning(f"No se pudo generar predicción para {partido['homeTeam']['name']} vs {partido['awayTeam']['name']}")
             except Exception as e:
                 st.error(f"Error al procesar predicción: {str(e)}")
-
