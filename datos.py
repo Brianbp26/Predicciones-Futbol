@@ -135,11 +135,7 @@ def mostrar_partidos(partidos, liga, logos):
         # Convertir la fecha y sumar una hora
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(hours=1)
         
-        # Verificar si la hora es 00:00
-        if fecha.strftime('%H:%M') == '00:00':
-            fecha = fecha.strftime('%d/%m/%Y')  # Solo día, mes y año
-        else:
-            fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
+        fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
         
         # Obtener logos
         logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
