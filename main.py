@@ -284,7 +284,8 @@ def train_model(df, home_team, away_team):
                 results.append(result)
                 
         except Exception as e:
-            print(f"Error procesando partido de temporada {temporada_actual}: {e}")
+            #Si dejamos el print se colapsa la terminal del streamlit
+            #print(f"Error procesando partido de temporada {temporada_actual}: {e}")
             continue
     
     if not features_list:
