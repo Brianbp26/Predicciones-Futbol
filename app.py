@@ -321,7 +321,7 @@ if liga_seleccionada:
 
         df_historico = cargar_datos_historicos(liga_seleccionada)
 
-        # Obtener los partidos y hacer predicciones
+        # Obtenemos los partidos y realizamos las predicciones
         partidos = obtener_partidos(liga_id)
         st.markdown("## 🎲 Predicciones próximos partidos")
 
@@ -329,7 +329,7 @@ if liga_seleccionada:
             home_team = estandarizar_nombre_equipo(partido['homeTeam']['name'])
             away_team = estandarizar_nombre_equipo(partido['awayTeam']['name'])
             
-            # Mostrar los partidos de la jornada
+            # Mostramos los partidos de la jornada
             mostrar_partidos([partido], liga_seleccionada, logos)
             
             try:
