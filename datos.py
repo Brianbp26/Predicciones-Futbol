@@ -26,12 +26,12 @@ def mostrar_clasificacion(clasificacion, liga,logos):
             # Cálculo de Diferencia de Goles
             dg_diferencia_goles = equipo["goalsFor"] - equipo["goalsAgainst"]
             
-            # Obtener el logo del equipo
+            # Obtenemos el logo del equipo
             club_name = equipo["team"]["name"].lower().replace(" ", "")
             logo_url = logos[liga].get(club_name, "")
             logo_html = f'<img src="{logo_url}" alt="{equipo["team"]["name"]}" style="width: 20px; height: 20px; vertical-align: middle;"> '
             
-            # Preparar fila de datos en el formato solicitado
+            # Añadimos los datos del equipo a la lista
             data.append([
                 equipo["position"],
                 logo_html + equipo["team"]["name"].replace(" FC", ""),  # Añadir el logo al nombre del equipo
@@ -52,13 +52,13 @@ def mostrar_clasificacion(clasificacion, liga,logos):
             "DG", "Pts"
         ]
         
-        # Crear DataFrame y configurar "Posición" como índice
+        # Creamos DataFrame y configuramos la "Posición" como índice
         df = pd.DataFrame(data, columns=columns).set_index("Posición")
         
-        # Convertir el DataFrame a HTML
+        # Convertimos el DataFrame a HTML
         df_html = df.to_html(escape=False)
         
-        # Mostrar la tabla con el índice configurado
+        # Mostramos la tabla con el índice configurado
         st.markdown(df_html, unsafe_allow_html=True)
 
 def obtener_partidos(liga):
@@ -72,17 +72,17 @@ def obtener_partidos(liga):
         data = response.json()
         partidos = data['matches']
         
-        # Fecha "hoy" como string, luego convertirla a datetime
+        # Fecha "hoy" como string, luego convertirla a datetime (esta fecha se usará para filtrar los partidos, cada 5 días realizaremos mantenimiento de la web y actualizaremos la fecha)
         hoy = "2025-01-17 10:45:43.394385"
         hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
         
-        # Sumar 90 días a la fecha actual
-        un_mes_despues = hoy_datetime + timedelta(days=5)
+        # Sumar 5 días a la fecha de hoy para obtener el último partido de la jornada (una jornada suele durar como máximo 5 días)
+        ultimo_partido_jornada = hoy_datetime + timedelta(days=5)
         
-        # Filtrar los partidos entre hoy y un mes después
+        # Filtramos los partidos entre hoy y un máximo de 5 días
         partidos_filtrados = [
             partido for partido in partidos 
-            if hoy_datetime <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= un_mes_despues
+            if hoy_datetime <= datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') <= ultimo_partido_jornada
         ]
         
         return partidos_filtrados
@@ -100,7 +100,7 @@ def agrupar_partidos_por_jornadas(partidos, liga):
     }
     jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
     
-    # Ordenar partidos por fecha
+    # Ordenamos los partidos por fecha
     partidos.sort(key=lambda p: p['utcDate'])
     
     jornada_actual = []
@@ -116,32 +116,35 @@ def mostrar_partidos(partidos, liga, logos):
         st.markdown("No hay partidos en la jornada actual.")
         return
     
-    # Obtener la jornada inicial
+    # Obtenemos la jornada inicial
     jornada_actual_numero = list(jornadas.keys())[0]
     partidos_jornada_actual = jornadas[jornada_actual_numero]
     
-    # Mostrar título de la jornada
+    # Añadimos el título de la jornada a la página web
     st.markdown(f"""
     <div style="font-size: 1.5rem; font-weight: bold; margin-top: 1rem; margin-bottom: 0.5rem;">
         Jornada {jornada_actual_numero}
     </div>
     """, unsafe_allow_html=True)
     
-    # Mostrar los partidos de la jornada
+    # Mostramos los partidos que hay en la jornada
     for partido in partidos_jornada_actual:
         local = partido['homeTeam']['name']
         visitante = partido['awayTeam']['name']
         
-        # Convertir la fecha y sumar una hora
+        # Convertimos la fecha y sumamos una hora para ajustarla a la hora de local (España)
         fecha = datetime.strptime(partido['utcDate'], '%Y-%m-%dT%H:%M:%SZ') + timedelta(hours=1)
-        
-        fecha = fecha.strftime('%d/%m/%Y %H:%M')  # Día, mes, año y hora
-        
-        # Obtener logos
+        # Verificamos si la hora es 00:00 (esto quiere decir que no se ha definido la hora del partido)
+        if fecha.strftime('%H:%M') == '00:00':
+            fecha = fecha.strftime('%d/%m/%Y')  
+        else:
+            fecha = fecha.strftime('%d/%m/%Y %H:%M') 
+            
+        # Obtenermos los logos de los equipos
         logo_local = logos[liga].get(local.lower().replace(" ", ""), "")
         logo_visitante = logos[liga].get(visitante.lower().replace(" ", ""), "")
         
-        # Generar el HTML
+        # Generamos el HTML
         st.markdown(f"""
 <div class="match-container" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background-color: #000000; margin-bottom: 0.5rem; border-radius: 8px;">
     <div class="team-container" style="text-align: center; width: 40%;">
