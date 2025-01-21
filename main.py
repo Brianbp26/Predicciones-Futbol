@@ -282,10 +282,6 @@ def train_model(df, home_team, away_team):
     X = pd.concat(features_list, ignore_index=True)
     y = np.array(results)
     
-    print(f"\nEntrenando modelo con {len(X)} partidos")
-    print(f"Usando datos desde temporada {temporadas[0]} hasta {temporadas[-1]}")
-    print(f"Solo para partidos que involucran a {home_team} y {away_team}")
-    
     # Dividir en train y test
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
@@ -315,20 +311,7 @@ def train_model(df, home_team, away_team):
     # Evaluar el modelo
     train_score = best_model.score(X_train_scaled, y_train)
     test_score = best_model.score(X_test_scaled, y_test)
-    
-    print(f"Mejores hiperparámetros: {grid_search.best_params_}")
-    print(f"Score en entrenamiento: {train_score:.3f}")
-    print(f"Score en test: {test_score:.3f}")
-    
-    # Mostrar importancia de características
-    feature_importance = pd.DataFrame({
-        'feature': X.columns,
-        'importance': best_model.feature_importances_
-    }).sort_values('importance', ascending=False)
-    
-    print("\nCaracterísticas más importantes:")
-    print(feature_importance.head(10))
-    
+
     return best_model, scaler, train_score, test_score
 
 
@@ -459,10 +442,6 @@ def predict_match_score(df, home_team, away_team):
                 away_score = home_score + 2
         
         return home_score, away_score
-        
-    except Exception as e:
-        print(f"Error al realizar la predicción: {e}")
-        return None, None
         
     except Exception as e:
         print(f"Error al realizar la predicción: {e}")
