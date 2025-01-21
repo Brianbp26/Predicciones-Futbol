@@ -73,7 +73,7 @@ def obtener_partidos(liga):
         partidos = data['matches']
         
         # Fecha "hoy" como string, luego convertirla a datetime
-        hoy = "2025-01-17 10:45:43.394385"
+        hoy = "2025-01-24 10:45:43.394385"
         hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
         
         un_mes_despues = hoy_datetime + timedelta(days=5)
