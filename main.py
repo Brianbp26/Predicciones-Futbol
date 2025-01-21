@@ -73,35 +73,34 @@ def prepare_data_for_model(df, home_team, away_team):
     """
     Prepara los datos para el modelo usando todas las temporadas con ponderación.
     """
-    #Como teníamos varios formatos en los csvs, definimos los formatos para poder operar con todos
+    # Intentar múltiples formatos de fecha
     date_formats = ["%d/%m/%Y", "%m/%d/%Y", "%Y-%m-%d"]
     for fmt in date_formats:
         try:
-            df.loc[:, 'Date'] = pd.to_datetime(df['Date'], format=fmt, errors='coerce')  
+            df.loc[:, 'Date'] = pd.to_datetime(df['Date'], format=fmt, errors='coerce')  # Corrección aquí
             break
         except ValueError:
             continue
     else:
-        # Si todos los formatos fallan, intentamos con dayfirst=True
+        # Si todos los formatos fallan, intentar con dayfirst=True
         df.loc[:, 'Date'] = pd.to_datetime(df['Date'], dayfirst=True, errors='coerce')
 
-    #Para trabajar con un dataframe independiente, creamos una copia
-    df = df.dropna(subset=['Date']).copy() 
-    df = df.sort_values('Date').copy()     
+    df = df.dropna(subset=['Date']).copy()  # Crear una copia segura
+    df = df.sort_values('Date').copy()     # Crear una copia segura después de ordenar
 
-
+    # Obtener todas las temporadas ordenadas
     temporadas = sorted(df['Temporada'].unique())
     num_temporadas = len(temporadas)
 
-    # Creamos un  diccionario de pesos para cada temporada, con mayor peso para la última temporada
+    # Crear diccionario de pesos para cada temporada, con mayor peso para la última temporada
     pesos_temporadas = {temp: 1 - (0.8 * (num_temporadas - i - 1) / (num_temporadas - 1)) 
                         for i, temp in enumerate(temporadas)}
 
-    # Incrementamos el peso de la última temporada ya que la consideramos más importante
+    # Incrementar el peso de la última temporada
     if temporadas:
         pesos_temporadas[temporadas[-1]] *= 1.5
 
-    #Definimos las variables que queremos analizar
+    # Inicializar variables para acumular estadísticas ponderadas
     stats = {
         'home_wins': 0,
         'home_draws': 0,
@@ -121,12 +120,12 @@ def prepare_data_for_model(df, home_team, away_team):
         'away_win_streak': 0
     }
 
-    # Calculamos estas estadísticas para cada temporada ponderando
+    # Calcular estadísticas ponderadas por temporada
     for temporada in temporadas:
         peso = pesos_temporadas[temporada]
-        df_temp = df[df['Temporada'] == temporada].copy() 
+        df_temp = df[df['Temporada'] == temporada].copy()  # Copia explícita
 
-        # Manejamos las divisiones por 0 al calcular promedios (equipos con una unica temporadd)
+        # Manejar divisiones por cero al calcular promedios
         try:
             # Partidos como local del equipo local
             home_local = df_temp[df_temp['HomeTeam'] == home_team].copy()
@@ -159,7 +158,7 @@ def prepare_data_for_model(df, home_team, away_team):
         except ZeroDivisionError:
             continue
 
-    #Estados de forma (ultimos 5 partidos)
+    # Obtener los últimos 5 partidos (sin ponderar, son los más recientes)
     ultimos_partidos_home = df[
         (df['HomeTeam'] == home_team) | 
         (df['AwayTeam'] == home_team)
@@ -170,13 +169,13 @@ def prepare_data_for_model(df, home_team, away_team):
         (df['AwayTeam'] == away_team)
     ].tail(5).copy()
 
-    # Calculamos la racha de victorias para potenciar al equipo
+    # Calcular racha de victorias
     stats['home_win_streak'] = sum((ultimos_partidos_home['HomeTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'H') |
                                    (ultimos_partidos_home['AwayTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'A'))
     stats['away_win_streak'] = sum((ultimos_partidos_away['HomeTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'H') |
                                    (ultimos_partidos_away['AwayTeam'] == away_team) & (ultimos_partidos_away['FTR'] == 'A'))
 
-    # Definimos lo que queremos devolver
+    # Preparar features finales
     features = {
         # Posiciones en la tabla actual
         'home_position': calcular_posicion_tabla(df, home_team),
@@ -202,7 +201,7 @@ def prepare_data_for_model(df, home_team, away_team):
         'h2h_draws_weighted': stats['h2h_draws'],
         'h2h_total_matches': stats['h2h_matches'],
         
-        # Forma reciente
+        # Forma reciente (últimos 5 partidos, sin ponderar)
         'home_last5_wins': sum((ultimos_partidos_home['HomeTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'H') |
                               (ultimos_partidos_home['AwayTeam'] == home_team) & (ultimos_partidos_home['FTR'] == 'A')),
         'home_last5_draws': sum(ultimos_partidos_home['FTR'] == 'D'),
@@ -216,6 +215,10 @@ def prepare_data_for_model(df, home_team, away_team):
         'away_win_streak': stats['away_win_streak']
     }
 
+    # Añadir losses de últimos 5 partidos
+    features['home_last5_losses'] = 5 - (features['home_last5_wins'] + features['home_last5_draws'])
+    features['away_last5_losses'] = 5 - (features['away_last5_wins'] + features['away_last5_draws'])
+
     return pd.DataFrame([features])
 
 def train_model(df, home_team, away_team):
@@ -227,33 +230,33 @@ def train_model(df, home_team, away_team):
         home_team: Equipo local
         away_team: Equipo visitante
     """
-    # Creamos listas para almacenar los features y los resultados
+    # Crear listas para almacenar features y resultados
     features_list = []
     results = []
 
-    # Ordenamos las temporadas
+    # Ordenar las temporadas
     temporadas = sorted(df['Temporada'].unique())
     
-    # Filtramos solo partidos donde participen los equipos de interés
+    # Filtrar solo partidos donde participen los equipos de interés
     df_equipos = df[
         ((df['HomeTeam'] == home_team) | (df['AwayTeam'] == home_team) |
          (df['HomeTeam'] == away_team) | (df['AwayTeam'] == away_team))
     ]
     
-    # Excluimos la primera temporada, ya que esta no tiene temporadas anteriores de las que "aprender"
+    # Para cada partido en el dataset, excluyendo la primera temporada
     for idx, partido in df_equipos[df_equipos['Temporada'] != temporadas[0]].iterrows():
         temporada_actual = partido['Temporada']
         
-        # Obtenemos los datos de todas las temporadas anteriores
+        # Obtener datos de todas las temporadas anteriores
         temporadas_anteriores = [t for t in temporadas if t < temporada_actual]
         if not temporadas_anteriores:
             continue
             
-        # Obtenemos datos hasta la temporada actual, manteniedo solo partidos de los equipos
+        # Obtener datos hasta la temporada actual, manteniedo solo partidos de los equipos
         df_hasta_temporada = df_equipos[df_equipos['Temporada'].isin(temporadas_anteriores)]
         
         try:
-            # Preparamos features usando los datos históricos
+            # Preparar features usando los datos históricos
             features = prepare_data_for_model(
                 df_hasta_temporada,
                 partido['HomeTeam'],
@@ -268,26 +271,32 @@ def train_model(df, home_team, away_team):
                 results.append(result)
                 
         except Exception as e:
+            #Si dejamos el print se colapsa la terminal del streamlit
+            #print(f"Error procesando partido de temporada {temporada_actual}: {e}")
             continue
     
     if not features_list:
         raise ValueError("No se pudieron generar suficientes datos para entrenar el modelo")
     
-    # Concatenamos todos los features
+    # Concatenar todos los features
     X = pd.concat(features_list, ignore_index=True)
     y = np.array(results)
     
-    # Dividimos para entrenar el modelo
+    print(f"\nEntrenando modelo con {len(X)} partidos")
+    print(f"Usando datos desde temporada {temporadas[0]} hasta {temporadas[-1]}")
+    print(f"Solo para partidos que involucran a {home_team} y {away_team}")
+    
+    # Dividir en train y test
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
     
-    # Escalamos características para que se pueda tomar todas por igual
+    # Escalar características
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
     
-    # Definimos el modelo y los hiperparámetros a optimizar
+    # Definir el modelo y los hiperparámetros a optimizar
     model = RandomForestClassifier(random_state=42)
     param_grid = {
         'n_estimators': [100, 200, 300],
@@ -297,18 +306,31 @@ def train_model(df, home_team, away_team):
         'class_weight': ['balanced']
     }
     
-    # Realizamos búsqueda de hiperparámetros para mejorar el modelo
+    # Realizar búsqueda de hiperparámetros
     grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5, n_jobs=-1, scoring='accuracy')
     grid_search.fit(X_train_scaled, y_train)
     
     best_model = grid_search.best_estimator_
     
-    # Evaluamos el modelo
+    # Evaluar el modelo
     train_score = best_model.score(X_train_scaled, y_train)
     test_score = best_model.score(X_test_scaled, y_test)
     
-    return best_model, scaler, train_score, test_score
+    print(f"Mejores hiperparámetros: {grid_search.best_params_}")
+    print(f"Score en entrenamiento: {train_score:.3f}")
+    print(f"Score en test: {test_score:.3f}")
     
+    # Mostrar importancia de características
+    feature_importance = pd.DataFrame({
+        'feature': X.columns,
+        'importance': best_model.feature_importances_
+    }).sort_values('importance', ascending=False)
+    
+    print("\nCaracterísticas más importantes:")
+    print(feature_importance.head(10))
+    
+    return best_model, scaler, train_score, test_score
+
 
 def predict_match(df, home_team, away_team):
     """
@@ -323,33 +345,46 @@ def predict_match(df, home_team, away_team):
         dict: Probabilidades y resultado más probable
     """
     try:
-        # Entrenamos el modelo  para estos equipos
-        model, scaler, _, _ = train_model(df, home_team, away_team)
+        # Entrenar el modelo específico para estos equipos
+        model, scaler, train_score, test_score = train_model(df, home_team, away_team)
         
-        # Obtenemos las características para el partido actual
+        # Obtener las características para el partido actual
         current_features = prepare_data_for_model(df, home_team, away_team)
         
         if current_features is None:
             raise ValueError("No se pudieron preparar las características del partido")
         
-        # Escalamos las características
+        # Escalar las características
         features_scaled = scaler.transform(current_features)
         
-        # Obtenemos probabilidades
+        # Obtener probabilidades
         probabilities = model.predict_proba(features_scaled)[0]
         
-        # Creamos diccionario con los resultados
+        # Encontrar el resultado más probable
+        resultado_idx = probabilities.argmax()
+        resultados = ['Victoria Visitante', 'Empate', 'Victoria Local']
+        resultado_probable = resultados[resultado_idx]
+        
+        # Crear diccionario con los resultados
         prediccion = {
+            'probabilidades': {
                 'victoria_local': f"{probabilities[2]*100:.1f}%",
                 'empate': f"{probabilities[1]*100:.1f}%",
                 'victoria_visitante': f"{probabilities[0]*100:.1f}%"
+            },
+            'resultado_mas_probable': resultado_probable,
+            'confianza_prediccion': f"{probabilities[resultado_idx]*100:.1f}%",
+            'metricas_modelo': {
+                'score_entrenamiento': f"{train_score:.3f}",
+                'score_test': f"{test_score:.3f}"
             }
+        }
+        
         return prediccion
         
     except Exception as e:
         print(f"Error al realizar la predicción: {e}")
         return None
-    
         
 def predict_match_score(df, home_team, away_team):
     """
@@ -364,27 +399,27 @@ def predict_match_score(df, home_team, away_team):
         tuple: (goles_local, goles_visitante)
     """
     try:
-        # Entrenamos el modelo para predecir el resultado
-        model, scaler, _, _ = train_model(df, home_team, away_team)
+        # Entrenar el modelo para predecir el resultado
+        model, scaler, train_score, test_score = train_model(df, home_team, away_team)
         
-        # Obtenemos características para el partido actual
+        # Obtener características para el partido actual
         current_features = prepare_data_for_model(df, home_team, away_team)
         
         if current_features is None:
             raise ValueError("No se pudieron preparar las características del partido")
         
-        # Escalamos características
+        # Escalar características
         features_scaled = scaler.transform(current_features)
         
-        # Obtenemos probabilidades del modelo
+        # Obtener probabilidades del modelo
         probabilities = model.predict_proba(features_scaled)[0]
         
-        # Obtenemos resultado más probable
+        # Obtener resultado más probable
         resultado_idx = probabilities.argmax()
         resultados = ['Victoria Visitante', 'Empate', 'Victoria Local']
         resultado_probable = resultados[resultado_idx]
         
-        # Calculamos goles esperados usando estadísticas recientes
+        # Calcular goles esperados usando estadísticas recientes
         recent_matches = df.tail(10*20)
         
         # Estadísticas equipo local
@@ -395,15 +430,15 @@ def predict_match_score(df, home_team, away_team):
         away_recent = recent_matches[recent_matches['AwayTeam'] == away_team]['FTAG'].mean()
         away_historical = df[df['AwayTeam'] == away_team]['FTAG'].mean()
         
-        # Manejamos los valores NaN
+        # Manejar NaN
         home_recent = home_recent if not pd.isna(home_recent) else home_historical
         away_recent = away_recent if not pd.isna(away_recent) else away_historical
         
-        # Calculamos goles esperados (66% forma reciente, 33% histórico)
-        home_expected = (0.66 * home_recent + 0.33 * home_historical)
-        away_expected = (0.66 * away_recent + 0.33 * away_historical)
+        # Calcular goles esperados (70% forma reciente, 30% histórico)
+        home_expected = (0.7 * home_recent + 0.3 * home_historical)
+        away_expected = (0.7 * away_recent + 0.3 * away_historical)
         
-        # Predecimos marcador según resultado predicho por el modelo
+        # Predecir marcador según resultado predicho por el modelo
         if resultado_probable == 'Victoria Local':
             home_score = round(max(home_expected, away_expected + 1))
             away_score = round(min(away_expected, home_score - 1))
@@ -415,6 +450,13 @@ def predict_match_score(df, home_team, away_team):
             home_score = away_score = max(1, round(avg_goals))
             if home_score > 3:
                 home_score = away_score = 2
+        
+        # Ajustar resultados poco probables
+        if abs(home_score - away_score) > 3:
+            if home_score > away_score:
+                home_score = away_score + 2
+            else:
+                away_score = home_score + 2
         
         return home_score, away_score
         
