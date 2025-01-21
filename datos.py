@@ -91,11 +91,11 @@ def obtener_partidos(liga):
     
 def agrupar_partidos_por_jornadas(partidos, liga):
     jornadas_iniciales = {
-        'LaLiga': 20,
-        'Premier League': 22,
-        'Serie A': 21,
-        'Ligue 1': 18,
-        'Bundesliga': 17
+        'LaLiga': 21,
+        'Premier League': 23,
+        'Serie A': 22,
+        'Ligue 1': 19,
+        'Bundesliga': 18
     }
     jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
     
