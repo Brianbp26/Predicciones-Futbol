@@ -433,13 +433,7 @@ def predict_match_score(df, home_team, away_team):
             home_score = away_score = max(1, round(avg_goals))
             if home_score > 3:
                 home_score = away_score = 2
-        
-        # Ajustar resultados poco probables
-        if abs(home_score - away_score) > 3:
-            if home_score > away_score:
-                home_score = away_score + 2
-            else:
-                away_score = home_score + 2
+       
         
         return home_score, away_score
         
