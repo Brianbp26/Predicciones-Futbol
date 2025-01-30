@@ -73,7 +73,7 @@ def obtener_partidos(liga):
         partidos = data['matches']
         
         # Fecha "hoy" como string, luego convertirla a datetime
-        hoy = "2025-01-24 10:45:43.394385"
+        hoy = "2025-01-31 10:45:43.394385"
         hoy_datetime = datetime.strptime(hoy, "%Y-%m-%d %H:%M:%S.%f")
         
         un_mes_despues = hoy_datetime + timedelta(days=5)
@@ -91,11 +91,11 @@ def obtener_partidos(liga):
     
 def agrupar_partidos_por_jornadas(partidos, liga):
     jornadas_iniciales = {
-        'LaLiga': 21,
-        'Premier League': 23,
-        'Serie A': 22,
-        'Ligue 1': 19,
-        'Bundesliga': 18
+        'LaLiga': 22,
+        'Premier League': 24,
+        'Serie A': 23,
+        'Ligue 1': 20,
+        'Bundesliga': 19
     }
     jornada_inicial = jornadas_iniciales.get(liga, 1)  # Si la liga no está definida, comienza desde la jornada 1
     
